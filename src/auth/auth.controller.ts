@@ -1,40 +1,41 @@
 import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
-import { AuthCredentials } from './auth.model';
+//import { AuthCredentials } from './auth.model';
 import { AuthService } from './auth.service';
+import { CreateAuthDto } from './dto/create-auth.dto';
+import { UpdateAuthDto } from './dto/update-auth.dto';
+import { BaseAuthDto } from './dto/base-auth.dto';
+import { Auth } from './schemas/auth.schema';
 
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly service: AuthService) { }
-
-
-    @Post('create')
-    async createUserAuthentication(@Body('username') username: string, @Body('password') password: string):Promise<string> {
-        const generatedId = await this.service.createUserAuthentication(username, password);
-
-        return generatedId;
-    }
-
     @Get()
-    async getAllAuth() {
+    async getAllAuth(): Promise<Auth[]> {
         return await this.service.getAllAuth();
     }
 
     @Get(':id')
-    getAuth(@Param('id') authId:string) {
-        return this.service.getAuth(authId);
+    async getAuth(@Param('id') authId: string): Promise<Auth> {
+        return await this.service.getAuth(authId);
+    }
+    @Post('create')
+    async createUserAuthentication(@Body() createAuthDto: CreateAuthDto): Promise<void> {
+        await this.service.createUserAuthentication(createAuthDto);
+    }
+    @Post('signin')
+    async signIn(@Body() createAuthDto: BaseAuthDto): Promise<{ accessToken: string }> {
+        return await this.service.signIn(createAuthDto);
     }
 
-    @Patch('/:id/password')
-    async update(@Param('id') id: string, @Body('password') password:string) {
-        await this.service.update(id, password);
-        return null;
-    }
 
+    @Patch(':id')
+    async update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
+        return await this.service.update(id, updateAuthDto);
+    }
     //Delete user
     @Delete(':id')
-    async remove(@Param('id') authId:string): Promise<void> {
-        await this.service.deleteAuth(authId);
-        return null;
+    async remove(@Param('id') authId: string): Promise<Auth> {
+        return await this.service.deleteAuth(authId);
     }
 }
