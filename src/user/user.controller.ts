@@ -1,42 +1,41 @@
+import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/common';
+//import { userCredentials } from './user.model';
+import { userService } from './user.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { BaseUserDto } from './dto/base-user.dto';
+import { User } from './schemas/user.schema';
+import { GetUser } from './get-user.decorator';
 
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
-import { UserService } from './user.service';
-import { User } from './user.model';
 
 @Controller('user')
-export class UserController {
-    constructor(private service: UserService) {
-    }
-
+export class userController {
+    constructor(private readonly service: userService) { }
     @Get()
-    getAllUsers() {
-        return this.service.getAllUsers();
-    }
-
-    @Get('findById/:id')
-    findById(@Param() params) {
-        return this.service.findById(params.id);
-    }
-
-    @Post('create')
-    create(@Body() user: User) {
-        return this.service.create(user);
-    }
-    //Update
-    @Patch('/:id/name')
-    update(@Param('id') id: string, @Body() user:User ) {
-        return this.service.update(id, user);
+    async getAlluser(): Promise<User[]> {
+        return await this.service.getAlluser();
     }
     
-    //Delete user
-    @Delete('delete/:id')
-    remove(@Param() params): Promise<void> {
-        return this.service.remove(params.id);
+    @Get(':id')
+    async getuser(@Param('id') userId: string): Promise<User> {
+        return await this.service.getuser(userId);
     }
-    /*
-    //Delete user by id
-    @Delete('deleteByID/:id')
-    removeById(@Param() params): Promise<void> {
-        return this.service.remove(params.id);
-    }*/
+    @Post('create')
+    async signUp(@Body() createuserDto: CreateUserDto): Promise<void> {
+        await this.service.signUp(createuserDto);
+    }
+    @Post('signin')
+    async signIn(@Body() createuserDto: BaseUserDto): Promise<{ accessToken: string }> {
+        return await this.service.signIn(createuserDto);
+    }
+
+    @Patch(':id')
+    async update(@Param('id') id: string, @Body() updateuserDto: UpdateUserDto) {
+        return await this.service.update(id, updateuserDto);
+    }
+    //Delete user
+    @Delete(':id')
+    async remove(@Param('id') userId: string): Promise<User> {
+        return await this.service.deleteuser(userId);
+    }
 }

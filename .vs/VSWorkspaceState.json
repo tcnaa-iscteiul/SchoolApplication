@@ -3,7 +3,8 @@
     "",
     "\\src",
     "\\src\\user",
-    "\\test"
+    "\\src\\user\\dto",
+    "\\src\\user\\schemas"
   ],
   "SelectedNode": "\\src\\user\\user.controller.ts",
   "PreviewInSolutionExplorer": false
