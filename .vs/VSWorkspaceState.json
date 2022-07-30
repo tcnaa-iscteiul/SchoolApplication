@@ -3,8 +3,13 @@
     "",
     "\\public",
     "\\src",
-    "\\src\\components"
+    "\\src\\components",
+    "\\src\\components\\Admin",
+    "\\src\\components\\UI",
+    "\\src\\hooks",
+    "\\src\\pages",
+    "\\src\\store"
   ],
-  "SelectedNode": "\\src\\store",
+  "SelectedNode": "\\src\\components\\Admin\\UpdateStudent.tsx",
   "PreviewInSolutionExplorer": false
 }
