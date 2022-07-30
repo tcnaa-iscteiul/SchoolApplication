@@ -1,10 +1,11 @@
 import { useCallback, useState } from 'react';
 import { IUser } from '../interfaces/IUser';
-import { IClass} from '../interfaces/IClass';
+import { IClass } from '../interfaces/IClass';
 import { Service } from '../services/Service';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth-slice';
 import { useNavigate } from 'react-router-dom';
+import { Status } from '../interfaces/Status';
 
 export const useSignUp = () => {
     const dispatch = useDispatch();
@@ -61,7 +62,7 @@ export const useSignUp = () => {
         setIsLoading(false);
     }, []);
 
-    const deleteStudent = useCallback(async (email:string) => {
+    const deleteStudent = useCallback(async (email: string) => {
         setIsLoading(true);
         setError(undefined);
         try {
@@ -84,12 +85,12 @@ export const useSignUp = () => {
         try {
             const { data, status } = await Service.getAllUsers();
             let users: IUser[] = [];
-            data.map((item:IUser)=>users.push(item));
+            data.map((item: IUser) => users.push(item));
             setUsers(users);
             if (status !== 201) {
                 throw new Error();
             }
-            
+
 
         }
         catch (err: any) {
@@ -103,18 +104,21 @@ export const useSignUp = () => {
         setError('');
         try {
             const { data, status } = await Service.signIn(user);
-            dispatch(authActions.login({ token: data.accessToken, role: data.role, status: data.status }));
             navigate('/' + data.role);
             if (status !== 201) {
                 throw new Error();
             }
+            if (data.status === Status.Inactive) {
+                throw new Error("Please contact the Admin!");
+            }
+            dispatch(authActions.login({ token: data.accessToken, role: data.role, status: data.status }));
 
         }
         catch (err: any) {
             setError(err.message || 'Something went wrong!');
         }
         setIsLoading(false);
-    }, [dispatch]);
+    }, [dispatch,navigate]);
 
     return {
         isLoading,

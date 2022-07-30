@@ -3,14 +3,8 @@
     "",
     "\\public",
     "\\src",
-    "\\src\\components",
-    "\\src\\components\\Admin",
-    "\\src\\components\\UI",
-    "\\src\\hooks",
-    "\\src\\interfaces",
-    "\\src\\pages",
-    "\\src\\store"
+    "\\src\\components"
   ],
-  "SelectedNode": "\\src\\components\\Admin\\CreateClass.tsx",
+  "SelectedNode": "\\src\\store",
   "PreviewInSolutionExplorer": false
 }

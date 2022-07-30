@@ -57,7 +57,7 @@ export default function SignUp() {
         valueChangeHandler: phoneChangedHandler,
         valueBlurHandler: phoneBlurHandler,
         reset: resetPhoneInput
-    } = useInput((value: any) => value.trim() !== '' && value.length === 9 && !isNaN(value));
+    } = useInput((value: any) => value.trim() !== '' && value.length === 9 && !isNaN(value)&&value.startsWith('9'));
 
     const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
     const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");

@@ -120,7 +120,7 @@ export default function StudentContainer() {
                                     color="inherit"
                                     noWrap
                                 >
-                                    Welcome Admin!
+                                    Welcome!
                                 </Typography>
                             </Paper>
                         </Grid>

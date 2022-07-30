@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getCookie, removeCookie, setCookie } from 'typescript-cookie';
+import { Status } from '../interfaces/Status';
 
 type Auth = {
     token: string,
     status: string | null,
-    role: string | null
+    role: string | null,
 }
 
 const initialState: Auth = {
@@ -13,7 +14,7 @@ const initialState: Auth = {
     role: getCookie('role') || null,
 }
 //TODO:expiration time token
-const calculateRemainingTime = (expirationTime:string) => {
+const calculateRemainingTime = (expirationTime: string) => {
     const currentTime = new Date().getTime();
     const adjExpirationTime = new Date(expirationTime).getTime();
 
@@ -29,12 +30,16 @@ const AuthSlice = createSlice({
     initialState,
     reducers: {
         login(state, action) {
-            state.token = action.payload.token;
-            state.status = action.payload.status;
-            state.role = action.payload.role;
-            setCookie('role', state.role);
-            setCookie('token', state.token);
-            setCookie('status', state.status);
+            if (action.payload.status !== Status.Inactive) {
+
+                state.token = action.payload.token;
+                state.status = action.payload.status;
+                state.role = action.payload.role;
+
+                setCookie('role', state.role);
+                setCookie('token', state.token);
+                setCookie('status', state.status);
+            }
 
         },
         logout(state) {
