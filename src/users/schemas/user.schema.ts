@@ -1,12 +1,14 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { Role, Status } from '../dto/base-user.dto';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
+import { Role, Status } from "../dto/UserSearch.dto";
 
-export type userDocument = User & Document;
+export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-    @Prop({unique:true, required:true})
+    _id: string;
+
+    @Prop({ unique: true, required: true })
     email: string;
 
     @Prop({ required: true })
@@ -26,6 +28,5 @@ export class User {
 
     @Prop({ required: true })
     phone: string;
-
 }
 export const UserSchema = SchemaFactory.createForClass(User);

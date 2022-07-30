@@ -2,10 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\user",
-    "\\src\\user\\dto",
-    "\\src\\user\\schemas"
+    "\\src\\users",
+    "\\src\\users\\dto",
+    "\\src\\users\\repository",
+    "\\src\\users\\schemas",
+    "\\src\\users\\service"
   ],
-  "SelectedNode": "\\src\\user\\user.controller.ts",
+  "SelectedNode": "\\src\\users\\repository\\user.repository.ts",
   "PreviewInSolutionExplorer": false
 }
