@@ -13,6 +13,7 @@ const StudentsSlice = createSlice({
             state.students = action.payload.students;
         },
         addStudent(state, action) {
+            console.log("add User");
             if (!state.students.find((student: IUser) => student.id === action.payload.id)) {
                 const newStudent = {
                     id: action.payload.id,

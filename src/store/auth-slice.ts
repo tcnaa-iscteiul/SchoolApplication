@@ -14,14 +14,6 @@ const initialState: Auth = {
     role: getCookie('role') || null,
 }
 //TODO:expiration time token
-const calculateRemainingTime = (expirationTime: string) => {
-    const currentTime = new Date().getTime();
-    const adjExpirationTime = new Date(expirationTime).getTime();
-
-    const remainingTime = adjExpirationTime - currentTime;
-
-    return remainingTime;
-}
 
 export const isAuthenticated = initialState.token ? true : false;
 
@@ -29,6 +21,14 @@ const AuthSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
+        logout(state) {
+            state.token = '';
+            state.status = null;
+            state.role = null;
+            removeCookie('token');
+            removeCookie('status');
+            removeCookie('role');
+        },
         login(state, action) {
             if (action.payload.status !== Status.Inactive) {
 
@@ -39,17 +39,14 @@ const AuthSlice = createSlice({
                 setCookie('role', state.role);
                 setCookie('token', state.token);
                 setCookie('status', state.status);
+
+               
+
+              //  setTimeout(this.logout, 60);
             }
 
         },
-        logout(state) {
-            state.token = '';
-            state.status = null;
-            state.role = null;
-            removeCookie('token');
-            removeCookie('status');
-            removeCookie('role');
-        },
+
     }
 });
 

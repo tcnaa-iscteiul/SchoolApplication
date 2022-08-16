@@ -1,8 +1,6 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
-    "\\src",
     "\\src\\components",
     "\\src\\components\\Admin",
     "\\src\\components\\UI",
@@ -10,6 +8,6 @@
     "\\src\\pages",
     "\\src\\store"
   ],
-  "SelectedNode": "\\src\\components\\Admin\\UpdateStudent.tsx",
+  "SelectedNode": "\\Api",
   "PreviewInSolutionExplorer": false
 }

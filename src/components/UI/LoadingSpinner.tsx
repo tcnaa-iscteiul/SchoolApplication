@@ -11,11 +11,13 @@ const LoadSpinner = (): JSX.Element => {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
-        <Dialog fullScreen={fullScreen} open={true}>
-            <DialogContent style={{ backgroundColor: 'transparent' }} >
+        <React.Fragment>
+            <Dialog fullScreen={fullScreen} open={true}>
+                <DialogContent style={{ backgroundColor: 'transparent' }} >
                     <CircularProgress />
-            </DialogContent>
-        </Dialog>
+                </DialogContent>
+            </Dialog>
+        </React.Fragment>
     );
 }
 

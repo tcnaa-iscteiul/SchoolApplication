@@ -23,11 +23,18 @@ export default function CreateStudent() {
 
     const { isLoading, error, createClass } = useSignUp();
     const [showModal, setShowModal] = useState<boolean>(false);
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate()+1);
+
+    var currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
+
     const [startDate, setStartDate] = useState<Date | null>(
-        new Date(new Date().toLocaleString() + ""),
+        tomorrow,
     );
     const [endDate, setEndDate] = useState<Date | null>(
-        new Date(new Date().toLocaleString() + ""),
+        tomorrow,
     );
 
     const [startDateBlur, setStartDateBlur] = useState<boolean>(false);
@@ -59,18 +66,18 @@ export default function CreateStudent() {
         reset: resetDescriptionInput
     } = useInput((value: any) => value.trim() !== '' && value.length > 10 && isNaN(value));
 
-    const today = new Date();
 
-    const validateStartDate = !(startDate && startDate.getTime() >= today.getTime()) && startDateBlur ;
-    const validateEndDate = !(endDate && startDate && endDate.getTime() >= startDate.getTime()) && startEndBlur;
+    const validateStartDate = !(startDate!.getTime() >= today.getTime());
+
+    const validateEndDate = !(endDate && startDate && endDate.getTime() >= startDate.getTime());
 
     const validateForm: boolean = enteredNameIsValid && enteredDescriptionIsValid && !validateStartDate && !validateEndDate;
 
     const resetInputs = () => {
         resetNameInput();
         resetDescriptionInput();
-        setStartDate(new Date(new Date().toLocaleString() + ""));
-        setEndDate(new Date(new Date().toLocaleString() + ""));
+        setStartDate(tomorrow);
+        setEndDate(tomorrow);
     }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -144,7 +151,7 @@ export default function CreateStudent() {
                                 <Grid item xs={12}>
                                     <DesktopDatePicker
                                         label="Start Date"
-                                        inputFormat="MM/dd/yyyy"
+                                        inputFormat="dd/MM/yyyy"
                                         value={startDate}
                                         onChange={handleStartDateChange}
                                         renderInput={(params) => (
@@ -160,7 +167,7 @@ export default function CreateStudent() {
                                 <Grid item xs={12}>
                                     <DesktopDatePicker
                                         label="End Date"
-                                        inputFormat="MM/dd/yyyy"
+                                        inputFormat="dd/MM/yyyy"
                                         value={endDate}
                                         onChange={handleEndDateChange}
                                         renderInput={(params) => (

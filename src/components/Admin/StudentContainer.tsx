@@ -33,15 +33,15 @@ export default function StudentContainer() {
 
     const { updateStudent } = useSignUp();
 
-
     useEffect(() => {
         dispatch(fetchUsersData());
         dispatch(fetchClassData());
     }, [dispatch]);
 
-
+    
     useEffect(() => {
         if (users.changed) {
+            console.log("aqui");
             dispatch(fetchUsersData());
         }
         if (classes.changed) {

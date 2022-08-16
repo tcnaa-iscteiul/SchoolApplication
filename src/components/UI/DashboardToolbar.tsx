@@ -9,10 +9,10 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { menuActions } from '../../store/menu-slice';
-import { authActions } from '../../store/auth-slice';
+import { useSignUp }  from "../../hooks/useSignUp";
 
 interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
+    open ?: boolean;
 }
 
 
@@ -37,13 +37,13 @@ const AppBar = styled(MuiAppBar, {
 
 
 const DashboardToolbar = (props: any) => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    const logoutHandler = (event: any) => {
+    const { logout } = useSignUp();
+    const dispatch = useDispatch();
+
+    const logoutHandler = async (event: any) => {
         event.preventDefault();
-        dispatch(authActions.logout());
-        navigate("'/");
+        logout();
     }
 
     const clickDashboardHandler = () => {
@@ -78,9 +78,9 @@ const DashboardToolbar = (props: any) => {
                     noWrap
                     sx={{ flexGrow: 1 }}
                     onClick={clickDashboardHandler}
-                > 
-                        Dashboard
-                  
+                >
+                    Dashboard
+
                 </Typography>
 
                 <Button color="inherit" onClick={logoutHandler}>Logout</Button>
@@ -89,3 +89,7 @@ const DashboardToolbar = (props: any) => {
 }
 
 export default DashboardToolbar;
+
+function deleteToken(arg0: string | undefined) {
+    throw new Error('Function not implemented.');
+}

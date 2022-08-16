@@ -5,7 +5,6 @@ export const fetchUsersData = () => {
     return async (dispatch:any) => {
         const fetchData = async () => {
             const response = await Service.getAllUsers();
-
             if (!response) {
                 throw new Error('Could not fetch cart data!');
             }

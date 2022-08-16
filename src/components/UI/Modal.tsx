@@ -20,21 +20,20 @@ export default function ResponsiveDialog(props:any) {
     let content:string = props.message || ' Please wait for the e-mail confirmation!';
 
     return (
-        <div>
+        <React.Fragment>
             <Dialog
                 fullScreen={fullScreen}
                 open={props.open}
                 onClose={handleClose}
                 aria-labelledby="responsive-dialog-title"
             >
-                <DialogTitle id="responsive-dialog-title">
-                    <Title>{props.title.toUpperCase()}</Title>
+                <DialogTitle id="responsive-dialog-title" color="primary">
+                    {props.title.toUpperCase()}
                 </DialogTitle>
                 <DialogContent style={{minWidth:400} }>
                     <DialogContentText>
                         {content}
                     </DialogContentText>
-               
                 <DialogActions>
                     <Button onClick={handleClose} variant="contained" autoFocus>
                         Ok
@@ -42,6 +41,6 @@ export default function ResponsiveDialog(props:any) {
                     </DialogActions>
                 </DialogContent>
             </Dialog>
-        </div>
+        </React.Fragment>
     );
 }

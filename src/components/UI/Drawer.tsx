@@ -10,7 +10,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 
 
-const pages = ["Main Feature", "Popular Course", "ABoutUs", "ContactUs", "Login", "SignUp"];
+const pages = ["Main Feature", "Popular Course", "ABoutUs", "Login", "SignUp"];
 
 const DrawerComp = () => {
     const [openDrawer, setOpenDrawer] = useState(false);

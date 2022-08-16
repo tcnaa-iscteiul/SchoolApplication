@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth-slice';
 import { useNavigate } from 'react-router-dom';
 import { Status } from '../interfaces/Status';
+import { getCookie } from 'typescript-cookie';
 
 export const useSignUp = () => {
     const dispatch = useDispatch();
@@ -20,7 +21,6 @@ export const useSignUp = () => {
         setError(undefined);
         try {
             const { status } = await Service.signUp(user);
-            console.log(status);
             if (status !== 201) {
                 throw new Error();
             }
@@ -84,6 +84,8 @@ export const useSignUp = () => {
         setError(undefined);
         try {
             const { data, status } = await Service.getAllUsers();
+            console.log(data);
+            console.log(status);
             let users: IUser[] = [];
             data.map((item: IUser) => users.push(item));
             setUsers(users);
@@ -99,27 +101,54 @@ export const useSignUp = () => {
         setIsLoading(false);
     }, []);
 
-    const signIn = useCallback(async (user: IUser) => {
+    const calculateRemainingTime = (expirationTime: string) => {
+        const currentTime = new Date().getTime();
+        const adjExpirationTime = new Date(expirationTime).getTime();
+
+        const remainingTime = adjExpirationTime - currentTime;
+
+        return remainingTime;
+    }
+
+    const logout = useCallback(async () => {
         setIsLoading(true);
         setError('');
         try {
-            const { data, status } = await Service.signIn(user);
-            navigate('/' + data.role);
+            const token = getCookie("token");
+            const { status } = await Service.deleteToken(token!);
+            navigate('/');
+            dispatch(authActions.logout());
             if (status !== 201) {
                 throw new Error();
             }
-            if (data.status === Status.Inactive) {
-                throw new Error("Please contact the Admin!");
-            }
-            dispatch(authActions.login({ token: data.accessToken, role: data.role, status: data.status }));
 
         }
         catch (err: any) {
             setError(err.message || 'Something went wrong!');
         }
         setIsLoading(false);
-    }, [dispatch,navigate]);
-
+    }, [dispatch, navigate]);
+    /*
+    const signIn = useCallback(async (user: IUser) => {
+        setIsLoading(true);
+        setError('');
+        try {
+            const { data, status } = await Service.signIn(user);
+            console.log(data);
+            navigate('/' + data.role);
+            if (status !== 201) {
+                throw new Error();
+            }
+            dispatch(authActions.login({ token: data.accessToken, role: data.role, status: data.status }));
+            const remainingTime = calculateRemainingTime(data);
+           // setTimeout(logout, 216000000);
+        }
+        catch (err: any) {
+            setError(err.message || 'Something went wrong!');
+        }
+        setIsLoading(false);
+    }, [dispatch, navigate, logout]);
+    */
     return {
         isLoading,
         error,
@@ -129,6 +158,7 @@ export const useSignUp = () => {
         deleteStudent,
         createClass,
         updateStudent,
-        signIn
+       // signIn,
+        logout
     }
 }

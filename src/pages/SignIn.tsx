@@ -9,7 +9,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link as LinkRouter } from 'react-router-dom';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import useInput from '../hooks/useInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -18,13 +18,23 @@ import Modal from '../components/UI/Modal';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import Layout from '../components/UI/Layout';
 import { useSignUp } from '../hooks/useSignUp';
+import { Service } from '../services/Service';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../store/auth-slice';
+import { useNavigate } from 'react-router-dom';
+import useAxios from '../hooks/use-axios';
+import { getCookie } from 'typescript-cookie';
 
 export default function SignIn() {
 
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+   // const { isLoading, error, signIn } = useSignUp();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const { isLoading, error, signIn } = useSignUp();
-
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const {
         value: enteredEmail,
         isValid: enteredEmailIsValid,
@@ -32,7 +42,7 @@ export default function SignIn() {
         valueChangeHandler: emailChangedHandler,
         valueBlurHandler: emailBlurHandler,
         reset: resetEmailInput
-    } = useInput((value: any) => value.trim() !== '' && value.includes('@') && value.length > 8);
+    } = useInput((value: any) => re.test(value));
     const {
         value: enteredPassword,
         isValid: enteredPasswordIsValid,
@@ -40,18 +50,39 @@ export default function SignIn() {
         valueChangeHandler: passwordChangedHandler,
         valueBlurHandler: passwordBlurHandler,
         reset: resetPasswordInput
-    } = useInput((value: any) => value.trim() !== '');
+    } = useInput((value: any) => value.trim() !== '' && value.length >= 8);
 
+
+
+
+     const signIn = useCallback(async (user: IUser) => {
+         setIsLoading(true);
+         setError('');
+         try {
+             const { data, status } = await Service.signIn(user);
+             navigate('/' + data.role);
+             if (status !== 201) {
+                 throw new Error();
+             }
+             dispatch(authActions.login({ token: data.accessToken, role: data.role, status: data.status }));
+           //  const remainingTime = calculateRemainingTime(data);
+             // setTimeout(logout, 216000000);
+         }
+         catch (err: any) {
+             setError(err.response.data.message || 'Something went wrong!');
+         }
+         setIsLoading(false);
+     }, [dispatch, navigate]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const newUser: IUser = {
             email: enteredEmail,
-            password: enteredPassword
+            password:enteredPassword
         }
-
         signIn(newUser);
+
         resetEmailInput();
         resetPasswordInput();
         setShowModal(true);
@@ -64,7 +95,7 @@ export default function SignIn() {
     return (
         <Layout>
             {isLoading && <LoadingSpinner />}
-            {showModal &&error&& <Modal open={showModal} onClose={handleCloseModal} message={error} title={"error"} />}
+            {showModal && error && <Modal open={showModal} onClose={handleCloseModal} message={error} title={"error"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -96,7 +127,7 @@ export default function SignIn() {
                             value={enteredEmail}
                             onChange={emailChangedHandler}
                             onBlur={emailBlurHandler}
-                            helperText={(emailInputHasError && !enteredEmail && 'Please insert a valid email')}
+                            helperText={(emailInputHasError && enteredEmail && 'Please insert a valid email')}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
@@ -107,6 +138,7 @@ export default function SignIn() {
                         />
                         <TextField
                             required
+                            error={passwordInputHasError}
                             sx={{ width: 1 }}
                             name="password"
                             label="Password"
@@ -115,7 +147,7 @@ export default function SignIn() {
                             value={enteredPassword}
                             onChange={passwordChangedHandler}
                             onBlur={passwordBlurHandler}
-                            helperText={(passwordInputHasError && !enteredPassword && 'Please insert a valid email')}
+                            helperText={(passwordInputHasError && enteredPassword && 'Please insert a valid password')}
                         />
                         <Button
                             type="submit"
