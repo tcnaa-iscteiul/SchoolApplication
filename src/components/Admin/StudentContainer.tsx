@@ -21,6 +21,7 @@ import { fetchClassData } from '../../store/classesActions';
 import { Typography } from '@mui/material';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
+import useAxios from '../../hooks/use-axios';
 
 export default function StudentContainer() {
 
@@ -33,8 +34,14 @@ export default function StudentContainer() {
 
     const { updateStudent } = useSignUp();
 
+    const { response, error, loading, sendData } = useAxios({
+        method: "Get",
+        url: "user/all"
+    });
+
     useEffect(() => {
-        dispatch(fetchUsersData());
+        sendData();
+        //dispatch(fetchUsersData());
         dispatch(fetchClassData());
     }, [dispatch]);
 
@@ -50,7 +57,7 @@ export default function StudentContainer() {
 
     }, [users, dispatch, classes]);
 
-    const allStudents = users.filter((user: IUser) => user.role === Role.Student);
+    const allStudents = response?.data.filter((user: IUser) => user.role === Role.Student);
     const teachers = users.filter((user: IUser) => user.role === Role.Teacher);
     const pendingTeachers = users.filter((user: IUser) => user.role === Role.Teacher && user.status === Status.Pending);
 
