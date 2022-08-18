@@ -12,7 +12,6 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
         try {
             const result = await api.request(params);
             setResponse(result);
-            console.log(result);
         } catch (err: any) {
             setError(err.message);
         } finally {
@@ -22,7 +21,6 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
 
     const sendData = () => {
         fetchData(axiosParams);
-        console.log(response);
     }
 
     useEffect(() => {
