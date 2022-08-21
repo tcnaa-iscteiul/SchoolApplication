@@ -5,11 +5,9 @@ export const fetchClassData = () => {
     return async (dispatch: any) => {
         const fetchData = async () => {
             const response = await Service.getAllClasses();
-
             if (!response) {
-                throw new Error('Could not fetch cart data!');
+                throw new Error('Could not fetch classes!');
             }
-
             const data = await response;
 
             return data;

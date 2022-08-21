@@ -42,7 +42,7 @@ export default function SignUp() {
         valueBlurHandler: lastNameBlurHandler,
         reset: resetLastNameInput
     } = useInput((value: any) => value.trim() !== '' && value.length > 2 && value.match(letters));
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const {
         value: enteredEmail,
         isValid: enteredEmailIsValid,
@@ -60,7 +60,6 @@ export default function SignUp() {
         reset: resetPhoneInput
     } = useInput((value: any) => value.trim() !== '' && value.length === 9 && !isNaN(value) && value.startsWith('9'));
 
-    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
     const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
     const {
         value: enteredPassword,

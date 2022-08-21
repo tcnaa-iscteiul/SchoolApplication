@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import api from '../services/api';
 
 const useAxios = (axiosParams: AxiosRequestConfig) => {
@@ -12,6 +12,9 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
         try {
             const result = await api.request(params);
             setResponse(result);
+            if (result.data.status !== 200) {
+                setError(result.data.response?.errorMessage);
+            }
         } catch (err: any) {
             setError(err.message);
         } finally {

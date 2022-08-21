@@ -11,16 +11,18 @@ import useInput from '../hooks/useInput';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import { Fragment } from 'react';
 import Modal from './UI/Modal';
-import { IUser } from '../interfaces';
 import LoadingSpinner from './UI/LoadingSpinner';
 import useAxios from '../hooks/use-axios';
 import { getCookie } from 'typescript-cookie';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
+import { Service } from '../services/Service';
 
 export default function ChangePassword() {
 
     const [showModal, setShowModal] = useState<boolean>(false);
+    const navigate = useNavigate();
 
-    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
     const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
     const {
         value: enteredPassword,
@@ -40,11 +42,22 @@ export default function ChangePassword() {
         reset: resetConfirmPasswordInput
     } = useInput((value: any) => value === enteredPassword);
 
-    const { response, error, loading:isLoading, sendData } = useAxios({
+    const sampleLocation = useLocation();
+    let token = getCookie("token");
+    if (!token) {
+        try {
+            token = sampleLocation.search.split("=")[1];
+        }
+        catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
+
+    const { response, error, loading: isLoading, sendData } = useAxios({
         method: "Patch",
         url: "auth/changePassword",
         data: {
-            token: getCookie("token"),
+            token: token,
             password: enteredPassword
         }
     });
@@ -52,25 +65,24 @@ export default function ChangePassword() {
     const validateForm: boolean = enteredPasswordIsValid && enteredConfirmaPasswordIsValid;
 
     const resetInputs = () => {
-
-       
         resetPasswordInput();
         resetConfirmPasswordInput();
     }
 
-
-
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         sendData();
+
         setShowModal(true);
         resetInputs();
-
     }
 
-    const handleCloseModal = () => {
+    const handleCloseModal = async() => {
         setShowModal(false);
+        if (sampleLocation.search && !error && !response?.data) {
+            await Service.deleteToken(token!);
+            navigate("/signin");
+        }
     }
 
     return (

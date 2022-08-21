@@ -12,5 +12,8 @@ export class Token {
 
     @Prop()
     email: string;
+
+    @Prop()
+    expireAt: string;
 }
 export const TokenSchema = SchemaFactory.createForClass(Token);

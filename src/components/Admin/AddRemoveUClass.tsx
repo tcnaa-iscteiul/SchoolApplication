@@ -10,7 +10,6 @@ import { useState } from 'react';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
 
-
 type AllStudents = {
     title: string,
     students?: boolean,
@@ -81,4 +80,3 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
 }
 
 export default AddRemoveUClass;
-

@@ -17,24 +17,21 @@ import { IUser } from '../interfaces';
 import Modal from '../components/UI/Modal';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import Layout from '../components/UI/Layout';
-import { useSignUp } from '../hooks/useSignUp';
 import { Service } from '../services/Service';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth-slice';
 import { useNavigate } from 'react-router-dom';
-import useAxios from '../hooks/use-axios';
-import { getCookie } from 'typescript-cookie';
+import { getCookie, setCookie } from 'typescript-cookie';
 
 export default function SignIn() {
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
-   // const { isLoading, error, signIn } = useSignUp();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const {
         value: enteredEmail,
         isValid: enteredEmailIsValid,
@@ -52,34 +49,36 @@ export default function SignIn() {
         reset: resetPasswordInput
     } = useInput((value: any) => value.trim() !== '' && value.length >= 8);
 
-
-
-
-     const signIn = useCallback(async (user: IUser) => {
-         setIsLoading(true);
-         setError('');
-         try {
-             const { data, status } = await Service.signIn(user);
-             navigate('/' + data.role);
-             if (status !== 201) {
-                 throw new Error();
-             }
-             dispatch(authActions.login({ token: data.accessToken, role: data.role, status: data.status }));
-           //  const remainingTime = calculateRemainingTime(data);
-             // setTimeout(logout, 216000000);
-         }
-         catch (err: any) {
-             setError(err.response.data.message || 'Something went wrong!');
-         }
-         setIsLoading(false);
-     }, [dispatch, navigate]);
+    const signIn = useCallback(async (user: IUser) => {
+        const token = getCookie("token");
+        if (token) {
+            navigate('/' + getCookie("role"));
+        } else {
+            setIsLoading(true);
+            setError('');
+            try {
+                const { data, status } = await Service.signIn(user);
+                navigate('/' + data.role);
+                if (status !== 201) {
+                    throw new Error();
+                }
+                dispatch(authActions.login({ token: data.accessToken, role: data.role, status: data.status }));
+                //  const remainingTime = calculateRemainingTime(data);
+                // setTimeout(logout, 216000000);
+            }
+            catch (err: any) {
+                setError(err.response.data.message || 'Something went wrong!');
+            }
+            setIsLoading(false);
+        }
+    }, [dispatch, navigate]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const newUser: IUser = {
             email: enteredEmail,
-            password:enteredPassword
+            password: enteredPassword
         }
         signIn(newUser);
 
@@ -158,6 +157,11 @@ export default function SignIn() {
                             Sign In
                         </Button>
                         <Grid container>
+                            <Grid item xs>
+                                <LinkRouter to="/forgotPassword">
+                                    Forgot password?
+                                </LinkRouter>
+                            </Grid>
                             <Grid item>
                                 <LinkRouter to="/signup">
                                     {"Don't have an account? Sign Up"}

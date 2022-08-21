@@ -8,8 +8,6 @@ const useInput = (validateValue: (value: string | boolean) => boolean) => {
     const valueIsValid = validateValue(enteredValue);
     const hasError = !valueIsValid && isTouched;
 
-   
-
     const valueChangeHandler = (event: any): void => {
         setEnteredValue(event.target.value);
     };

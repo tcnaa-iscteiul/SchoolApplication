@@ -20,7 +20,7 @@ import { studentsActions } from '../../store/redux-slice';
 export default function UpdateStudent() {
     const dispatch = useDispatch();
     const { isLoading, error, updateStudent } = useSignUp();
-    const students = useSelector((state: any) => state.students.students);
+    const { students } = useSelector((state: any) => state.students);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [user, setUser] = useState<string>('');
     const [firstName, setFirstName] = useState<string>('');
@@ -28,8 +28,7 @@ export default function UpdateStudent() {
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
 
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     const validateInput = (value: any) => {
         return (value.trim() !== '' && value.length > 2 && isNaN(value)) || value.trim() === '';
@@ -38,7 +37,7 @@ export default function UpdateStudent() {
         return (value.trim() !== '' && value.length === 9 && !isNaN(value)) || (value.trim() === '');
     }
 
-    const validateForm: boolean = validateInput(firstName) && validateInput(lastName) && !re.test(email) && validatePhone(phone);
+    const validateForm: boolean = validateInput(firstName) && validateInput(lastName) && validatePhone(phone);
     const fieldNotEmpty = firstName.trim() !== '' || lastName.trim() !== '' || email.trim() !== '' || phone.trim() !== '';
 
     const resetInputs = () => {
@@ -62,7 +61,8 @@ export default function UpdateStudent() {
             Object.entries(newUser).filter(([_, v]) => v != null && v !== "")
         );
         await updateStudent(validatedUser);
-        dispatch(studentsActions.removeUser(user));
+        dispatch(studentsActions.updateUser(newUser));
+
 
         setShowModal(true);
         resetInputs();
@@ -125,19 +125,6 @@ export default function UpdateStudent() {
                                     value={lastName}
                                     helperText={!validateInput(lastName) && 'Please insert a valid last name'}
 
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    sx={{ width: 1 }}
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    value={email}
-                                    error={(email && !re.test(email)) || false}
-                                    onChange={event => setEmail(event.target.value)}
-                                    helperText={email && !re.test(email) && 'Please insert a valid email'}
                                 />
                             </Grid>
                             <Grid item xs={12}>

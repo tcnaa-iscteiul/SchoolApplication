@@ -17,8 +17,6 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
-
-
 export default function CreateStudent() {
 
     const { isLoading, error, createClass } = useSignUp();
@@ -48,7 +46,6 @@ export default function CreateStudent() {
         setEndDate(newValue);
     };
 
-
     const {
         value: enteredName,
         isValid: enteredNameIsValid,
@@ -65,7 +62,6 @@ export default function CreateStudent() {
         valueBlurHandler: descriptionBlurHandler,
         reset: resetDescriptionInput
     } = useInput((value: any) => value.trim() !== '' && value.length > 10 && isNaN(value));
-
 
     const validateStartDate = !(startDate!.getTime() >= today.getTime());
 

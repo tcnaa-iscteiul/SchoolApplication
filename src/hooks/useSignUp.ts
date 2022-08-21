@@ -5,7 +5,6 @@ import { Service } from '../services/Service';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth-slice';
 import { useNavigate } from 'react-router-dom';
-import { Status } from '../interfaces/Status';
 import { getCookie } from 'typescript-cookie';
 
 export const useSignUp = () => {
@@ -62,11 +61,11 @@ export const useSignUp = () => {
         setIsLoading(false);
     }, []);
 
-    const deleteStudent = useCallback(async (email: string) => {
+    const deleteStudent = useCallback(async (user:IUser) => {
         setIsLoading(true);
         setError(undefined);
         try {
-            const { status } = await Service.deleteUser(email);
+            const { status } = await Service.deleteUser(user);
             console.log(status);
             if (status !== 200) {
                 throw new Error();

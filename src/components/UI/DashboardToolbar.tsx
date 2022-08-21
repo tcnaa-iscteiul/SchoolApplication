@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { menuActions } from '../../store/menu-slice';
 import { useSignUp }  from "../../hooks/useSignUp";

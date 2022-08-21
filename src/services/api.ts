@@ -32,9 +32,10 @@ api.interceptors.response.use(response => {
             originalReq._retry = true;
             const token = getCookie("token");
             if (token) {
+               originalReq.headers!["Authorization"] = 'Bearer ' + getCookie("token");
                 let res = api.put(`${Config.API_URL}token/refresh`, { oldToken: token })
                     .then((res) => {
-                        setCookie("token", res.data.accessToken)
+                        setCookie("token", res.data.accessToken);
                         originalReq.headers["Authorization"] = `Bearer ${res.data.accessToken}`;
                         return axios(originalReq);
                     })

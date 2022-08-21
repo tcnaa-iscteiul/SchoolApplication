@@ -45,7 +45,7 @@ export default function DisplayTable(props: DisplayTableProps) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {users.map((user: IUser, index:number) => (
+                    {users&&users.map((user: IUser, index:number) => (
                         <TableRow key= { index}>
                             <TableCell>{user.firstName}</TableCell>
                             <TableCell>{user.lastName}</TableCell>

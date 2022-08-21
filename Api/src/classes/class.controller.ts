@@ -16,7 +16,7 @@ import { StudentToClassDto } from "./dto/StudentToClass.dto";
 import { Class } from "./class.schema";
 import { ClassService } from "./class.service";
 import { AuthGuard } from "@nestjs/passport";
-import { Roles } from "../role.decorator";
+import { Roles } from "../roleGuard/role.decorator";
 import { Role } from "../users/dto/UserRole.dto";
 
 @UseGuards(AuthGuard("jwt"))

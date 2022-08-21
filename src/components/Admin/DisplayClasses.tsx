@@ -9,7 +9,6 @@ import Title from './Title';
 import { IClass } from '../../interfaces/IClass';
 import { useState } from 'react';
 
-
 export default function DisplayClasses(props: any) {
     const [more, setMore] = useState<boolean>(false);
 

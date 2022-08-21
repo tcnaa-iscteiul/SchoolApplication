@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { studentsActions } from '../../store/redux-slice';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
-
+import { IUser } from '../../interfaces';
 
 const RemoveStudent = (): JSX.Element => {
     const students = useSelector((state: any) => state.students.students);
@@ -22,13 +22,13 @@ const RemoveStudent = (): JSX.Element => {
     const { isLoading, error, deleteStudent } = useSignUp();
 
     const manageUser = (email: string) => {
-        console.log(email);
         setUser(email);
     }
 
     const removeClickHandler = async(event:any) => {
         event.preventDefault();
-        await deleteStudent(user);
+        const deleteUser = students.filter((student: IUser)=> student.email===user);
+        await deleteStudent(deleteUser);
         dispatch(studentsActions.removeUser(user));
         setShowModal(true);
     }

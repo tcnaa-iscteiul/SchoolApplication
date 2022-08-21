@@ -1,7 +1,6 @@
 import {
     IsString,
     MinLength,
-    IsEmail,
     IsOptional,
     IsMongoId,
 } from "class-validator";

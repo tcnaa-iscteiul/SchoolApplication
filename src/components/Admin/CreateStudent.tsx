@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useState } from 'react';
 import useInput from '../../hooks/useInput';
-import PasswordStrengthBar from 'react-password-strength-bar';
 import { Fragment } from 'react';
 import Modal from '../UI/Modal';
 import { useSignUp } from '../../hooks/useSignUp';
@@ -22,6 +21,7 @@ import { studentsActions } from '../../store/redux-slice';
 export default function CreateStudent() {
 
     const dispatch = useDispatch();
+
     const { isLoading, error, signUp } = useSignUp();
     const [showModal, setShowModal] = useState<boolean>(false);
     const {
@@ -40,7 +40,7 @@ export default function CreateStudent() {
         valueBlurHandler: lastNameBlurHandler,
         reset: resetLastNameInput
     } = useInput((value: any) => value.trim() !== '' && value.length > 2 && isNaN(value));
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const {
         value: enteredEmail,
         isValid: enteredEmailIsValid,
@@ -58,35 +58,35 @@ export default function CreateStudent() {
         reset: resetPhoneInput
     } = useInput((value: any) => value.trim() !== '' && value.length === 9 && !isNaN(value));
 
-    const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-    const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    const {
-        value: enteredPassword,
-        isValid: enteredPasswordIsValid,
-        hasError: passwordInputHasError,
-        valueChangeHandler: passwordChangedHandler,
-        valueBlurHandler: passwordBlurHandler,
-        reset: resetPasswordInput
-    } = useInput((value: any) => mediumRegex.test(value));
 
-
-    const validateForm: boolean = enteredFirstNameIsValid && enteredLastNameIsValid && enteredEmailIsValid && enteredPhoneIsValid && enteredPasswordIsValid;
+    const validateForm: boolean = enteredFirstNameIsValid && enteredLastNameIsValid && enteredEmailIsValid && enteredPhoneIsValid;
 
     const resetInputs = () => {
         resetFirstNameInput();
         resetLastNameInput();
         resetEmailInput();
         resetPhoneInput();
-        resetPasswordInput();
+    }
+
+    const generatePassword = () => {
+        const chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const passwordLength = 12;
+        let password = "";
+
+        for (var i = 0; i <= passwordLength; i++) {
+            var randomNumber = Math.floor(Math.random() * chars.length);
+            password += chars.substring(randomNumber, randomNumber + 1);
+        }
+        return password;
     }
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
+        const pass = generatePassword();
 
         const newUser: IUser = {
             email: enteredEmail,
-            password: enteredPassword,
+            password: pass,
             status: Status.Active,
             role: Role.Student,
             firstName: enteredFirstName,
@@ -182,25 +182,7 @@ export default function CreateStudent() {
                                     onBlur={phoneBlurHandler}
                                     helperText={(phoneInputHasError && enteredPhone && 'Please insert a valid phone number')}
                                 />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    error={passwordInputHasError}
-                                    value={enteredPassword}
-                                    onChange={passwordChangedHandler}
-                                    helperText={(passwordInputHasError && enteredPassword && 'Please insert a valid password')}
-                                    onBlur={passwordBlurHandler}
-                                    margin="normal"
-                                    required
-                                    sx={{ width: 1 }}
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="current-password" />
-                                <PasswordStrengthBar password={enteredPassword} />
-                            </Grid>
-                           
+                            </Grid>  
                         </Grid>
                         <Button
                             type="submit"

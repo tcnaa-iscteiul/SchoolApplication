@@ -14,7 +14,6 @@ type lists = {
     list: string[]
 }
 
-
 const ListItems = (props: any): JSX.Element => {
 
     const dispatch = useDispatch();

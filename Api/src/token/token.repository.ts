@@ -22,13 +22,15 @@ export class TokenRepository {
         private authService: AuthRepository
     ) { }
 
-    async save(hash: string, email: string) {
+    async save(hash: string, email: string, expireAt: string) {
         const objToken = await this.tokenModel.findOne({ email: email });
+    
         if (objToken) {
             await this.tokenModel.findOneAndUpdate(
                 { id: objToken.id },
                 {
                     hash,
+                    expireAt
                 },
                 {
                     new: true,
@@ -38,6 +40,7 @@ export class TokenRepository {
             await new this.tokenModel({
                 hash: hash,
                 email: email,
+                expireAt
             }).save();
         }
     }
@@ -47,29 +50,33 @@ export class TokenRepository {
         if (objToken) {
             const user = await this.userService.findEmail(objToken.email);
             return this.authService.login(user);
-        } else { 
+        } else {
             return new HttpException(
                 {
-                    errorMessage: "Token inválido",
+                    errorMessage: "Invalid Token",
                 },
                 HttpStatus.UNAUTHORIZED);
         }
     }
 
-    async getUserByToken(token: string): Promise<any> {
-        token = token.replace("Bearer ", "").trim();
-        const objToken: Token = await this.tokenModel.findOne({ hash: token });
-        if (objToken) {
+    async getUserByToken(oldToken: string) {
+        const objToken = await this.tokenModel.findOne({ hash: oldToken });
+        const today = new Date();
+        today.setDate(today.getDate());
+        if (objToken && today.getTime() <= new Date(objToken.expireAt).getTime()) {
+            if (today.getTime() >= new Date(objToken.expireAt).getTime()) {
+                return null;
+            }
             const user = await this.userService.findEmail(objToken.email);
             return user;
-        } else { 
+        } else {
             return null;
         }
     }
 
-    async deleteToken(token:string): Promise<void> {
+    async deleteToken(token: string): Promise<void> {
         const result = await this.tokenModel.findOneAndDelete({
-            token:token,
+            token: token,
         });
         if (!result) {
             throw new NotFoundException(`Token with ID not found`);

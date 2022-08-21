@@ -9,19 +9,18 @@ import {
     UseGuards,
     Query,
 } from "@nestjs/common";
-import { UserService } from "./service/user.service";
+import { UserService } from "./user.service";
 import { UserCreateDto } from "./dto/UserCreate.dto";
 import { UserUpdateDto } from "./dto/UserUpdate.dto";
 import { UserSearchDto } from "./dto/UserSearch.dto";
-import { User } from "./schemas/user.schema";
+import { User } from "./user.schema";
 import { AuthGuard } from "@nestjs/passport";
 
-//@UseGuards(AuthGuard)
+@UseGuards(AuthGuard("jwt"))
 @Controller("user")
-export class userController {
+export class UserController {
     constructor(private userService: UserService) { }
 
-    // @UsePipes(ValidationPipe)
     @Get("/all")
     async getAllUsers(@Query() param: UserSearchDto): Promise<User[]> {
         if (Object.keys(param).length) {
@@ -32,8 +31,6 @@ export class userController {
     }
 
     @Post()
-    //@UsePipes(ValidationPipe)
-    // @UsePipes(new EmployeeTierValidationPipe())
     createUser(@Body() userCreateDto: UserCreateDto): Promise<void> {
         return this.userService.create(userCreateDto);
     }
@@ -47,7 +44,7 @@ export class userController {
     updateUser(@Body() userUpdateDto: UserUpdateDto): Promise<void> {
         return this.userService.update(userUpdateDto);
     }
-    // @HttpCode(204)
+
     @Delete()
     async deleteUser(@Body() param: UserUpdateDto) {
         return await this.userService.delete(param);
@@ -56,13 +53,5 @@ export class userController {
     @Get()
     async getNrUsers(@Body() userUpdateDto: UserSearchDto) {
         return await this.userService.getNrUsers(userUpdateDto);
-    }
-
-    @Post("/signin")
-    async signIn(@Body() baseUserDto: UserSearchDto): Promise<{
-        accessToken: string,
-        role: string
-    }> {
-        return await this.userService.signIn(baseUserDto);
     }
 }

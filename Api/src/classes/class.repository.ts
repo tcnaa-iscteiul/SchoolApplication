@@ -13,7 +13,7 @@ import { ClassUpdateDto } from "./dto/ClassUpdate.dto";
 import { ClassSearchDto } from "./dto/ClassSearch.dto";
 import { StudentToClassDto } from "./dto/StudentToClass.dto";
 import { Class, ClassDocument } from "./class.schema";
-import { User, UserDocument } from "../users/user.schema";
+import { UserDocument } from "../users/user.schema";
 import { Role } from "../users/dto/UserRole.dto";
 import { TeacherToClassDto } from "./dto/AssignTeacherToClass.dto";
 import { UserRepository } from "../users/user.repository";
@@ -22,8 +22,6 @@ import { UserRepository } from "../users/user.repository";
 export class ClassRepository {
     constructor(
         @InjectModel(Class.name) private classModel: Model<ClassDocument>,
-        //TODO
-        //Corrigir
         @Inject(forwardRef(() => UserRepository))private readonly userModel: Model<UserDocument>
     ) { }
     //Create a class, and if already exists a class with the same name, return an error

@@ -9,6 +9,7 @@ import { LocalStrategy } from "./strategy/local.strategy";
 import { JwtStrategy } from "./strategy/jwt.strategy";
 import { AuthRepository } from "./auth.repository";
 import { AuthController } from "./auth.controller";
+import { MailModule } from "../mail/mail.module";
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { AuthController } from "./auth.controller";
                 expiresIn: "30s",
             },
         }),
+        MailModule
     ],
     controllers: [AuthController],
     providers: [AuthService, LocalStrategy, AuthRepository, JwtStrategy],

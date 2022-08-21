@@ -7,6 +7,10 @@ type lists = {
 
 const adminDashboard: lists[] = [
     {
+        subheader: "Manage Account",
+        list: ["Change Password",],
+    },
+    {
         subheader: "Manage Students",
         list: ["All Students", "Create Student", "Update Student", "Remove Student",],
     },

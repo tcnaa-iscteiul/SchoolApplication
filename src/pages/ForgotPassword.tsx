@@ -1,39 +1,26 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Link as LinkRouter } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import {  useState } from 'react';
 import useInput from '../hooks/useInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { IUser } from '../interfaces';
 import Modal from '../components/UI/Modal';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import Layout from '../components/UI/Layout';
-import { Service } from '../services/Service';
-import { useDispatch } from 'react-redux';
-import { authActions } from '../store/auth-slice';
-import { useNavigate } from 'react-router-dom';
 import useAxios from '../hooks/use-axios';
-import { getCookie } from 'typescript-cookie';
 
 export default function ForgotPassword() {
 
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [error, setError] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    // const { isLoading, error, signIn } = useSignUp();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const {
         value: enteredEmail,
         isValid: enteredEmailIsValid,
@@ -42,28 +29,20 @@ export default function ForgotPassword() {
         valueBlurHandler: emailBlurHandler,
         reset: resetEmailInput
     } = useInput((value: any) => re.test(value));
-    const {
-        value: enteredPassword,
-        isValid: enteredPasswordIsValid,
-        hasError: passwordInputHasError,
-        valueChangeHandler: passwordChangedHandler,
-        valueBlurHandler: passwordBlurHandler,
-        reset: resetPasswordInput
-    } = useInput((value: any) => value.trim() !== '' && value.length >= 8);
 
-
-
+    const { response, error, loading: isLoading, sendData } = useAxios({
+        method: "Post",
+        url: "auth/forgotPassword",
+        data: {
+            email: enteredEmail,
+        }
+    });
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        const newUser: IUser = {
-            email: enteredEmail,
-            password: enteredPassword
-        }
+        sendData();
 
         resetEmailInput();
-        resetPasswordInput();
         setShowModal(true);
     };
 
@@ -74,7 +53,7 @@ export default function ForgotPassword() {
     return (
         <Layout>
             {isLoading && <LoadingSpinner />}
-            {showModal && error && <Modal open={showModal} onClose={handleCloseModal} message={error} title={"error"} />}
+            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Email sent successfully"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -119,7 +98,7 @@ export default function ForgotPassword() {
                             type="submit"
                             variant="contained"
                             sx={{ mt: 3, mb: 2, width: 1 }}
-                            disabled={!enteredPasswordIsValid || !enteredEmailIsValid}
+                            disabled={ !enteredEmailIsValid}
                         >
                             Send Email
                         </Button>

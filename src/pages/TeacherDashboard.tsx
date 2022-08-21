@@ -7,6 +7,10 @@ type lists = {
 
 const teacherDashboard: lists[] = [
     {
+        subheader: "Manage Account",
+        list: ["Change Password",],
+    },
+    {
         subheader: "Manage Classes",
         list: ["Class 1", "Class 2", "Class 3", "Class 4"],
     }

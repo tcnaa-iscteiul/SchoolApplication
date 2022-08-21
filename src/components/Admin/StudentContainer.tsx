@@ -22,6 +22,7 @@ import { Typography } from '@mui/material';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
 import useAxios from '../../hooks/use-axios';
+import ChangePassword from '../ChangePassword';
 
 export default function StudentContainer() {
 
@@ -40,8 +41,8 @@ export default function StudentContainer() {
     });
 
     useEffect(() => {
-        sendData();
-        //dispatch(fetchUsersData());
+        //sendData();
+        dispatch(fetchUsersData());
         dispatch(fetchClassData());
     }, [dispatch]);
 
@@ -55,10 +56,11 @@ export default function StudentContainer() {
             dispatch(fetchClassData());
         }
 
-    }, [users, dispatch, classes]);
+    }, [users, dispatch, classes,sendData]);
 
-    const allStudents = response?.data.filter((user: IUser) => user.role === Role.Student);
+    const allStudents = users.filter((user: IUser) => user.role === Role.Student);
     const teachers = users.filter((user: IUser) => user.role === Role.Teacher);
+    const activeTeachers = teachers.filter((user: IUser) => user.status === Status.Active);
     const pendingTeachers = users.filter((user: IUser) => user.role === Role.Teacher && user.status === Status.Pending);
 
 
@@ -71,13 +73,14 @@ export default function StudentContainer() {
     }
 
     const components: JSX.Element[] = [
+        <ChangePassword key={"Change Password" }/>,
         <DisplayTable key={"All Students"} title={"All Students"} users={allStudents} approveRequest={() => { }} />,
         <CreateStudent key={"Create Student"} />,
         <UpdateStudent key={"Update Student"} />,
         <RemoveStudent key={"Remove Student"} />,
         <DisplayTable key={"All Teachers"} title={"All Teachers"} users={teachers} approveRequest={() => { }} />,
         <DisplayTable key={"Approve Request"} title={"Approve Teacher"} users={pendingTeachers} button={true} buttonTitle={"Confirm"} approveRequest={approveRequest} />,
-        <DisplayTable key={"Disable Teacher"} title={"Disable Teacher"} users={teachers} button={true} buttonTitle={"Disable"} approveRequest={disableTeacher} />,
+        <DisplayTable key={"Disable Teacher"} title={"Disable Teacher"} users={activeTeachers} button={true} buttonTitle={"Disable"} approveRequest={disableTeacher} />,
         <DisplayClasses key={"All Classes"} allClasses={classes} />,
         <CreateClass key={"Create Class"} />,
         <AddRemoveUClass key={"Add/Remove Students"} students={true} title={"Add Students to Class "} add={true} />,

@@ -14,7 +14,7 @@ import {
 export class UserUpdateDto {
     @IsOptional()
     @IsMongoId()
-    id: string;
+    id?: string;
 
     @IsEmail()
     email?: string;
