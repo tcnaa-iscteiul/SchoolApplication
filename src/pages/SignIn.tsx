@@ -67,7 +67,7 @@ export default function SignIn() {
                 // setTimeout(logout, 216000000);
             }
             catch (err: any) {
-                setError(err.response.data.message || 'Something went wrong!');
+                setError(err.message || 'Something went wrong!');
             }
             setIsLoading(false);
         }
