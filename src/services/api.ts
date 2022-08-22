@@ -7,6 +7,7 @@ const api = axios.create({
     headers: {
         Accept: 'application/json',
         Authorization: 'Bearer ' + getCookie("token"),
+      
     } });
 
 
@@ -16,6 +17,7 @@ api.interceptors.request.use(
     async (config) => {
         // Add configurations here
         config.headers!["Authorization"] = 'Bearer ' + getCookie("token");
+        config.headers!['content - type'] = 'application/x-www-form-urlencoded';
         return config;
     },
     (err) => {

@@ -5,8 +5,11 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
-    
+    /*
     app.use((req, res, next) => {
+        console.log(req);
+        console.log(res);
+        console.log(next);
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Methods', '*');
         res.header('Access-Control-Allow-Headers', '*');
@@ -17,7 +20,7 @@ async function bootstrap() {
         allowedHeaders: "*",
         origin: "*"
     });
-
+    */
     app.useGlobalPipes(new ValidationPipe());
     await app.listen(process.env.PORT || 3000, function () {
         console.log('CORS-enabled web server listening on port 80')
