@@ -33,7 +33,7 @@ api.interceptors.response.use(response => {
             const token = getCookie("token");
             if (token) {
                originalReq.headers!["Authorization"] = 'Bearer ' + getCookie("token");
-                let res = api.put(`${Config.API_URL}token/refresh`, { oldToken: token })
+                let res = api.put('token/refresh', { oldToken: token })
                     .then((res) => {
                         setCookie("token", res.data.accessToken);
                         originalReq.headers["Authorization"] = `Bearer ${res.data.accessToken}`;
@@ -45,7 +45,6 @@ api.interceptors.response.use(response => {
                 reject(err)
             }
         }if (err.response.status === 408 || err.code === 'ECONNABORTED') {
-            console.log(`A timeout happend on url ${Config.API_URL}`);
             return Promise.reject(err);
         } else {
             reject(err)
