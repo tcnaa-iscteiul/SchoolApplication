@@ -19,12 +19,16 @@ import { Status } from '../interfaces/Status';
 import { Role } from '../interfaces/Role';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import Layout from '../components/UI/Layout';
+import { IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 
 export default function SignUp() {
 
     const { isLoading, error, signUp } = useSignUp();
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [showPassword, setShowPassord] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassord] = useState<boolean>(false);
     const letters = /^[A-Za-z]+$/;
     const {
         value: enteredFirstName,
@@ -111,6 +115,14 @@ export default function SignUp() {
     const handleCloseModal = () => {
         setShowModal(false);
     }
+
+    const handleClickShowPassword = () => {
+        setShowPassord(!showPassword);
+    };
+
+    const handleClickShowConfirmPassword = () => {
+        setShowConfirmPassord(!showConfirmPassword);
+    };
 
     return (
         <Layout>
@@ -201,14 +213,26 @@ export default function SignUp() {
                                     onChange={passwordChangedHandler}
                                     helperText={(passwordInputHasError && enteredPassword && 'Please insert a valid password')}
                                     onBlur={passwordBlurHandler}
-                                    margin="normal"
                                     required
                                     sx={{ width: 1 }}
                                     name="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     label="Password"
-                                    type="password"
                                     id="password"
-                                    autoComplete="current-password" />
+                                    autoComplete="current-password"
+                                    InputProps={{
+                                    endAdornment:
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                      }}
+                                />
                                 <PasswordStrengthBar password={enteredPassword} />
                             </Grid>
                             <Grid item xs={12}>
@@ -217,13 +241,25 @@ export default function SignUp() {
                                     sx={{ width: 1 }}
                                     name="confirmPassword"
                                     label="Confirm Password"
-                                    type="password"
+                                    type={showConfirmPassword ? 'text' : 'password'}
                                     id="confirmPassword"
                                     error={confirmPasswordInputHasError}
                                     value={enteredConfirmPassword}
                                     onChange={confirmPasswordChangedHandler}
                                     helperText={(confirmPasswordInputHasError && !enteredConfirmPassword && 'The passwords does not match')}
                                     onBlur={confirmPasswordBlurHandler}
+                                    InputProps={{
+                                        endAdornment:
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowConfirmPassword}
+                                                    edge="end"
+                                                >
+                                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                    }}
                                 />
                             </Grid>
                         </Grid>

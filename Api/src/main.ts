@@ -5,9 +5,8 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
+    
     app.use((req, res, next) => {
-        console.log(process.env.NODE_ENV);
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Methods', '*');
         res.header('Access-Control-Allow-Headers', '*');
@@ -18,10 +17,8 @@ async function bootstrap() {
         allowedHeaders: "*",
         origin: "*"
     });
-
+    
     app.useGlobalPipes(new ValidationPipe());
-    await app.listen('https://school-application2.vercel.app');
-
-    //await app.listen(process.env.PORT);
+    await app.listen(process.env.PORT||3000);
 }
 bootstrap();
