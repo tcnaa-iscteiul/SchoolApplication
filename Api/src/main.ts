@@ -13,8 +13,8 @@ async function bootstrap() {
         next();
     });
 
-    app.enableCors({
-        allowedHeaders: "*",
+     app.enableCors({
+        allowedHeaders: ['content-type'],
         origin: "*"
     });
     
