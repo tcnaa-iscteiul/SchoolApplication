@@ -17,7 +17,7 @@ api.interceptors.request.use(
     async (config) => {
         // Add configurations here
         config.headers!["Authorization"] = 'Bearer ' + getCookie("token");
-        config.headers!['content - type'] = 'application/x-www-form-urlencoded';
+      //  config.headers!['content - type'] = 'application/x-www-form-urlencoded';
         return config;
     },
     (err) => {
