@@ -11,8 +11,8 @@ const api = axios.create({
     } });
 
 const options = {
-    method: 'POST',
-    url: `${Config.API_URL}auth`,
+    method: 'GET',
+    url: `${Config.API_URL}user/all`,
     headers: {
         Accept: 'application/json',
         Authorization: 'Bearer ' + getCookie("token"),
