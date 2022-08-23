@@ -1,3 +1,9 @@
+import { BottomNavigation } from "@mui/material"
+import Layout from "./UI/Layout"
+
 export const MainFeature = () => {
-    return <p>Main Feature</p>;
+    return <Layout>
+        <p>Main Feature</p>
+        <BottomNavigation />
+    </Layout>
 }

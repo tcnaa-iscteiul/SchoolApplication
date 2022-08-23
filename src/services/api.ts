@@ -10,6 +10,25 @@ const api = axios.create({
       
     } });
 
+const options = {
+    method: 'POST',
+    url: `${Config.API_URL}auth`,
+    headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + getCookie("token"),
+    },
+    data: {
+        email: "admin@admin.pt",
+        password: "Admin!123"
+    }
+};
+
+axios.request(options).then(function (response) {
+    //console.log(response.data);
+}).catch(function (error) {
+    console.error(error);
+});
+
 
 // For GET requests
 api.interceptors.request.use(

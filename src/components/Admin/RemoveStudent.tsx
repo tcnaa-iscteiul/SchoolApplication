@@ -12,6 +12,7 @@ import { studentsActions } from '../../store/redux-slice';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
 import { IUser } from '../../interfaces';
+import { memo } from 'react';
 
 const RemoveStudent = (): JSX.Element => {
     const students = useSelector((state: any) => state.students.students);
@@ -68,4 +69,4 @@ const RemoveStudent = (): JSX.Element => {
         </Fragment>
 }
 
-export default RemoveStudent;
+export default memo(RemoveStudent);

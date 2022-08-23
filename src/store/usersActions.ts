@@ -1,8 +1,10 @@
 import { Service } from '../services/Service';
 import { studentsActions } from './redux-slice';
+import { Dispatch } from 'react';
+import { Action } from 'redux';
 
 export const fetchUsersData = () => {
-    return async (dispatch:any) => {
+    return async (dispatch: Dispatch<any>) => {
         const fetchData = async () => {
             const response = await Service.getAllUsers();
             if (!response) {

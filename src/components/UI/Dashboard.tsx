@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, createTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -11,16 +11,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import StudentContainer from '../Admin/StudentContainer';
 import DashboardToolbar from './DashboardToolbar';
 import ListItems from '../Admin/ListItems';
-import { lightGreen } from '@mui/material/colors';
+import theme from './theme';
 
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: lightGreen[500],
-        },
-    },
-});
 const drawerWidth: number = 300;
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -49,7 +41,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-export default function DashboardContent(props: any) {
+type DashboardProps = {
+    options: lists[],
+}
+
+export default function DashboardContent(props:DashboardProps) {
     const [open, setOpen] = React.useState(true);
 
     const toggleDrawer = () => {
@@ -59,7 +55,6 @@ export default function DashboardContent(props: any) {
     const handleGetOpen = (value: boolean) => {
         setOpen(value);
     }
-
 
     return (
         <Box sx={{ display: 'flex' }}>

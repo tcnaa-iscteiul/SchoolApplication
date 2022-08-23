@@ -21,7 +21,7 @@ import { Service } from '../services/Service';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth-slice';
 import { useNavigate } from 'react-router-dom';
-import { getCookie, setCookie } from 'typescript-cookie';
+import { getCookie } from 'typescript-cookie';
 
 export default function SignIn() {
 
@@ -39,7 +39,7 @@ export default function SignIn() {
         valueChangeHandler: emailChangedHandler,
         valueBlurHandler: emailBlurHandler,
         reset: resetEmailInput
-    } = useInput((value: any) => re.test(value));
+    } = useInput((value: string) => re.test(value));
     const {
         value: enteredPassword,
         isValid: enteredPasswordIsValid,
@@ -47,7 +47,7 @@ export default function SignIn() {
         valueChangeHandler: passwordChangedHandler,
         valueBlurHandler: passwordBlurHandler,
         reset: resetPasswordInput
-    } = useInput((value: any) => value.trim() !== '' && value.length >= 8);
+    } = useInput((value: string) => value.trim() !== '' && value.length >= 8);
 
     const signIn = useCallback(async (user: IUser) => {
         const token = getCookie("token");

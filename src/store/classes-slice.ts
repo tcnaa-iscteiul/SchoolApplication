@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IClass } from '../interfaces/IClass';
 
-const initialState: { classes: IClass[] } = {
+const initialState: ClassesState = {
     classes: [],
 }
 

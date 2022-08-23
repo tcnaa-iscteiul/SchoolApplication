@@ -16,8 +16,9 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 import Dropdown from '../UI/Dropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { studentsActions } from '../../store/redux-slice';
+import { memo } from 'react';
 
-export default function UpdateStudent() {
+ function UpdateStudent() {
     const dispatch = useDispatch();
     const { isLoading, error, updateStudent } = useSignUp();
     const { students } = useSelector((state: any) => state.students);
@@ -50,7 +51,6 @@ export default function UpdateStudent() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-
         const newUser: IUser = {
             email: user,
             firstName: firstName,
@@ -62,7 +62,6 @@ export default function UpdateStudent() {
         );
         await updateStudent(validatedUser);
         dispatch(studentsActions.updateUser(newUser));
-
 
         setShowModal(true);
         resetInputs();
@@ -156,3 +155,5 @@ export default function UpdateStudent() {
         </Fragment>
     );
 }
+
+export default memo(UpdateStudent);

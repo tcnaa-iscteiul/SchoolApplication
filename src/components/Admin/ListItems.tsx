@@ -8,13 +8,12 @@ import { Fragment } from 'react';
 import Divider from '@mui/material/Divider';
 import { useDispatch } from 'react-redux';
 import { menuActions } from '../../store/menu-slice';
+import { memo } from 'react';
 
-type lists = {
-    subheader: string,
-    list: string[]
+type DashboardProps = {
+    list: lists[],
 }
-
-const ListItems = (props: any): JSX.Element => {
+const ListItems = (props:  DashboardProps): JSX.Element => {
 
     const dispatch = useDispatch();
 
@@ -44,4 +43,4 @@ const ListItems = (props: any): JSX.Element => {
         ))}</Fragment>);
 }
 
-export default ListItems;
+export default memo(ListItems);

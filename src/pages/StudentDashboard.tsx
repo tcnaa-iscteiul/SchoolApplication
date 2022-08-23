@@ -1,10 +1,5 @@
 import Dashboard from '../components/UI/Dashboard';
 
-type lists = {
-    subheader: string,
-    list: string[]
-}
-
 const studentDashboard: lists[] = [
     {
         subheader: "Manage Account",

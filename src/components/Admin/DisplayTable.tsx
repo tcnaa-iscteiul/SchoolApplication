@@ -10,6 +10,7 @@ import Title from './Title';
 import { IUser } from '../../interfaces/IUser';
 import { useState } from 'react';
 import { CssBaseline } from '@mui/material';
+import { memo } from 'react';
 
 type DisplayTableProps = {
     title: string,
@@ -19,7 +20,7 @@ type DisplayTableProps = {
     approveRequest: (value: string) => void
 }
 
-export default function DisplayTable(props: DisplayTableProps) {
+ function DisplayTable(props: DisplayTableProps) {
     const [more, setMore] = useState<boolean>(false);
 
 
@@ -63,3 +64,5 @@ export default function DisplayTable(props: DisplayTableProps) {
         </React.Fragment >
     );
 }
+
+export default memo(DisplayTable);

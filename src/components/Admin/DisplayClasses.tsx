@@ -8,16 +8,19 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import { IClass } from '../../interfaces/IClass';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { memo } from 'react';
 
-export default function DisplayClasses(props: any) {
+function DisplayClasses() {
     const [more, setMore] = useState<boolean>(false);
+    const  allClasses  = useSelector((state: any) => state.classes.classes);
 
-    function preventDefault(event: React.MouseEvent) {
+    function showMoreHandler(event: React.MouseEvent) {
         event.preventDefault();
         setMore(!more);
     }
 
-    const classes = (more && props.allClasses) || (props.allClasses.filter((user: IClass, index: number) => index < 5));
+    const classes = (more && allClasses) || (allClasses.filter((user: IClass, index: number) => index < 5));
 
     return (
         <React.Fragment>
@@ -32,7 +35,7 @@ export default function DisplayClasses(props: any) {
                     </TableRow>
                 </TableHead >
                 <TableBody>
-                    {classes.map((clas: IClass, index:number) => (
+                    {classes.map((clas: IClass, index: number) => (
                         <TableRow key={index}>
                             <TableCell>{clas.name}</TableCell>
                             <TableCell>{clas.description}</TableCell>
@@ -42,9 +45,11 @@ export default function DisplayClasses(props: any) {
                     ))}
                 </TableBody>
             </Table >
-            <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+            <Link color="primary" href="#" onClick={showMoreHandler} sx={{ mt: 3 }}>
                 {!more ? 'See more orders' : 'See less orders'}
             </Link>
         </React.Fragment >
     );
 }
+
+export default memo(DisplayClasses);

@@ -1,3 +1,9 @@
+import { BottomNavigation } from "@mui/material";
+import Layout from "./UI/Layout";
+
 export const PopularCourse = () => {
-    return <p>Popular Course</p>;
+    return <Layout>
+        <p>Popular Course</p>;
+        <BottomNavigation />
+    </Layout>;
 }

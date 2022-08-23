@@ -14,7 +14,6 @@ interface AppBarProps extends MuiAppBarProps {
     open ?: boolean;
 }
 
-
 const drawerWidth: number = 300;
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -89,6 +88,3 @@ const DashboardToolbar = (props: any) => {
 
 export default DashboardToolbar;
 
-function deleteToken(arg0: string | undefined) {
-    throw new Error('Function not implemented.');
-}

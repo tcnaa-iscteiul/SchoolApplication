@@ -9,6 +9,7 @@ import { Service } from '../../services/Service';
 import { useState } from 'react';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
+import { memo } from 'react';
 
 type AllStudents = {
     title: string,
@@ -25,7 +26,7 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showModal, setShowModal] = useState<boolean>(false);
 
-    const clickHandler = async (event: any) => {
+    const clickHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         try {
             setIsLoading(true);
@@ -36,9 +37,9 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
             setUser('');
             setClasses('');
         }
-        catch (err: any) {
-            setError(err.message);
-            throw new Error(err.message);
+        catch (error: any) {
+            setError(error);
+            throw new Error(error);
         }
         setIsLoading(false);
     }
@@ -79,4 +80,4 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
     </Fragment>
 }
 
-export default AddRemoveUClass;
+export default memo(AddRemoveUClass);

@@ -8,18 +8,10 @@ import {
     Typography,
     useMediaQuery
 } from "@mui/material";
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import DrawerComp from "./Drawer";
-import { createTheme } from '@mui/material/styles';
-import { lightGreen } from '@mui/material/colors';
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: lightGreen[500],
-        },
-    },
-});
+import theme from './theme';
 
 const Header = (props: any): JSX.Element => {
 
@@ -31,31 +23,28 @@ const Header = (props: any): JSX.Element => {
                 <Toolbar>
                     {isMatch ? (
                         <>
-                            <Typography sx={{ fontSize: "2rem", paddingLeft: "10%" }}>
+                            <Typography>
                                 School
                             </Typography>
                             <DrawerComp />
                         </>
                     ) : (
-
                         <>
                             <Box sx={{
                                 display: 'flex',
-
-                                alignItems: 'center',
                             }}>
-                                <Link to='/home' style={{ textDecoration: 'none', color: 'black' }} >
-                                    <MenuItem key={"Home"} sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
+                                <Link to='/home' >
+                                    <MenuItem key={"Home"}>
                                         Home
                                     </MenuItem>
                                 </Link>
-                                <Link to='/home' style={{ textDecoration: 'none', color: 'black' }}>
-                                    <MenuItem key={"Popular Course"} sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
+                                <Link to='/courses' style={{ textDecoration: 'none', color: 'black' }}>
+                                    <MenuItem key={"Popular Course"}>
                                         Popular Course
                                     </MenuItem>
                                 </Link>
-                                <Link to='/home' style={{ textDecoration: 'none', color: 'black' }}>
-                                    <MenuItem key={"Main Feature"} sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
+                                <Link to='/feature' style={{ textDecoration: 'none', color: 'black' }}>
+                                        <MenuItem key={"Main Feature"} >
                                         Main Feature
                                     </MenuItem>
                                 </Link>

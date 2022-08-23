@@ -11,8 +11,8 @@ async function bootstrap() {
         res.header('Access-Control-Allow-Methods', '*');
         res.header('Access-Control-Allow-Headers', '*');
         next();
-    });*/
-
+    });
+    
     const allowCors = fn => async (req, res) => {
         res.setHeader('Access-Control-Allow-Credentials', true)
         res.setHeader('Access-Control-Allow-Origin', '*')
@@ -36,6 +36,7 @@ async function bootstrap() {
     }
 
     module.exports = allowCors(handler)
+    */
   /*  
     app.use(function (req, res, next) {
 
@@ -55,12 +56,12 @@ async function bootstrap() {
         // Pass to next layer of middleware
         next();
     });
-    
+    */
     app.enableCors({
         allowedHeaders: "*",
         origin: "*"
     });
-    */
+    
     app.useGlobalPipes(new ValidationPipe());
     await app.listen(process.env.PORT || 3000, function () {
         console.log('CORS-enabled web server listening on port 80')

@@ -16,8 +16,9 @@ import { IClass } from '../../interfaces/IClass';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { memo } from 'react';
 
-export default function CreateStudent() {
+ function CreateClass() {
 
     const { isLoading, error, createClass } = useSignUp();
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -44,8 +45,8 @@ export default function CreateStudent() {
 
     const handleEndDateChange = (newValue: Date | null) => {
         setEndDate(newValue);
-    };
-
+     };
+     const letters = /^[A-Za-z]+$/;
     const {
         value: enteredName,
         isValid: enteredNameIsValid,
@@ -53,8 +54,9 @@ export default function CreateStudent() {
         valueChangeHandler: NameChangedHandler,
         valueBlurHandler: NameBlurHandler,
         reset: resetNameInput
-    } = useInput((value: any) => value.trim() !== '' && value.length > 2 && isNaN(value));
-    const {
+    } = useInput((value:any) => value.trim() !== '' && value.length > 2 && isNaN(value));
+
+     const {
         value: enteredDescription,
         isValid: enteredDescriptionIsValid,
         hasError: descriptionInputHasError,
@@ -193,3 +195,5 @@ export default function CreateStudent() {
         </Fragment>
     );
 }
+
+export default memo(CreateClass);

@@ -23,12 +23,13 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
 import useAxios from '../../hooks/use-axios';
 import ChangePassword from '../ChangePassword';
+import { memo } from 'react';
 
-export default function StudentContainer() {
+ function StudentContainer() {
 
     const dispatch: Dispatch<any> = useDispatch();
     const users = useSelector((state: any) => state.students.students);
-    const classes = useSelector((state: any) => state.classes.classes);
+    
     const option = useSelector((state: any) => state.menu.option);
 
     const [showModal, setShowModal] = React.useState<boolean>(false);
@@ -49,14 +50,10 @@ export default function StudentContainer() {
     
     useEffect(() => {
         if (users.changed) {
-            console.log("aqui");
             dispatch(fetchUsersData());
         }
-        if (classes.changed) {
-            dispatch(fetchClassData());
-        }
 
-    }, [users, dispatch, classes,sendData]);
+    }, [users, dispatch,sendData]);
 
     const allStudents = users.filter((user: IUser) => user.role === Role.Student);
     const teachers = users.filter((user: IUser) => user.role === Role.Teacher);
@@ -81,7 +78,7 @@ export default function StudentContainer() {
         <DisplayTable key={"All Teachers"} title={"All Teachers"} users={teachers} approveRequest={() => { }} />,
         <DisplayTable key={"Approve Request"} title={"Approve Teacher"} users={pendingTeachers} button={true} buttonTitle={"Confirm"} approveRequest={approveRequest} />,
         <DisplayTable key={"Disable Teacher"} title={"Disable Teacher"} users={activeTeachers} button={true} buttonTitle={"Disable"} approveRequest={disableTeacher} />,
-        <DisplayClasses key={"All Classes"} allClasses={classes} />,
+        <DisplayClasses key={"All Classes"} />,
         <CreateClass key={"Create Class"} />,
         <AddRemoveUClass key={"Add/Remove Students"} students={true} title={"Add Students to Class "} add={true} />,
         <AddRemoveUClass key={"Add/Remove Students"} students={true} title={"Remove Students to Class "} remove={true} />,
@@ -139,3 +136,5 @@ export default function StudentContainer() {
             </Grid>
         </Container >);
 }
+
+export default memo(StudentContainer);

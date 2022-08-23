@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useInput = (validateValue: (value: string | boolean) => boolean) => {
+const useInput = (validateValue: (value:any) => boolean) => {
 
     const [enteredValue, setEnteredValue] = useState<string>('');
     const [isTouched, setIsTouched] = useState(false);
@@ -8,7 +8,7 @@ const useInput = (validateValue: (value: string | boolean) => boolean) => {
     const valueIsValid = validateValue(enteredValue);
     const hasError = !valueIsValid && isTouched;
 
-    const valueChangeHandler = (event: any): void => {
+    const valueChangeHandler = (event:any): void => {
         setEnteredValue(event.target.value);
     };
 

@@ -17,10 +17,17 @@ import { getCookie } from 'typescript-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import { Service } from '../services/Service';
+import { memo } from 'react';
+import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
-export default function ChangePassword() {
+function ChangePassword() {
 
     const [showModal, setShowModal] = useState<boolean>(false);
+
+    const [showPassword, setShowPassord] = useState<boolean>(false);
+    const [showConfirmPassword, setShowConfirmPassord] = useState<boolean>(false);
+
     const navigate = useNavigate();
 
     const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
@@ -85,6 +92,14 @@ export default function ChangePassword() {
         }
     }
 
+    const handleClickShowPassword = () => {
+        setShowPassord(!showPassword);
+    };
+
+    const handleClickShowConfirmPassword = () => {
+        setShowConfirmPassord(!showConfirmPassword);
+    };
+
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
@@ -111,14 +126,26 @@ export default function ChangePassword() {
                                     onChange={passwordChangedHandler}
                                     helperText={(passwordInputHasError && enteredPassword && 'Please insert a valid password')}
                                     onBlur={passwordBlurHandler}
-                                    margin="normal"
                                     required
                                     sx={{ width: 1 }}
                                     name="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     label="Password"
-                                    type="password"
                                     id="password"
-                                    autoComplete="current-password" />
+                                    autoComplete="current-password"
+                                    InputProps={{
+                                        endAdornment:
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                    }}
+                                />
                                 <PasswordStrengthBar password={enteredPassword} />
                             </Grid>
                             <Grid item xs={12}>
@@ -127,13 +154,25 @@ export default function ChangePassword() {
                                     sx={{ width: 1 }}
                                     name="confirmPassword"
                                     label="Confirm Password"
-                                    type="password"
+                                    type={showConfirmPassword ? 'text' : 'password'}
                                     id="confirmPassword"
                                     error={confirmPasswordInputHasError}
                                     value={enteredConfirmPassword}
                                     onChange={confirmPasswordChangedHandler}
                                     helperText={(confirmPasswordInputHasError && !enteredConfirmPassword && 'The passwords does not match')}
                                     onBlur={confirmPasswordBlurHandler}
+                                    InputProps={{
+                                        endAdornment:
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowConfirmPassword}
+                                                    edge="end"
+                                                >
+                                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                    }}
                                 />
                             </Grid>
                         </Grid>
@@ -152,3 +191,5 @@ export default function ChangePassword() {
         </Fragment>
     );
 }
+
+export default memo(ChangePassword);

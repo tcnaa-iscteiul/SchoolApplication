@@ -17,8 +17,9 @@ import { Role } from '../../interfaces/Role';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { useDispatch } from 'react-redux';
 import { studentsActions } from '../../store/redux-slice';
+import { memo } from 'react';
 
-export default function CreateStudent() {
+function CreateStudent() {
 
     const dispatch = useDispatch();
 
@@ -199,3 +200,5 @@ export default function CreateStudent() {
         </Fragment>
     );
 }
+
+export default memo(CreateStudent);

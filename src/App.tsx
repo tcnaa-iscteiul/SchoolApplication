@@ -11,10 +11,13 @@ import TeacherDashboard from './pages/TeacherDashboard';
 import PrivateRoutes from './PrivateRoutes';
 import { Provider } from "react-redux";
 import store from './store/index';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { lightGreen } from '@mui/material/colors';
 import ForgotPassword from './pages/ForgotPassword';
 import ChangePassword from './components/ChangePassword';
+import theme from './components/UI/theme';
+import { ThemeProvider } from '@mui/material/styles';
+import "./components/UI/GlobalCSS.css";
+import { PopularCourse } from './components/PopularCourse';
+import { MainFeature } from './components/MainFeature';
 
 enum Role {
     Student = "Student",
@@ -22,21 +25,12 @@ enum Role {
     Teacher = "Teacher"
 }
 
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: lightGreen[500],
-        },
-    },
-});
-
 function App() {
 
     return (
         <Fragment>
             <ThemeProvider theme={theme}>
                 <Router>
-
                     <Provider store={store}>
                         <Routes>
                             {/* Public pages*/}
@@ -52,6 +46,8 @@ function App() {
 
                             {/* Public pages*/}
                             < Route path='/' element={<HomePage />} />
+                            < Route path='/courses' element={<PopularCourse />} />
+                            < Route path='/feature' element={<MainFeature />} />
                             < Route path='/signin/*' element={<SignIn />} />
                             < Route path='/signup' element={<SignUp />} />
                             < Route path='/forgotPassword' element={<ForgotPassword />} />

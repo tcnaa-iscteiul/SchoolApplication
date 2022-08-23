@@ -8,6 +8,7 @@ import { IClass } from '../../interfaces/IClass';
 import { useSelector } from 'react-redux';
 import { Status } from '../../interfaces/Status';
 import { Role } from '../../interfaces/Role';
+import { memo } from 'react';
 
 type AllStudents = {
     students?: boolean,
@@ -16,7 +17,8 @@ type AllStudents = {
     teachers?: boolean,
     value:string
 }
-export default function Dropdown(props: AllStudents) {
+
+function Dropdown(props: AllStudents) {
 
     const users = useSelector((state: any) => state.students.students);
     const classes = useSelector((state: any) => state.classes.classes);
@@ -56,3 +58,5 @@ export default function Dropdown(props: AllStudents) {
         </FormControl>
     );
 }
+
+export default memo(Dropdown);
