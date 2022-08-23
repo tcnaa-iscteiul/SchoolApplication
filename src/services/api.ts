@@ -17,10 +17,6 @@ const options = {
         Accept: 'application/json',
         Authorization: 'Bearer ' + getCookie("token"),
     },
-    data: {
-        email: "admin@admin.pt",
-        password: "Admin!123"
-    }
 };
 
 axios.request(options).then(function (response) {

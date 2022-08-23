@@ -1,4 +1,20 @@
 {
+  {
+    "version": 2,
+    "name": "blog-server",
+    "builds": [
+      {
+        "src": "Api/src/main.ts",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "dist/main.js"
+      }
+    ]
+  },
   "headers": [
     {
       "source": "/api/(.*)",
