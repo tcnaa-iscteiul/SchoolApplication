@@ -5,18 +5,23 @@ import Config from '../util/Config';
 const api = axios.create({
     baseURL: `${Config.API_URL}`,
     headers: {
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + getCookie("token"),
-      
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getCookie("token"),
+        withCredentials: true,
+        mode: 'no-cors',
     } });
 
 const options = {
     method: 'GET',
     url: `${Config.API_URL}user/all`,
     headers: {
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + getCookie("token"),
-    },
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getCookie("token"),
+        withCredentials: true,
+        mode: 'no-cors',
+    }
 };
 
 axios.request(options).then(function (response) {
