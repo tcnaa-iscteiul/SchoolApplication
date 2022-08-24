@@ -33,11 +33,12 @@ const theme = createTheme({
                     MuiBox: {
                         display: 'inline-list-item',
                     },
+                    /*
                     button: {
                         color: 'red',
                         textDecoration: 'none',
                         display: 'inline-list-item',
-                    },
+                    },*/
 
                 },
             },

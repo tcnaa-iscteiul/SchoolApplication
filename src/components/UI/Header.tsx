@@ -33,7 +33,7 @@ const Header = (props: any): JSX.Element => {
                             <Box sx={{
                                 display: 'flex',
                             }}>
-                                <Link to='/home' >
+                                <Link to='/home' style={{ textDecoration: 'none', color: 'black' }}>
                                     <MenuItem key={"Home"}>
                                         Home
                                     </MenuItem>
