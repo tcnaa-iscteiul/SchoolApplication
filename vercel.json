@@ -1,5 +1,4 @@
 {
-  {
     "version": 2,
     "builds": [
       {
@@ -7,11 +6,8 @@
         "use": "@vercel/node"
       },
       {
-      "src": "/Api/src/main.ts",
-      "use": "@vercel/node"
-    }
-    ],
- 
-    }
-  ]
+        "src": "/Api/src/main.ts",
+        "use": "@vercel/node"
+      }
+    ]
 }
