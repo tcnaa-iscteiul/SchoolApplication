@@ -5,6 +5,7 @@ import Config from '../util/Config';
 const api = axios.create({
     baseURL: `${Config.API_URL}`,
     headers: {
+<<<<<<< HEAD
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + getCookie("token"),
@@ -29,20 +30,30 @@ axios.request(options).then(function (response) {
     console.log(response.data);
 }).catch(function (error) {
     console.error(error);
+=======
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + getCookie("token"),
+    }
+>>>>>>> 4a6c8d4799045593ee341f8b33acbde78c9de8f0
 });
 
 
 // For GET requests
 api.interceptors.request.use(
+<<<<<<< HEAD
 
     async (config) => {
         // Add configurations here
         config.headers!["Authorization"] = 'Bearer ' + getCookie("token");
         //  config.headers!['content - type'] = 'application/x-www-form-urlencoded';
+=======
+    async (config) => {
+        // Add configurations here
+        config.headers!["Authorization"] = 'Bearer ' + getCookie("token");
+>>>>>>> 4a6c8d4799045593ee341f8b33acbde78c9de8f0
         return config;
     },
     (err) => {
-        console.log(err);
         return Promise.reject(err);
     }
 );
@@ -52,7 +63,10 @@ api.interceptors.response.use(response => {
     return response
 }, err => {
     return new Promise((resolve, reject) => {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4a6c8d4799045593ee341f8b33acbde78c9de8f0
         const originalReq = err.config;
         if (err.response.status === 401 && err.config && !err.config._retry) {
             originalReq._retry = true;
@@ -65,7 +79,6 @@ api.interceptors.response.use(response => {
                         originalReq.headers["Authorization"] = `Bearer ${res.data.accessToken}`;
                         return axios(originalReq);
                     })
-                console.log("post");
                 resolve(res)
             }
             else {

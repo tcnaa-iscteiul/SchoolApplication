@@ -1,0 +1,17 @@
+{
+  {
+    "version": 2,
+    "builds": [
+      {
+        "src": "/src/index.tsx",
+        "use": "@vercel/node"
+      },
+      {
+      "src": "/Api/src/main.ts",
+      "use": "@vercel/node"
+    }
+    ],
+ 
+    }
+  ]
+}
