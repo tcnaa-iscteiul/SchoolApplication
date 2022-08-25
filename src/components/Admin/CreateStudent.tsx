@@ -17,10 +17,11 @@ import { useDispatch } from 'react-redux';
 import { memo } from 'react';
 import useAxios from '../../hooks/use-axios';
 import { fetchUsersData } from '../../store/usersActions';
+import Title from './Title';
 
 function CreateStudent() {
 
-    const dispatch:any = useDispatch();
+    const dispatch: any = useDispatch();
 
     const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -60,7 +61,7 @@ function CreateStudent() {
         reset: resetPhoneInput
     } = useInput((value: string) => value.trim() !== '' && value.length === 9 && number.test(value));
 
-    const generatePassword = ():string => {
+    const generatePassword = (): string => {
         const chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const passwordLength = 12;
         let password = "";
@@ -113,27 +114,19 @@ function CreateStudent() {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student registered with success"} title={error?"error":"Success" } />}
+            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student registered with success"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <Box display="flex">
                     <Typography component="h1" variant="h5">
-                       Create Student
+                        Create Student
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12} >
                                 <TextField
                                     name="firstName"
                                     required
-                                    sx={{ width: 1 }}
                                     id="firstName"
                                     label="First Name"
                                     autoFocus
@@ -147,7 +140,6 @@ function CreateStudent() {
                             <Grid item xs={12} >
                                 <TextField
                                     required
-                                    sx={{ width: 1 }}
                                     id="lastName"
                                     label="Last Name"
                                     name="lastName"
@@ -163,8 +155,6 @@ function CreateStudent() {
                                 <TextField
                                     required
                                     error={emailInputHasError}
-                                    margin="normal"
-                                    sx={{ width: 1 }}
                                     id="email"
                                     label="Email Address"
                                     name="email"
@@ -178,7 +168,6 @@ function CreateStudent() {
                             <Grid item xs={12}>
                                 <TextField
                                     required
-                                    sx={{ width: 1 }}
                                     id="phoneNumber"
                                     label="Phone Number"
                                     name="phoneNumber"
@@ -188,17 +177,18 @@ function CreateStudent() {
                                     onBlur={phoneBlurHandler}
                                     helperText={(phoneInputHasError && enteredPhone && 'Please insert a valid phone number')}
                                 />
-                            </Grid>  
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    fullWidth
+                                    type="submit"
+                                    variant="contained"
+                                    disabled={!validateForm}
+                                >
+                                    Create Student
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Button
-                            type="submit"
-                            sx={{ mt: 3, mb: 2, width: 1 }}
-                            variant="contained"
-                            disabled={!validateForm}
-                           
-                        >
-                            Create Student
-                        </Button>
                     </Box>
                 </Box>
             </Container>

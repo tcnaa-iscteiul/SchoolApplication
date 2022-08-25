@@ -20,7 +20,7 @@ import Layout from '../components/UI/Layout';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import useAxios from '../hooks/use-axios';
-
+import '../components/styles/SignIn.css';
 
 export default function SignUp() {
 
@@ -132,27 +132,19 @@ export default function SignUp() {
             {!isLoading && <Modal open={showModal} onClose={handleCloseModal} message={error || "Account created with success!"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <Box>
+                    <Avatar>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12} >
                                 <TextField
                                     name="firstName"
                                     required
-                                    sx={{ width: 1 }}
                                     id="firstName"
                                     label="First Name"
                                     autoFocus
@@ -166,7 +158,6 @@ export default function SignUp() {
                             <Grid item xs={12} >
                                 <TextField
                                     required
-                                    sx={{ width: 1 }}
                                     id="lastName"
                                     label="Last Name"
                                     name="lastName"
@@ -183,7 +174,6 @@ export default function SignUp() {
                                     required
                                     error={emailInputHasError}
                                     margin="normal"
-                                    sx={{ width: 1 }}
                                     id="email"
                                     label="Email Address"
                                     name="email"
@@ -197,7 +187,6 @@ export default function SignUp() {
                             <Grid item xs={12}>
                                 <TextField
                                     required
-                                    sx={{ width: 1 }}
                                     id="phoneNumber"
                                     label="Phone Number"
                                     name="phoneNumber"
@@ -216,7 +205,6 @@ export default function SignUp() {
                                     helperText={(passwordInputHasError && enteredPassword && 'Please insert a valid password')}
                                     onBlur={passwordBlurHandler}
                                     required
-                                    sx={{ width: 1 }}
                                     name="password"
                                     type={showPassword ? 'text' : 'password'}
                                     label="Password"
@@ -240,7 +228,6 @@ export default function SignUp() {
                             <Grid item xs={12}>
                                 <TextField
                                     required
-                                    sx={{ width: 1 }}
                                     name="confirmPassword"
                                     label="Confirm Password"
                                     type={showConfirmPassword ? 'text' : 'password'}
@@ -264,15 +251,17 @@ export default function SignUp() {
                                     }}
                                 />
                             </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    fullWidth
+                                    type="submit"
+                                    variant="contained"
+                                    disabled={!validateForm}
+                                >
+                                    Sign Up
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Button
-                            type="submit"
-                            sx={{ mt: 3, mb: 2, width: 1 }}
-                            variant="contained"
-                            disabled={!validateForm}
-                        >
-                            Sign Up
-                        </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <LinkRouter to="/signin">

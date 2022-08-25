@@ -1,0 +1,3 @@
+.MuiAppBar-root .MuiToolBar-root {
+    padding-right: 24px,// keep right padding when drawer closed
+}

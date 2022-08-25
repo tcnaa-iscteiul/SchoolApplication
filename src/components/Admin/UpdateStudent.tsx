@@ -93,30 +93,19 @@ function UpdateStudent() {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            {(!isLoading||showModal) && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student updated with success"} title={error ? "error" : "Success"} />}
+            {(!isLoading || showModal) && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student updated with success"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <Box display="flex">
                     <Typography component="h1" variant="h5">
                         Update Student
                     </Typography>
-                    <br />
                     <CssBaseline />
-                    <Grid item xs={12} >
-                        <Dropdown students={allStudents} manageUser={clickHandler} value={user} />
-                    </Grid>
+                    <Dropdown students={allStudents} manageUser={clickHandler} value={user} />
                     {user && <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} >
                                 <TextField
                                     name="firstName"
-                                    sx={{ width: 1 }}
                                     id="firstName"
                                     label="First Name"
                                     autoFocus
@@ -128,7 +117,6 @@ function UpdateStudent() {
                             </Grid>
                             <Grid item xs={12} >
                                 <TextField
-                                    sx={{ width: 1 }}
                                     id="lastName"
                                     label="Last Name"
                                     name="lastName"
@@ -141,7 +129,6 @@ function UpdateStudent() {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    sx={{ width: 1 }}
                                     id="phoneNumber"
                                     label="Phone Number"
                                     name="phoneNumber"
@@ -153,8 +140,8 @@ function UpdateStudent() {
                             </Grid>
                             <Grid item xs={12}>
                                 <Button
+                                    fullWidth
                                     type="submit"
-                                    sx={{ width: 1 }}
                                     variant="contained"
                                     disabled={validateForm && !fieldNotEmpty}
                                 >

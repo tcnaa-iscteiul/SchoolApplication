@@ -2,22 +2,18 @@ import * as React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import DialogContent from '@mui/material/DialogContent';
-
+import maxWidthSpinner from './theme';
 
 const LoadSpinner = (): JSX.Element => {
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const fullScreen = useMediaQuery(`(max-width:${maxWidthSpinner}px)`);
 
     return (
-        <React.Fragment>
-            <Dialog fullScreen={fullScreen} open={true}>
-                <DialogContent style={{ backgroundColor: 'transparent' }} >
-                    <CircularProgress />
-                </DialogContent>
-            </Dialog>
-        </React.Fragment>
+        <Dialog fullScreen={fullScreen} open={true}>
+            <DialogContent >
+                <CircularProgress />
+            </DialogContent>
+        </Dialog>
     );
 }
 

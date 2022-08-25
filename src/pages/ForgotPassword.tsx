@@ -15,6 +15,7 @@ import Modal from '../components/UI/Modal';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import Layout from '../components/UI/Layout';
 import useAxios from '../hooks/use-axios';
+import '../components/styles/SignIn.css';
 
 export default function ForgotPassword() {
 
@@ -56,18 +57,11 @@ export default function ForgotPassword() {
             {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error||"Email sent successfully"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <Box>
                     <Typography component="h1" variant="h5">
                         Forgot Password
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
                         <Typography component="h1" variant="h6">
                             Please enter your email. You will receive a link to create a new password via email.
                         </Typography>
@@ -75,7 +69,6 @@ export default function ForgotPassword() {
                             required
                             error={emailInputHasError}
                             margin="normal"
-                            sx={{ width: 1 }}
                             id="email"
                             label="Email Address"
                             name="email"
@@ -93,11 +86,10 @@ export default function ForgotPassword() {
                                 ),
                             }}
                         />
-                        
                         <Button
+                            fullWidth
                             type="submit"
                             variant="contained"
-                            sx={{ mt: 3, mb: 2, width: 1 }}
                             disabled={ !enteredEmailIsValid}
                         >
                             Send Email

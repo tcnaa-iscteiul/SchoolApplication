@@ -1,49 +1,40 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
     Drawer,
     IconButton,
     List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
+    MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Link } from 'react-router-dom';
 
+const pages = ["Main Feature", "Popular Course", "Login", "SignUp"];
+const links = ["feature", "courses", "signin", "signup"];
 
-const pages = ["Main Feature", "Popular Course", "ABoutUs", "Login", "SignUp"];
 
 const DrawerComp = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Drawer
                 anchor="right"
                 open={openDrawer}
                 onClose={() => setOpenDrawer(false)}
             >
                 <List>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <ListItemText sx={{ align: "center" }} onClick={()=>setOpenDrawer(false) }>X</ListItemText>
-                        </ListItemIcon>
-                    </ListItemButton>
-                    {pages.map((page, index:number) => (
-                        <ListItemButton key={index}>
-                            <ListItemIcon>
-                                <ListItemText sx={{align:"center"} }>{page}</ListItemText>
-                            </ListItemIcon>
-                        </ListItemButton>
+                    <MenuItem onClick={() => setOpenDrawer(false)}>X</MenuItem>
+                    {pages.map((page, index: number) => (
+                        <MenuItem component={Link} to={`/${links[index]}`}>{page}</MenuItem>
                     ))}
                 </List>
             </Drawer>
-            <IconButton
-                sx={{ color: "white", marginLeft: "auto" }}
+            <IconButton edge="end"
                 onClick={() => setOpenDrawer(!openDrawer)}
             >
                 <MenuIcon />
             </IconButton>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

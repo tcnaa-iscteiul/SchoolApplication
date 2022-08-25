@@ -21,12 +21,21 @@
 /// <reference types="mongoose/types/utility" />
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/inferschematype" />
-import { Document } from "mongoose";
+import { Document } from 'mongoose';
 export declare type TokenDocument = Token & Document;
 export declare class Token {
-    id: string;
-    hash: string;
-    email: string;
-    expireAt: string;
+  id: string;
+  hash: string;
+  email: string;
+  expireAt: string;
 }
-export declare const TokenSchema: import("mongoose").Schema<Token, import("mongoose").Model<Token, any, any, any, any>, {}, {}, any, {}, "type", Token>;
+export declare const TokenSchema: import('mongoose').Schema<
+  Token,
+  import('mongoose').Model<Token, any, any, any, any>,
+  {},
+  {},
+  any,
+  {},
+  'type',
+  Token
+>;

@@ -34,7 +34,7 @@ const ListItems = (props:  DashboardProps): JSX.Element => {
 
     return (<Fragment>
         {props.list.map((item: lists, index:number) => (
-            <div key={index}><Divider sx={{ my: 1 }}/>
+            <div key={index}><Divider/>
                 <ListSubheader component="div" inset>
                     {item.subheader}
                 </ListSubheader>

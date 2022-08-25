@@ -1,8 +1,7 @@
-import * as React from 'react';
 import { Theme } from "@mui/material";
 
-
-export const headerStyle=  ((theme: Theme) => ({
+export function headerStyle (theme: Theme ) {
+    /*
     root: {
         padding: 0,
         margin: 0,
@@ -23,5 +22,5 @@ export const headerStyle=  ((theme: Theme) => ({
     },
     flexCenter: {
         alignItems: 'center'
-    }
-}));
+    }*/
+};

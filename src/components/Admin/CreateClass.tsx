@@ -102,24 +102,16 @@ function CreateClass() {
             {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Class created with success"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <Box display="flex">
                     <Typography component="h1" variant="h5">
                         Create Class
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12} >
                                 <TextField
                                     name="Name"
                                     required
-                                    sx={{ width: 1 }}
                                     id="Name"
                                     label="Name"
                                     autoFocus
@@ -133,7 +125,6 @@ function CreateClass() {
                             <Grid item xs={12} >
                                 <TextField
                                     required
-                                    sx={{ width: 1 }}
                                     id="description"
                                     label="Description"
                                     name="description"
@@ -154,7 +145,7 @@ function CreateClass() {
                                         onChange={handleStartDateChange}
                                         renderInput={(params) => (
                                             <TextField
-                                                style={{ width: 400 }}{...params}
+                                                {...params}
                                                 required
                                                 onBlur={() => { setStartDateBlur(true); }}
                                                 error={validateStartDate}
@@ -170,7 +161,7 @@ function CreateClass() {
                                         onChange={handleEndDateChange}
                                         renderInput={(params) => (
                                             <TextField
-                                                style={{ width: 400 }}{...params}
+                                                {...params}
                                                 required
                                                 onBlur={() => { setEndDateBlur(true); }}
                                                 error={validateEndDate}
@@ -179,16 +170,17 @@ function CreateClass() {
                                     />
                                 </Grid>
                             </LocalizationProvider>
+                            <Grid item xs={12}>
+                                <Button
+                                    fullWidth
+                                    type="submit"
+                                    variant="contained"
+                                    disabled={!validateForm}
+                                >
+                                    Create Class
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Button
-                            type="submit"
-                            sx={{ mt: 3, mb: 2, width: 1 }}
-                            variant="contained"
-                            disabled={!validateForm}
-
-                        >
-                            Create Class
-                        </Button>
                     </Box>
                 </Box>
             </Container>

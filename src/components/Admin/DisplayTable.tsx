@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import Title from './Title';
 import { IUser } from '../../interfaces/IUser';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { CssBaseline } from '@mui/material';
 import { memo } from 'react';
 
@@ -32,7 +32,7 @@ type DisplayTableProps = {
     const users = props.users && (more ? props.users : props.users.filter((user: IUser, index: number) => index < 5));
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Title>{props.title}</Title>
             <CssBaseline />
             <Table size="small">
@@ -58,10 +58,10 @@ type DisplayTableProps = {
                     ))}
                 </TableBody>
             </Table>
-            <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+            <Link href="#" onClick={preventDefault}>
                 {!more ? 'See more orders' : 'See less orders'}
             </Link>
-        </React.Fragment >
+        </Fragment >
     );
 }
 

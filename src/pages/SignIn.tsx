@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { Link as LinkRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import useInput from '../hooks/useInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -106,70 +106,84 @@ export default function SignIn() {
     return (
         <Layout>
             {isLoading && <LoadingSpinner />}
-            {showModal && error && <Modal open={showModal} onClose={handleCloseModal} message={error} title={"error"} />}
-            <Container maxWidth="xs">
-                <CssBaseline />
+            {showModal && error &&
+                <Modal open={showModal}
+                    onClose={handleCloseModal}
+                    message={error}
+                    title={"error"}
+                />}
+            <Container component="main" maxWidth="xs">
                 <Box>
-                    <Avatar color="theme">
+                    <Avatar>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate>
-                        <TextField
-                            required
-                            error={emailInputHasError}
-                            margin="normal"
-                            sx={{ width: 1 }}
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            value={enteredEmail}
-                            onChange={emailChangedHandler}
-                            onBlur={emailBlurHandler}
-                            helperText={(emailInputHasError && enteredEmail && 'Please insert a valid email')}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <AccountCircle />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                        <TextField
-                            required
-                            error={passwordInputHasError}
-                            sx={{ width: 1 }}
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            value={enteredPassword}
-                            onChange={passwordChangedHandler}
-                            onBlur={passwordBlurHandler}
-                            helperText={(passwordInputHasError && enteredPassword && 'Please insert a valid password')}
-                        />
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2, width: 1 }}
-                            disabled={!enteredPasswordIsValid || !enteredEmailIsValid}
-                        >
-                            Sign In
-                        </Button>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} >
+                                <TextField
+                                    required
+                                    error={emailInputHasError}
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    autoFocus
+                                    value={enteredEmail}
+                                    onChange={emailChangedHandler}
+                                    onBlur={emailBlurHandler}
+                                    helperText={(emailInputHasError
+                                        && enteredEmail
+                                        && 'Please insert a valid email')}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <AccountCircle />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    error={passwordInputHasError}
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    value={enteredPassword}
+                                    onChange={passwordChangedHandler}
+                                    onBlur={passwordBlurHandler}
+                                    helperText={(passwordInputHasError
+                                        && enteredPassword
+                                        && 'Please insert a valid password')}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Button
+                                    fullWidth
+                                    type="submit"
+                                    variant="contained"
+                                    disabled={!enteredPasswordIsValid || !enteredEmailIsValid}
+                                >
+                                    Sign In
+                                </Button>
+                            </Grid>
+                        </Grid>
                         <Grid container>
                             <Grid item xs>
-                                <LinkRouter to="/forgotPassword">
+                                <Link to="/forgotPassword">
                                     Forgot password?
-                                </LinkRouter>
+                                </Link>
                             </Grid>
                             <Grid item>
-                                <LinkRouter to="/signup">
+                                <Link to="/signup">
                                     {"Don't have an account? Sign Up"}
-                                </LinkRouter>
+                                </Link>
                             </Grid>
                         </Grid>
                     </Box>

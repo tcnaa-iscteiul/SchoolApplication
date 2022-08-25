@@ -17,12 +17,7 @@ import theme from './components/UI/theme';
 import { ThemeProvider } from '@mui/material/styles';
 import { PopularCourse } from './components/PopularCourse';
 import { MainFeature } from './components/MainFeature';
-
-enum Role {
-    Student = "Student",
-    Admin = "Admin",
-    Teacher = "Teacher"
-}
+import { Role } from './interfaces/Role';
 
 function App() {
 
@@ -55,7 +50,6 @@ function App() {
                             <Route path='/*' element={<Navigate to="/" />} />
                         </Routes>
                     </Provider>
-
                 </Router>
             </ThemeProvider>
         </Fragment >

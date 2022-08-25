@@ -6,8 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import theme from './theme';
-
+import maxWidthModal from './theme';
 
 type DialogProps = {
     open: boolean,
@@ -17,16 +16,15 @@ type DialogProps = {
 }
 
 export default function ResponsiveDialog(props:DialogProps) {
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const fullScreen = useMediaQuery(`(max-width:${maxWidthModal}px)`);
 
     const handleClose = () => {
         props.onClose();
     };
 
-    let content:string = props.message || ' Please wait for the e-mail confirmation!';
+    let content:string = props.message;
 
     return (
-        <React.Fragment>
             <Dialog
                 fullScreen={fullScreen}
                 open={props.open}
@@ -36,7 +34,7 @@ export default function ResponsiveDialog(props:DialogProps) {
                 <DialogTitle id="responsive-dialog-title" color="primary">
                     {props.title.toUpperCase()}
                 </DialogTitle>
-                <DialogContent style={{minWidth:400} }>
+                <DialogContent>
                     <DialogContentText>
                         {content}
                     </DialogContentText>
@@ -47,6 +45,5 @@ export default function ResponsiveDialog(props:DialogProps) {
                     </DialogActions>
                 </DialogContent>
             </Dialog>
-        </React.Fragment>
     );
 }

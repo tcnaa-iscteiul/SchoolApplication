@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import { IClass } from '../../interfaces/IClass';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { memo } from 'react';
 
@@ -23,7 +23,7 @@ function DisplayClasses() {
     const classes = (more && allClasses) || (allClasses.filter((user: IClass, index: number) => index < 5));
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Title>All Classes</Title>
             <Table size="small">
                 <TableHead>
@@ -45,10 +45,10 @@ function DisplayClasses() {
                     ))}
                 </TableBody>
             </Table >
-            <Link color="primary" href="#" onClick={showMoreHandler} sx={{ mt: 3 }}>
+            <Link href="#" onClick={showMoreHandler} >
                 {!more ? 'See more orders' : 'See less orders'}
             </Link>
-        </React.Fragment >
+        </Fragment >
     );
 }
 

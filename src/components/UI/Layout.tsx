@@ -1,23 +1,15 @@
 import { Fragment } from 'react';
 import Header from './Header';
-import { Box } from "@mui/material";
+import { Container } from "@mui/material";
+import { IChildren } from '../../interfaces/IChildren';
 
-
-const Layout = (props: any): JSX.Element => {//TODO: remove any
-
+const Layout = (props: IChildren): JSX.Element => {
     return (
         <Fragment>
             <Header />
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
+            <Container >
                 {props.children}
-            </Box>
+            </Container>
         </Fragment>
     );
 };

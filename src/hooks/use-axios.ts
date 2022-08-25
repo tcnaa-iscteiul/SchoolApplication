@@ -18,7 +18,6 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
             }
         } catch (error) {
             setLoading(false);
-            console.log(error);
             if (error instanceof AxiosError) {
                 if (error.response?.data) {
                     setError(error.response.data.message);

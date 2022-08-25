@@ -11,6 +11,7 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
 import { memo } from 'react';
 import { AxiosError } from 'axios';
+import { Grid } from '@mui/material';
 
 type AllStudents = {
     title: string,
@@ -31,7 +32,7 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
         event.preventDefault();
         try {
             setIsLoading(true);
-            props.students&&props.add&&await Service.assignStudentToClass(classes!, user!);
+            props.students && props.add && await Service.assignStudentToClass(classes!, user!);
             props.students && props.remove && await Service.removeStudentToClass(classes!, user!);
             props.teacher && props.add && await Service.assignTeacherToClass(classes!, user!);
             props.teacher && props.remove && await Service.removeTeacherToClass(classes!, user!);
@@ -60,16 +61,9 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
     return <Fragment>
         <Container component="main" maxWidth="xs">
             {isLoading && <LoadingSpinner />}
-            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || props.add?"Added with success":"Removed with success"} title={error ? "error" : "Success"} />}
+            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || props.add ? "Added with success" : "Removed with success"} title={error ? "error" : "Success"} />}
             <CssBaseline />
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
+            <Box display="flex">
                 <Typography component="h1" variant="h5">
                     {props.title}
                 </Typography>
@@ -77,13 +71,20 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
                 {props.students && <Dropdown students={props.students} manageUser={(email: string) => { setUser(email) }} value={user} />}
                 {props.teacher && <Dropdown teachers={props.teacher} manageUser={(email: string) => { setUser(email) }} value={user} />}
                 <br /><br />
-                <Dropdown classes={true} manageUser={(name: string) => { setClasses(name) }} value={classes} />
-                <Button type="submit"
-                    sx={{ mt: 3, mb: 2, width: 1 }}
-                    variant="contained"
-                    disabled={!(user && classes)}
-                    onClick={clickHandler}
-                >{props.add ? "Add" : "Remove"}</Button>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} >
+                        <Dropdown classes={true} manageUser={(name: string) => { setClasses(name) }} value={classes} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            fullWidth
+                            type="submit"
+                            variant="contained"
+                            disabled={!(user && classes)}
+                            onClick={clickHandler}
+                        >{props.add ? "Add" : "Remove"}</Button>
+                    </Grid>
+                </Grid>
             </Box>
         </Container>
     </Fragment>

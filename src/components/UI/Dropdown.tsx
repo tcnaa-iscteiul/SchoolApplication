@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { Status } from '../../interfaces/Status';
 import { Role } from '../../interfaces/Role';
 import { memo } from 'react';
+import { Box } from '@mui/material';
 
 type AllStudents = {
     students?: boolean,
@@ -32,17 +33,15 @@ function Dropdown(props: AllStudents) {
     const classItems: IClass[] = (props.classes && classes) || [];
 
     return (
-        <FormControl sx={{ minWidth: 390 }}>
-            <InputLabel id="demo-simple-select-helper-label">
+        <FormControl>
+            <InputLabel>
                 {(props.students && "Student") || (props.teachers && "Teachers") || (props.classes && "Classes")}
             </InputLabel>
             <Select
-                labelId="demo-select-small"
-                id="demo-select-small"
+                fullWidth
                 value={props.value}
                 label={"name"}
                 onChange={handleChange}
-
             >
                 {menuItems && menuItems.map((user,index:number) => (
                     <MenuItem key={ index } value={user.email}>

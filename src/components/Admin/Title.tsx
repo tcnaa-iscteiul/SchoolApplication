@@ -1,16 +1,14 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
+import { IChildren } from '../../interfaces/IChildren';
+import { Fragment } from 'react';
 
-interface TitleProps {
-    children?: React.ReactNode;
-}
-
-export default function Title(props: TitleProps) {
+export default function Title(props: IChildren) {
     return (
-        <React.Fragment>
+        <Fragment>
             <Typography component="h2" variant="h6" color="primary" gutterBottom>
                 {props.children}
             </Typography>
-        </React.Fragment>
+        </Fragment>
     );
 }

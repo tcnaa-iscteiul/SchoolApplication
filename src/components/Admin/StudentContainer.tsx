@@ -24,39 +24,39 @@ import { memo } from 'react';
 import useAxios from '../../hooks/use-axios';
 import { studentsActions } from '../../store/redux-slice';
 
- function StudentContainer() {
+function StudentContainer() {
 
-     const dispatch: any = useDispatch();
+    const dispatch: any = useDispatch();
 
-     const [email, setEmail] = React.useState<string>('');
-     const users = useSelector((state: any) => state.students.students);//TODO: remove any
-    
-     const option = useSelector((state: any) => state.menu.option);//TODO: remove any
+    const [email, setEmail] = React.useState<string>('');
+    const users = useSelector((state: any) => state.students.students);//TODO: remove any
+
+    const option = useSelector((state: any) => state.menu.option);//TODO: remove any
 
     const [showModal, setShowModal] = React.useState<boolean>(false);
 
-     const { response, error, loading: isLoading, sendData } = useAxios({
-         method: "Patch",
-         url: "user",
-         data: {
-             email: email,
-             status: Status.Active
-         }
-     });
+    const { response, error, loading: isLoading, sendData } = useAxios({
+        method: "Patch",
+        url: "user",
+        data: {
+            email: email,
+            status: Status.Active
+        }
+    });
 
-     const approveRequest = React.useCallback((value: string) => {
-         setEmail(value);
-         sendData();
-         setShowModal(true);
-         dispatch(studentsActions.removeUser(email));
-     }, [sendData]);
+    const approveRequest = React.useCallback((value: string) => {
+        setEmail(value);
+        sendData();
+        setShowModal(true);
+        dispatch(studentsActions.removeUser(email));
+    }, [sendData]);
 
     useEffect(() => {
         dispatch(fetchUsersData());
         dispatch(fetchClassData());
-    }, [dispatch,approveRequest]);
+    }, [dispatch, approveRequest]);
 
-    
+
     useEffect(() => {
         if (users.changed) {
             dispatch(fetchUsersData());
@@ -69,11 +69,11 @@ import { studentsActions } from '../../store/redux-slice';
     const pendingTeachers = users.filter((user: IUser) => user.role === Role.Teacher && user.status === Status.Pending);
 
     const disableTeacher = (value: string) => {
-       
+
     }
 
     const components: JSX.Element[] = [
-        <ChangePassword key={"Change Password" }/>,
+        <ChangePassword key={"Change Password"} />,
         <DisplayTable key={"All Students"} title={"All Students"} users={allStudents} approveRequest={() => { }} />,
         <CreateStudent key={"Create Student"} />,
         <UpdateStudent key={"Update Student"} />,
@@ -96,20 +96,13 @@ import { studentsActions } from '../../store/redux-slice';
     }
 
     return (
-
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {isLoading && <LoadingSpinner />}
             {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student removed with success"} title={error ? "error" : "Success"} />}
             <Grid container spacing={3}>
                 {res && res.map((item, index: number) => (
                     <Grid item key={index} xs={12}>
-                        <Paper
-                            sx={{
-                                p: 6,
-                                display: 'flex',
-                                flexDirection: 'column'
-                            }}
-                        >
+                        <Paper elevation={2}>
                             {item}
                         </Paper>
                     </Grid>
@@ -117,13 +110,7 @@ import { studentsActions } from '../../store/redux-slice';
                 {res.length === 0 &&
                     <Grid container spacing={3}>
                         <Grid item key={"welcome"} xs={12}>
-                            <Paper
-                                sx={{
-                                    p: 24,
-                                    display: 'flex',
-                                    flexDirection: 'column'
-                                }}
-                            >
+                            <Paper elevation={1}>
                                 <Typography
                                     component="h1"
                                     variant="h3"
@@ -135,7 +122,6 @@ import { studentsActions } from '../../store/redux-slice';
                             </Paper>
                         </Grid>
                     </Grid>}
-
             </Grid>
         </Container >);
 }

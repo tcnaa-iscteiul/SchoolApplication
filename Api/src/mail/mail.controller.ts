@@ -4,10 +4,10 @@ import { MailService } from './mail.service';
 
 @Controller('email')
 export class MailController {
-    constructor(private mailService: MailService) { }
+  constructor(private mailService: MailService) {}
 
-    @Get()
-    async send(@Body()data: IMailGunData) {
-        return await this.mailService.send(data);
-    }
+  @Get()
+  async send(@Body() data: IMailGunData) {
+    return await this.mailService.send(data);
+  }
 }

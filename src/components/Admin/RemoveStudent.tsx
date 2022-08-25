@@ -51,20 +51,13 @@ const RemoveStudent = (): JSX.Element => {
         {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student removed with success"} title={error ? "error" : "Success"} />}
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <Box
-                sx={{
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
+            <Box display="flex">
                 <Typography component="h1" variant="h5">
                     Remove Student
                 </Typography>
-                <br />
                 <Dropdown students={students} manageUser={manageUser} value={user} />
-                {user&&<Button
+                {user && <Button
+                    fullWidth
                     type="submit"
                     sx={{ mt: 3, mb: 2, width: 1 }}
                     variant="contained"

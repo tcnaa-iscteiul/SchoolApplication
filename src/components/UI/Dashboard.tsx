@@ -6,14 +6,24 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import StudentContainer from '../Admin/StudentContainer';
-import DashboardToolbar from './DashboardToolbar';
 import ListItems from '../Admin/ListItems';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Typography from '@mui/material/Typography';
 import theme from './theme';
-
+import MenuIcon from '@mui/icons-material/Menu';
+import { Button, IconButton } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { menuActions } from '../../store/menu-slice';
+import { useSignUp } from "../../hooks/useSignUp";
+import '../styles/Dashboard.css';
+import { useState } from 'react';
 const drawerWidth: number = 300;
+
+interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+}
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ open }) => ({
@@ -41,59 +51,112 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+}));
+
+
+const StyledToolbar = styled(Toolbar)({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    left: 0,
+    px: [1],
+});
+
+const Main = styled(Box)({
+    backgroundColor: theme.palette.grey[100],
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+});
+
+
 type DashboardProps = {
     options: lists[],
 }
 
-export default function DashboardContent(props:DashboardProps) {
-    const [open, setOpen] = React.useState(true);
+export default function DashboardContent(props: DashboardProps) {
+
+
+    const { logout } = useSignUp();
+    const dispatch = useDispatch();
+
+    const logoutHandler = async (event: React.MouseEvent) => {
+        event.preventDefault();
+        logout();
+    }
+
+    const clickDashboardHandler = () => {
+        dispatch(menuActions.addOption({ option: '' }));
+    }
+    const [open, setOpen] = useState(true);
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
-    const handleGetOpen = (value: boolean) => {
-        setOpen(value);
-    }
-
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box display="flex">
             <CssBaseline />
-            <DashboardToolbar open={open} handleGetOpen={handleGetOpen} />
+            <AppBar position="absolute" open={open}>
+                <Toolbar>
+                    <IconButton
+                        edge="start"
+                        onClick={() => { setOpen(!open) }}
+                        sx={{
+                            marginRight: '36px',
+                            ...(open && { display: 'none' }),
+                        }}//TODO:remove inline style
+                    >
+                        <MenuIcon />
+                    </IconButton>
+
+                    <Typography
+                        component="h1"
+                        variant="h6"
+                        noWrap
+                        onClick={clickDashboardHandler}
+                    >
+                        Dashboard
+                    </Typography>
+
+                    <Button variant="contained" onClick={logoutHandler}>Logout</Button>
+                </Toolbar>
+            </AppBar>
             <Drawer variant="permanent" open={open}>
-                <Toolbar
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        left:0,
-                        px: [1],
-                    }}
-                > 
+                <StyledToolbar>
                     <IconButton onClick={toggleDrawer}>
                         <ChevronLeftIcon />
                     </IconButton>
-                </Toolbar>
+                </StyledToolbar>
                 <Divider />
                 <List component="nav">
                     <ListItems key={Math.random()} list={props.options} />
                 </List>
             </Drawer>
-            <Box
-                component="main"
-                sx={{
-                    backgroundColor: (theme) =>
-                        theme.palette.mode === 'light'
-                            ? theme.palette.grey[100]
-                            : theme.palette.grey[900],
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
-                }}
-            >
+            <Main>
                 <Toolbar />
-                <StudentContainer/>
-            </Box>
+                <StudentContainer />
+            </Main>
         </Box>
     );
+}
+
+function MuiIconButton(MuiIconButton: any, arg1: { shouldForwardProp: (prop: PropertyKey) => boolean; }) {
+    throw new Error('Function not implemented.');
 }

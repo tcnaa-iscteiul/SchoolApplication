@@ -20,6 +20,7 @@ import { Service } from '../services/Service';
 import { memo } from 'react';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import './styles/SignIn.css';
 
 function ChangePassword() {
 
@@ -84,7 +85,7 @@ function ChangePassword() {
         resetInputs();
     }
 
-    const handleCloseModal = async() => {
+    const handleCloseModal = async () => {
         setShowModal(false);
         if (sampleLocation.search && !error && !response?.data) {
             await Service.deleteToken(token!);
@@ -103,23 +104,16 @@ function ChangePassword() {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            {!isLoading && <Modal open={showModal} onClose={handleCloseModal} message={error||"Password updateded with success"} title={error ? "error" : "Success"} />}
+            {!isLoading && <Modal open={showModal} onClose={handleCloseModal} message={error || "Password updateded with success"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <Box>
                     <Typography component="h1" variant="h5">
                         Change Password
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
                         <Grid container spacing={2}>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} >
                                 <TextField
                                     error={passwordInputHasError}
                                     value={enteredPassword}
@@ -127,7 +121,6 @@ function ChangePassword() {
                                     helperText={(passwordInputHasError && enteredPassword && 'Please insert a valid password')}
                                     onBlur={passwordBlurHandler}
                                     required
-                                    sx={{ width: 1 }}
                                     name="password"
                                     type={showPassword ? 'text' : 'password'}
                                     label="Password"
@@ -151,7 +144,6 @@ function ChangePassword() {
                             <Grid item xs={12}>
                                 <TextField
                                     required
-                                    sx={{ width: 1 }}
                                     name="confirmPassword"
                                     label="Confirm Password"
                                     type={showConfirmPassword ? 'text' : 'password'}
@@ -175,20 +167,21 @@ function ChangePassword() {
                                     }}
                                 />
                             </Grid>
+                            <Grid item xs={12}>
+                                <Button
+                                    fullWidth
+                                    type="submit"
+                                    variant="contained"
+                                    disabled={!validateForm}
+                                >
+                                    Change Password
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Button
-                            type="submit"
-                            sx={{ mt: 3, mb: 2, width: 1 }}
-                            variant="contained"
-                            disabled={!validateForm}
-
-                        >
-                            Change Password
-                        </Button>
                     </Box>
                 </Box>
             </Container>
-        </Fragment>
+        </Fragment >
     );
 }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
     AppBar,
     Box,
@@ -19,7 +19,7 @@ const Header = (props: any): JSX.Element => {
     const isMatch = useMediaQuery(theme.breakpoints.down("md"));
 
     return (
-        <React.Fragment>
+        <Fragment>
             <AppBar position="fixed">
                 <Toolbar>
                     {isMatch ? (
@@ -49,7 +49,7 @@ const Header = (props: any): JSX.Element => {
                 </Toolbar>
             </AppBar>
             {props.children}
-        </React.Fragment>
+        </Fragment>
     );
 };
 

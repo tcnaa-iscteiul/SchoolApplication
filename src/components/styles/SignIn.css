@@ -1,6 +1,3 @@
-.MuiContainer-root .MuiBox-root {
-    display: flex;
-}
 
 .MuiContainer-root .MuiBox-root {
     margin-top: 64px;
@@ -9,7 +6,7 @@
     flex-direction: column;
 }
 
-.MuiContainer-root .MuiBox-root .MuiAvatar-root {
-    margin:8px;
-    background-color:purple;
-}
+    .MuiContainer-root .MuiBox-root .MuiAvatar-root {
+        background-color: purple;
+        margin:8px;
+    }
