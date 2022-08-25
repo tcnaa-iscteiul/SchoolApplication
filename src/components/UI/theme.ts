@@ -1,10 +1,16 @@
 import { createTheme } from '@mui/material/styles';
-import { lightGreen } from '@mui/material/colors';
+import { lightGreen, purple } from '@mui/material/colors';
+
+const primaryColor = lightGreen[500];
+const secondaryColor = purple[500];
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: lightGreen[500],
+            main: primaryColor,
+        },
+        secondary: {
+            main: secondaryColor,
         },
     },
 
@@ -14,36 +20,12 @@ const theme = createTheme({
         },
     },
     components: {
-        // Name of the component
-        MuiButton: {
+        MuiAvatar: {
             styleOverrides: {
-                // Name of the slot
-                root: {
-                    // Some CSS
-                    fontSize: '1rem',
-
-                },
-            },
-        },
-
-        MuiAppBar: {
-            styleOverrides: {
-                // Name of the slot
-                root: {
-                    MuiBox: {
-                        display: 'inline-list-item',
-                    },
-                    /*
-                    button: {
-                        color: 'red',
-                        textDecoration: 'none',
-                        display: 'inline-list-item',
-                    },*/
-
-                },
-            },
-        },
-    },
+                colorDefault: primaryColor,
+            }
+        }
+    }
 });
 
 

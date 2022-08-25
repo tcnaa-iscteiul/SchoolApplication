@@ -10,21 +10,21 @@ import { useState } from 'react';
 import useInput from '../../hooks/useInput';
 import { Fragment } from 'react';
 import Modal from '../UI/Modal';
-import { useSignUp } from '../../hooks/useSignUp';
-import { IUser } from '../../interfaces';
 import { Status } from '../../interfaces/Status';
 import { Role } from '../../interfaces/Role';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { useDispatch } from 'react-redux';
-import { studentsActions } from '../../store/redux-slice';
 import { memo } from 'react';
+import useAxios from '../../hooks/use-axios';
+import { fetchUsersData } from '../../store/usersActions';
 
 function CreateStudent() {
 
-    const dispatch = useDispatch();
+    const dispatch:any = useDispatch();
 
-    const { isLoading, error, signUp } = useSignUp();
     const [showModal, setShowModal] = useState<boolean>(false);
+
+    const letters = /^[A-Za-z]+$/;
     const {
         value: enteredFirstName,
         isValid: enteredFirstNameIsValid,
@@ -32,7 +32,7 @@ function CreateStudent() {
         valueChangeHandler: firstNameChangedHandler,
         valueBlurHandler: firstNameBlurHandler,
         reset: resetFirstNameInput
-    } = useInput((value: any) => value.trim() !== '' && value.length > 2 && isNaN(value));
+    } = useInput((value: string) => value.trim() !== '' && value.length > 2 && letters.test(value));
     const {
         value: enteredLastName,
         isValid: enteredLastNameIsValid,
@@ -40,7 +40,7 @@ function CreateStudent() {
         valueChangeHandler: lastNameChangedHandler,
         valueBlurHandler: lastNameBlurHandler,
         reset: resetLastNameInput
-    } = useInput((value: any) => value.trim() !== '' && value.length > 2 && isNaN(value));
+    } = useInput((value: string) => value.trim() !== '' && value.length > 2 && letters.test(value));
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const {
         value: enteredEmail,
@@ -49,7 +49,8 @@ function CreateStudent() {
         valueChangeHandler: emailChangedHandler,
         valueBlurHandler: emailBlurHandler,
         reset: resetEmailInput
-    } = useInput((value: any) => re.test(value));
+    } = useInput((value: string) => re.test(value));
+    const number = /^[0-9]+$/;
     const {
         value: enteredPhone,
         isValid: enteredPhoneIsValid,
@@ -57,19 +58,9 @@ function CreateStudent() {
         valueChangeHandler: phoneChangedHandler,
         valueBlurHandler: phoneBlurHandler,
         reset: resetPhoneInput
-    } = useInput((value: any) => value.trim() !== '' && value.length === 9 && !isNaN(value));
+    } = useInput((value: string) => value.trim() !== '' && value.length === 9 && number.test(value));
 
-
-    const validateForm: boolean = enteredFirstNameIsValid && enteredLastNameIsValid && enteredEmailIsValid && enteredPhoneIsValid;
-
-    const resetInputs = () => {
-        resetFirstNameInput();
-        resetLastNameInput();
-        resetEmailInput();
-        resetPhoneInput();
-    }
-
-    const generatePassword = () => {
+    const generatePassword = ():string => {
         const chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const passwordLength = 12;
         let password = "";
@@ -81,27 +72,41 @@ function CreateStudent() {
         return password;
     }
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const pass = generatePassword();
-
-        const newUser: IUser = {
+    const { response, error, loading: isLoading, sendData } = useAxios({
+        method: "Post",
+        url: "auth/create",
+        data: {
             email: enteredEmail,
-            password: pass,
+            password: generatePassword(),
             status: Status.Active,
             role: Role.Student,
             firstName: enteredFirstName,
             lastName: enteredLastName,
             phone: enteredPhone
         }
-        signUp(newUser);
-        dispatch(studentsActions.addStudent(newUser));
+    });
+
+    const validateForm: boolean = enteredFirstNameIsValid && enteredLastNameIsValid && enteredEmailIsValid && enteredPhoneIsValid;
+
+    const resetInputs = () => {
+        resetFirstNameInput();
+        resetLastNameInput();
+        resetEmailInput();
+        resetPhoneInput();
+    }
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        sendData();
         setShowModal(true);
         resetInputs();
-
     }
 
     const handleCloseModal = () => {
+        if (!error) {
+            dispatch(fetchUsersData());
+        }
         setShowModal(false);
     }
 

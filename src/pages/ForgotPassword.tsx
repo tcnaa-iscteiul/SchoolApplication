@@ -28,7 +28,7 @@ export default function ForgotPassword() {
         valueChangeHandler: emailChangedHandler,
         valueBlurHandler: emailBlurHandler,
         reset: resetEmailInput
-    } = useInput((value: any) => re.test(value));
+    } = useInput((value: string) => re.test(value));
 
     const { response, error, loading: isLoading, sendData } = useAxios({
         method: "Post",
@@ -53,7 +53,7 @@ export default function ForgotPassword() {
     return (
         <Layout>
             {isLoading && <LoadingSpinner />}
-            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Email sent successfully"} title={error ? "error" : "Success"} />}
+            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error||"Email sent successfully"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box

@@ -6,10 +6,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+import theme from './theme';
 
-export default function ResponsiveDialog(props:any) {
-    const theme = useTheme();
+
+type DialogProps = {
+    open: boolean,
+    title: string,
+    message: string,
+    onClose: ()=>void,
+}
+
+export default function ResponsiveDialog(props:DialogProps) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const handleClose = () => {

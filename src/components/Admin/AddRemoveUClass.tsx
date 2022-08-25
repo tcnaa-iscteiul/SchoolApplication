@@ -10,6 +10,7 @@ import { useState } from 'react';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
 import { memo } from 'react';
+import { AxiosError } from 'axios';
 
 type AllStudents = {
     title: string,
@@ -37,9 +38,17 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
             setUser('');
             setClasses('');
         }
-        catch (error: any) {
-            setError(error);
-            throw new Error(error);
+        catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.data) {
+                    setError(error.response.data.message);
+                } else if (error.message) {
+                    setError(error.message);
+                }
+            }
+            else {
+                setError("Something went wrong!");
+            }
         }
         setIsLoading(false);
     }

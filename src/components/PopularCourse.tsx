@@ -3,7 +3,7 @@ import Layout from "./UI/Layout";
 
 export const PopularCourse = () => {
     return <Layout>
-        <p>Popular Course</p>;
+        <p>Popular Course</p>
         <BottomNavigation />
     </Layout>;
 }

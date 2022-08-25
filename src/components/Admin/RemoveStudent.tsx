@@ -4,42 +4,50 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Fragment } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { useSignUp } from '../../hooks/useSignUp';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { studentsActions } from '../../store/redux-slice';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
-import { IUser } from '../../interfaces';
 import { memo } from 'react';
+import useAxios from '../../hooks/use-axios';
+import { fetchUsersData } from '../../store/usersActions';
 
 const RemoveStudent = (): JSX.Element => {
-    const students = useSelector((state: any) => state.students.students);
+
+    const dispatch: any = useDispatch();
+    const students = useSelector((state: any) => state.students.students);//TODO: remove any
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [user, setUser] = useState<string>('');
-    const dispatch = useDispatch();
-    const { isLoading, error, deleteStudent } = useSignUp();
 
     const manageUser = (email: string) => {
         setUser(email);
     }
 
-    const removeClickHandler = async(event:any) => {
+    const { response, error, loading, sendData } = useAxios({
+        method: "Delete",
+        url: "user",
+        data: {
+            email: user,
+        }
+    });
+
+    const removeClickHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        const deleteUser = students.filter((student: IUser)=> student.email===user);
-        await deleteStudent(deleteUser);
-        dispatch(studentsActions.removeUser(user));
+        sendData();
         setShowModal(true);
     }
 
     const handleCloseModal = () => {
+        if (!error) {
+            dispatch(fetchUsersData());
+        }
         setShowModal(false);
     }
 
     return <Fragment>
-        {isLoading && <LoadingSpinner />}
+        {loading && <LoadingSpinner />}
         {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student removed with success"} title={error ? "error" : "Success"} />}
         <Container component="main" maxWidth="xs">
             <CssBaseline />

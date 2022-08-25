@@ -3,15 +3,16 @@ import {
     AppBar,
     Box,
     Button,
+    Grid,
     MenuItem,
     Toolbar,
     Typography,
     useMediaQuery
 } from "@mui/material";
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import DrawerComp from "./Drawer";
 import theme from './theme';
+import "../styles/Header.css";
 
 const Header = (props: any): JSX.Element => {
 
@@ -19,7 +20,7 @@ const Header = (props: any): JSX.Element => {
 
     return (
         <React.Fragment>
-            <AppBar>
+            <AppBar position="fixed">
                 <Toolbar>
                     {isMatch ? (
                         <>
@@ -30,35 +31,19 @@ const Header = (props: any): JSX.Element => {
                         </>
                     ) : (
                         <>
-                            <Box sx={{
-                                display: 'flex',
-                            }}>
-                                <Link to='/home' style={{ textDecoration: 'none', color: 'black' }}>
-                                    <MenuItem key={"Home"}>
-                                        Home
-                                    </MenuItem>
-                                </Link>
-                                <Link to='/courses' style={{ textDecoration: 'none', color: 'black' }}>
-                                    <MenuItem key={"Popular Course"}>
-                                        Popular Course
-                                    </MenuItem>
-                                </Link>
-                                <Link to='/feature' style={{ textDecoration: 'none', color: 'black' }}>
-                                        <MenuItem key={"Main Feature"} >
-                                        Main Feature
-                                    </MenuItem>
-                                </Link>
+                            <Box>
+                                <MenuItem component={Link} to={'/home'}>Home</MenuItem>
+                                <MenuItem component={Link} to={'/courses'}>Popular Course</MenuItem>
+                                <MenuItem component={Link} to={'/feature'}>Main Feature</MenuItem>
                             </Box>
-                            <Link to="/signin" style={{ textDecoration: 'none', marginLeft: "auto" }}>
-                                <Button variant="contained" >
+                            <Grid container>
+                                <Button component={Link} to="/signin" variant="contained">
                                     Login
                                 </Button>
-                            </Link>
-                            <Link to="/signup" style={{ textDecoration: 'none', marginLeft: "10px" }}>
-                                <Button variant="contained">
+                                <Button component={Link} to="/signup" variant="contained">
                                     SignUp
                                 </Button>
-                            </Link>
+                            </Grid>
                         </>
                     )}
                 </Toolbar>

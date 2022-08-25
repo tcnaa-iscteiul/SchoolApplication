@@ -20,8 +20,8 @@ type AllStudents = {
 
 function Dropdown(props: AllStudents) {
 
-    const users = useSelector((state: any) => state.students.students);
-    const classes = useSelector((state: any) => state.classes.classes);
+    const users = useSelector((state: any) => state.students.students); //TODO: remove any
+    const classes = useSelector((state: any) => state.classes.classes); //TODO: remove any
 
     const handleChange = (event: SelectChangeEvent) => {
         props.manageUser(event.target.value);

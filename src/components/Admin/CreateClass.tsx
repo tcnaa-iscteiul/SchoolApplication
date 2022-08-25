@@ -18,13 +18,13 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { memo } from 'react';
 
- function CreateClass() {
+function CreateClass() {
 
     const { isLoading, error, createClass } = useSignUp();
     const [showModal, setShowModal] = useState<boolean>(false);
     const today = new Date();
     const tomorrow = new Date();
-    tomorrow.setDate(today.getDate()+1);
+    tomorrow.setDate(today.getDate() + 1);
 
     var currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 1);
@@ -45,8 +45,8 @@ import { memo } from 'react';
 
     const handleEndDateChange = (newValue: Date | null) => {
         setEndDate(newValue);
-     };
-     const letters = /^[A-Za-z]+$/;
+    };
+    const letters = /^[A-Za-z]+$/;
     const {
         value: enteredName,
         isValid: enteredNameIsValid,
@@ -54,16 +54,16 @@ import { memo } from 'react';
         valueChangeHandler: NameChangedHandler,
         valueBlurHandler: NameBlurHandler,
         reset: resetNameInput
-    } = useInput((value:any) => value.trim() !== '' && value.length > 2 && isNaN(value));
+    } = useInput((value: string) => value.trim() !== '' && value.length > 2 && letters.test(value));
 
-     const {
+    const {
         value: enteredDescription,
         isValid: enteredDescriptionIsValid,
         hasError: descriptionInputHasError,
         valueChangeHandler: descriptionChangedHandler,
         valueBlurHandler: descriptionBlurHandler,
         reset: resetDescriptionInput
-    } = useInput((value: any) => value.trim() !== '' && value.length > 10 && isNaN(value));
+    } = useInput((value: string) => value.trim() !== '' && value.length > 10);
 
     const validateStartDate = !(startDate!.getTime() >= today.getTime());
 
@@ -156,9 +156,9 @@ import { memo } from 'react';
                                             <TextField
                                                 style={{ width: 400 }}{...params}
                                                 required
-                                                onBlur={() => { setStartDateBlur(true); } }
+                                                onBlur={() => { setStartDateBlur(true); }}
                                                 error={validateStartDate}
-                                                helperText={startDate instanceof Date && !isNaN(startDate.getTime()) &&validateStartDate && "It is not possible to create a class with the past date "} />
+                                                helperText={startDate instanceof Date && !isNaN(startDate.getTime()) && validateStartDate && "It is not possible to create a class with the past date "} />
                                         )}
                                     />
                                 </Grid>
@@ -174,7 +174,7 @@ import { memo } from 'react';
                                                 required
                                                 onBlur={() => { setEndDateBlur(true); }}
                                                 error={validateEndDate}
-                                                helperText={endDate instanceof Date && !isNaN(endDate.getTime()) &&endDate.toString()!=='Invalid Data'&&validateEndDate && "The end date must be greather than the start date!"} />
+                                                helperText={endDate instanceof Date && !isNaN(endDate.getTime()) && endDate.toString() !== 'Invalid Data' && validateEndDate && "The end date must be greather than the start date!"} />
                                         )}
                                     />
                                 </Grid>

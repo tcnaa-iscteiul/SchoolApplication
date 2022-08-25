@@ -2,7 +2,8 @@ import { Fragment } from 'react';
 import Header from './Header';
 import { Box } from "@mui/material";
 
-const Layout = (props: any): JSX.Element => {
+
+const Layout = (props: any): JSX.Element => {//TODO: remove any
 
     return (
         <Fragment>

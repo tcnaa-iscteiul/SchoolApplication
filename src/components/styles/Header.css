@@ -1,0 +1,27 @@
+.MuiAppBar-root {
+    position: static;
+}
+
+    .MuiAppBar-root .MuiBox-root {
+        display: flex;
+    }
+
+    .MuiAppBar-root .MuiGrid-container {
+        display: flex;
+        justify-content: flex-end;
+        place-items: flex-end;
+    }
+
+    .MuiAppBar-root .MuiButton-contained {
+        font-size: 1rem;
+        margin:0.5%;
+    }
+
+    .MuiAppBar-root .MuiMenuItem-root {
+        font-size: 1rem;
+        color: black;
+    }
+
+    .MuiAppBar-root .MuiTypography-root {
+        font-size: 2rem;
+    }

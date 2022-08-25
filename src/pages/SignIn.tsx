@@ -22,6 +22,8 @@ import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth-slice';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from 'typescript-cookie';
+import { AxiosError } from 'axios';
+import '../components/styles/SignIn.css';
 
 export default function SignIn() {
 
@@ -60,14 +62,24 @@ export default function SignIn() {
                 const { data, status } = await Service.signIn(user);
                 navigate('/' + data.role);
                 if (status !== 201) {
-                    throw new Error();
+                    console.log("aqui");
+                    throw new Error("New Error");
                 }
                 dispatch(authActions.login({ token: data.accessToken, role: data.role, status: data.status }));
                 //  const remainingTime = calculateRemainingTime(data);
                 // setTimeout(logout, 216000000);
             }
-            catch (err: any) {
-                setError(err.message || 'Something went wrong!');
+            catch (error) {
+                if (error instanceof AxiosError) {
+                    if (error.response?.data) {
+                        setError(error.response.data.message);
+                    } else if (error.message) {
+                        setError(error.message);
+                    }
+                }
+                else {
+                    setError("Something went wrong!");
+                }
             }
             setIsLoading(false);
         }
@@ -95,24 +107,16 @@ export default function SignIn() {
         <Layout>
             {isLoading && <LoadingSpinner />}
             {showModal && error && <Modal open={showModal} onClose={handleCloseModal} message={error} title={"error"} />}
-            <Container component="main" maxWidth="xs">
+            <Container maxWidth="xs">
                 <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <Box>
+                    <Avatar color="theme">
                         <LockOutlinedIcon />
                     </Avatar>
-
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate>
                         <TextField
                             required
                             error={emailInputHasError}

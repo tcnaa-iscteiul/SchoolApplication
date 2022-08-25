@@ -4,7 +4,7 @@ import api from '../services/api';
 
 const useAxios = (axiosParams: AxiosRequestConfig) => {
     const [response, setResponse] = useState<AxiosResponse>();
-    const [error, setError] = useState<AxiosError>();
+    const [error, setError] = useState<string>('');
     const [loading, setLoading] = useState(false);
 
     const fetchData = useCallback(async (params: AxiosRequestConfig) => {
@@ -13,10 +13,22 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
             const result = await api.request(params);
             setResponse(result);
             if (result.data.status !== 200) {
+                console.log(result);
                 setError(result.data.response?.errorMessage);
             }
-        } catch (err: any) {
-            setError(err.message);
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
+            if (error instanceof AxiosError) {
+                if (error.response?.data) {
+                    setError(error.response.data.message);
+                } else if (error.message) {
+                    setError(error.message);
+                }
+            }
+            else {
+                setError("Something went wrong!");
+            }
         } finally {
             setLoading(false);
         }

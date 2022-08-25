@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth-slice';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from 'typescript-cookie';
+import { AxiosError } from 'axios';
 
 export const useSignUp = () => {
     const dispatch = useDispatch();
@@ -20,12 +21,24 @@ export const useSignUp = () => {
         setError(undefined);
         try {
             const { status } = await Service.signUp(user);
+            console.log(status);
             if (status !== 201) {
+                console.log("aqui");
+                setError("Something went wrong!");
                 throw new Error();
             }
         }
-        catch (err: any) {
-            setError(err.message || 'Something went wrong!');
+        catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.data) {
+                    setError(error.response.data.message);
+                } else if (error.message) {
+                    setError(error.message);
+                }
+            }
+            else {
+                setError("Something went wrong!");
+            }
         }
         setIsLoading(false);
     }, []);
@@ -40,8 +53,17 @@ export const useSignUp = () => {
                 throw new Error();
             }
         }
-        catch (err: any) {
-            setError(err.message || 'Something went wrong!');
+        catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.data) {
+                    setError(error.response.data.message);
+                } else if (error.message) {
+                    setError(error.message);
+                }
+            }
+            else {
+                setError("Something went wrong!");
+            }
         }
         setIsLoading(false);
     }, []);
@@ -55,8 +77,17 @@ export const useSignUp = () => {
                 throw new Error();
             }
         }
-        catch (err: any) {
-            setError(err.message);
+        catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.data) {
+                    setError(error.response.data.message);
+                } else if (error.message) {
+                    setError(error.message);
+                }
+            }
+            else {
+                setError("Something went wrong!");
+            }
         }
         setIsLoading(false);
     }, []);
@@ -71,8 +102,17 @@ export const useSignUp = () => {
                 throw new Error();
             }
         }
-        catch (err: any) {
-            setError(err.message || 'Something went wrong!');
+        catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.data) {
+                    setError(error.response.data.message);
+                } else if (error.message) {
+                    setError(error.message);
+                }
+            }
+            else {
+                setError("Something went wrong!");
+            }
         }
         setIsLoading(false);
     }, []);
@@ -83,19 +123,24 @@ export const useSignUp = () => {
         setError(undefined);
         try {
             const { data, status } = await Service.getAllUsers();
-            console.log(data);
-            console.log(status);
             let users: IUser[] = [];
             data.map((item: IUser) => users.push(item));
             setUsers(users);
             if (status !== 201) {
                 throw new Error();
             }
-
-
         }
-        catch (err: any) {
-            setError(err.message || 'Something went wrong!');
+        catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.data) {
+                    setError(error.response.data.message);
+                } else if (error.message) {
+                    setError(error.message);
+                }
+            }
+            else {
+                setError("Something went wrong!");
+            }
         }
         setIsLoading(false);
     }, []);
@@ -122,8 +167,17 @@ export const useSignUp = () => {
             }
 
         }
-        catch (err: any) {
-            setError(err.message || 'Something went wrong!');
+        catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.data) {
+                    setError(error.response.data.message);
+                } else if (error.message) {
+                    setError(error.message);
+                }
+            }
+            else {
+                setError("Something went wrong!");
+            }
         }
         setIsLoading(false);
     }, [dispatch, navigate]);

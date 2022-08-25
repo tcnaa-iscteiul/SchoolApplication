@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { makeStyles, Theme, createStyles } from "@mui/material";
-import Button from '@mui/material/Button';
-import theme from './theme';
+import { Theme } from "@mui/material";
 
 
 export const headerStyle=  ((theme: Theme) => ({

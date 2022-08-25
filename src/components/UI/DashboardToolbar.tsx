@@ -33,13 +33,17 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
+type Dashboard = {
+    open: boolean,
+    handleGetOpen: (value: boolean) => void,
+}
 
-const DashboardToolbar = (props: any) => {
+const DashboardToolbar = (props:Dashboard) => {
 
     const { logout } = useSignUp();
     const dispatch = useDispatch();
 
-    const logoutHandler = async (event: any) => {
+    const logoutHandler = async (event: React.MouseEvent) => {
         event.preventDefault();
         logout();
     }

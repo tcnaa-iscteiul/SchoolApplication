@@ -13,22 +13,21 @@ import { useState } from 'react';
 import useInput from '../hooks/useInput';
 import PasswordStrengthBar from 'react-password-strength-bar';
 import Modal from '../components/UI/Modal';
-import { useSignUp } from '../hooks/useSignUp';
-import { IUser } from '../interfaces';
 import { Status } from '../interfaces/Status';
 import { Role } from '../interfaces/Role';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import Layout from '../components/UI/Layout';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import useAxios from '../hooks/use-axios';
 
 
 export default function SignUp() {
 
-    const { isLoading, error, signUp } = useSignUp();
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showPassword, setShowPassord] = useState<boolean>(false);
     const [showConfirmPassword, setShowConfirmPassord] = useState<boolean>(false);
+
     const letters = /^[A-Za-z]+$/;
     const {
         value: enteredFirstName,
@@ -37,7 +36,7 @@ export default function SignUp() {
         valueChangeHandler: firstNameChangedHandler,
         valueBlurHandler: firstNameBlurHandler,
         reset: resetFirstNameInput
-    } = useInput((value: any) => value.trim() !== '' && value.length > 1 && value.match(letters));
+    } = useInput((value: string) => value.trim() !== '' && value.length > 1 && letters.test(value));
     const {
         value: enteredLastName,
         isValid: enteredLastNameIsValid,
@@ -45,7 +44,7 @@ export default function SignUp() {
         valueChangeHandler: lastNameChangedHandler,
         valueBlurHandler: lastNameBlurHandler,
         reset: resetLastNameInput
-    } = useInput((value: any) => value.trim() !== '' && value.length > 2 && value.match(letters));
+    } = useInput((value: string) => value.trim() !== '' && value.length > 2 && letters.test(value));
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const {
         value: enteredEmail,
@@ -54,7 +53,8 @@ export default function SignUp() {
         valueChangeHandler: emailChangedHandler,
         valueBlurHandler: emailBlurHandler,
         reset: resetEmailInput
-    } = useInput((value: any) => re.test(value));
+    } = useInput((value: string) => re.test(value));
+    const number = /^[0-9]+$/;
     const {
         value: enteredPhone,
         isValid: enteredPhoneIsValid,
@@ -62,7 +62,7 @@ export default function SignUp() {
         valueChangeHandler: phoneChangedHandler,
         valueBlurHandler: phoneBlurHandler,
         reset: resetPhoneInput
-    } = useInput((value: any) => value.trim() !== '' && value.length === 9 && !isNaN(value) && value.startsWith('9'));
+    } = useInput((value: string) => value.trim() !== '' && value.length === 9 && number.test(value) && value.startsWith('9'));
 
     const mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
     const {
@@ -72,7 +72,7 @@ export default function SignUp() {
         valueChangeHandler: passwordChangedHandler,
         valueBlurHandler: passwordBlurHandler,
         reset: resetPasswordInput
-    } = useInput((value: any) => mediumRegex.test(value));
+    } = useInput((value: string) => mediumRegex.test(value));
     const {
         value: enteredConfirmPassword,
         isValid: enteredConfirmaPasswordIsValid,
@@ -80,12 +80,26 @@ export default function SignUp() {
         valueChangeHandler: confirmPasswordChangedHandler,
         valueBlurHandler: confirmPasswordBlurHandler,
         reset: resetConfirmPasswordInput
-    } = useInput((value: any) => value === enteredPassword);
+    } = useInput((value: string) => value === enteredPassword);
 
+    const { response, error, loading: isLoading, sendData } = useAxios({
+        method: "Post",
+        url: "auth/create",
+        data: {
+            email: enteredEmail,
+            password: enteredPassword,
+            status: Status.Pending,
+            role: Role.Teacher,
+            firstName: enteredFirstName,
+            lastName: enteredLastName,
+            phone: enteredPhone
+        }
+    });
 
     const validateForm: boolean = enteredFirstNameIsValid && enteredLastNameIsValid && enteredEmailIsValid && enteredPhoneIsValid && enteredPasswordIsValid && enteredConfirmaPasswordIsValid;
 
     const resetInputs = () => {
+        setShowModal(true);
         resetFirstNameInput();
         resetLastNameInput();
         resetEmailInput();
@@ -96,20 +110,8 @@ export default function SignUp() {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-
-        const newUser: IUser = {
-            email: enteredEmail,
-            password: enteredPassword,
-            status: Status.Pending,
-            role: Role.Teacher,
-            firstName: enteredFirstName,
-            lastName: enteredLastName,
-            phone: enteredPhone
-        }
-        signUp(newUser);
+        sendData();
         resetInputs();
-        setShowModal(true);
     }
 
     const handleCloseModal = () => {
@@ -127,7 +129,7 @@ export default function SignUp() {
     return (
         <Layout>
             {isLoading && <LoadingSpinner />}
-            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Account created with success!"} title={error ? "error" : "Success"} />}
+            {!isLoading && <Modal open={showModal} onClose={handleCloseModal} message={error || "Account created with success!"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -221,17 +223,17 @@ export default function SignUp() {
                                     id="password"
                                     autoComplete="current-password"
                                     InputProps={{
-                                    endAdornment:
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                edge="end"
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                      }}
+                                        endAdornment:
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                    }}
                                 />
                                 <PasswordStrengthBar password={enteredPassword} />
                             </Grid>

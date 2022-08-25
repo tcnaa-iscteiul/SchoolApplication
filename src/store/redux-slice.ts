@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IUser } from '../interfaces';
 
-const initialState: { students: IUser[] } = {
+interface CounterState {
+    students: IUser[]
+}
+
+const initialState: CounterState = {
     students: [],
 }
 
@@ -20,6 +24,7 @@ const StudentsSlice = createSlice({
                     email: action.payload.email,
                     status: action.payload.status,
                     role: action.payload.role,
+                    phone: action.payload.phone
                 }
                 state.students.push(newStudent);
                 state.students = state.students.sort();
@@ -43,10 +48,11 @@ const StudentsSlice = createSlice({
             }
         },
         getAllUsers: (state, action) => {
-            state.students = [action.payload];
+            state.students = [action.payload.students];
         },
     }
 });
 
 export const studentsActions = StudentsSlice.actions;
+export const { replaceStudents, addStudent, removeUser, updateUser, getAllUsers } = StudentsSlice.actions;
 export default StudentsSlice;

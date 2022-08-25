@@ -38,7 +38,7 @@ function ChangePassword() {
         valueChangeHandler: passwordChangedHandler,
         valueBlurHandler: passwordBlurHandler,
         reset: resetPasswordInput
-    } = useInput((value: any) => mediumRegex.test(value));
+    } = useInput((value: string) => mediumRegex.test(value));
 
     const {
         value: enteredConfirmPassword,
@@ -47,7 +47,7 @@ function ChangePassword() {
         valueChangeHandler: confirmPasswordChangedHandler,
         valueBlurHandler: confirmPasswordBlurHandler,
         reset: resetConfirmPasswordInput
-    } = useInput((value: any) => value === enteredPassword);
+    } = useInput((value: string) => value === enteredPassword);
 
     const sampleLocation = useLocation();
     let token = getCookie("token");
@@ -55,8 +55,8 @@ function ChangePassword() {
         try {
             token = sampleLocation.search.split("=")[1];
         }
-        catch (err: any) {
-            throw new Error(err.message);
+        catch (err) {
+            throw new Error("Token not found!");
         }
     }
 
@@ -103,7 +103,7 @@ function ChangePassword() {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Password updateded with success"} title={error ? "error" : "Success"} />}
+            {!isLoading && <Modal open={showModal} onClose={handleCloseModal} message={error||"Password updateded with success"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box

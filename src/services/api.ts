@@ -10,7 +10,6 @@ const api = axios.create({
     }
 });
 
-
 // For GET requests
 api.interceptors.request.use(
     async (config) => {
@@ -51,8 +50,6 @@ api.interceptors.response.use(response => {
         } else {
             reject(err)
         }
-
-
     })
 })
 

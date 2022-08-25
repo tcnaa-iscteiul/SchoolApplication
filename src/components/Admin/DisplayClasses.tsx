@@ -13,7 +13,7 @@ import { memo } from 'react';
 
 function DisplayClasses() {
     const [more, setMore] = useState<boolean>(false);
-    const  allClasses  = useSelector((state: any) => state.classes.classes);
+    const allClasses = useSelector((state: any) => state.classes.classes);//TODO: remove any
 
     function showMoreHandler(event: React.MouseEvent) {
         event.preventDefault();

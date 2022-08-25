@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItemButton, { ListItemButtonClasses } from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
@@ -17,14 +17,14 @@ const ListItems = (props:  DashboardProps): JSX.Element => {
 
     const dispatch = useDispatch();
 
-    const onClickHandler = (event: any) => {
+    const onClickHandler = (event: React.MouseEvent<HTMLElement>, text: string) => {
         event.preventDefault();
-        dispatch(menuActions.addOption({ option:event.target.textContent}));
+        dispatch(menuActions.addOption({ option:text}));
     }
 
     const itens = (list: string[]) => (list.map((option: string, index: number) => (
         <ListItemButton key={index.toString()}
-            onClick={onClickHandler}>
+            onClick={(e)=>onClickHandler(e,option)}>
             <ListItemIcon>
                 <PeopleIcon />
             </ListItemIcon>

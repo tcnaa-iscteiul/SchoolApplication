@@ -9,19 +9,18 @@ import Container from '@mui/material/Container';
 import { useState } from 'react';
 import { Fragment } from 'react';
 import Modal from '../UI/Modal';
-import { useSignUp } from '../../hooks/useSignUp';
 import { IUser } from '../../interfaces';
 import { Role } from '../../interfaces/Role';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Dropdown from '../UI/Dropdown';
 import { useSelector, useDispatch } from 'react-redux';
-import { studentsActions } from '../../store/redux-slice';
+import useAxios from '../../hooks/use-axios';
+import { fetchUsersData } from '../../store/usersActions';
 import { memo } from 'react';
 
- function UpdateStudent() {
-    const dispatch = useDispatch();
-    const { isLoading, error, updateStudent } = useSignUp();
-    const { students } = useSelector((state: any) => state.students);
+function UpdateStudent() {
+    const dispatch: any = useDispatch();
+    const { students } = useSelector((state: any) => state.students);//TODO: remove any
     const [showModal, setShowModal] = useState<boolean>(false);
     const [user, setUser] = useState<string>('');
     const [firstName, setFirstName] = useState<string>('');
@@ -29,13 +28,13 @@ import { memo } from 'react';
     const [email, setEmail] = useState<string>('');
     const [phone, setPhone] = useState<string>('');
 
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    const validateInput = (value: any) => {
-        return (value.trim() !== '' && value.length > 2 && isNaN(value)) || value.trim() === '';
+    const letters = /^[A-Za-z]+$/;
+    const validateInput = (value: string) => {
+        return (value.trim() !== '' && value.length > 2 && letters.test(value)) || value.trim() === '';
     }
-    const validatePhone = (value: any) => {
-        return (value.trim() !== '' && value.length === 9 && !isNaN(value)) || (value.trim() === '');
+    const number = /^[0-9]+$/;
+    const validatePhone = (value: string) => {
+        return (value.trim() !== '' && value.length === 9 && number.test(value)) || (value.trim() === '');
     }
 
     const validateForm: boolean = validateInput(firstName) && validateInput(lastName) && validatePhone(phone);
@@ -48,27 +47,41 @@ import { memo } from 'react';
         setPhone('');
     }
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const newUser: IUser = {
-            email: user,
+    const { name, surname, telephone } = Object.fromEntries(
+        Object.entries({
             firstName: firstName,
             lastName: lastName,
             phone: phone
-        }
-        const validatedUser = Object.fromEntries(
-            Object.entries(newUser).filter(([_, v]) => v != null && v !== "")
-        );
-        await updateStudent(validatedUser);
-        dispatch(studentsActions.updateUser(newUser));
+        }).filter(([_, v]) => v != null && v !== "")
+    );
 
+    const { response, error, loading: isLoading, sendData } = useAxios({
+        method: "Patch",
+        url: "user",
+        data: {
+            email: user,
+            firstName: firstName || name,
+            lastName: lastName || surname,
+            phone: phone || telephone
+        }
+    });
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        console.log(user);
+        console.log(firstName);
+        console.log(surname);
+        console.log(telephone);
+
+        sendData();
         setShowModal(true);
         resetInputs();
-
     }
 
     const handleCloseModal = () => {
+        if (!error) {
+            dispatch(fetchUsersData());
+        }
         setShowModal(false);
     }
 
@@ -80,7 +93,7 @@ import { memo } from 'react';
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student updated with success"} title={error ? "error" : "Success"} />}
+            {(!isLoading||showModal) && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student updated with success"} title={error ? "error" : "Success"} />}
             <Container component="main" maxWidth="xs">
                 <Box
                     sx={{

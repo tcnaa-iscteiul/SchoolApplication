@@ -15,7 +15,6 @@ import ForgotPassword from './pages/ForgotPassword';
 import ChangePassword from './components/ChangePassword';
 import theme from './components/UI/theme';
 import { ThemeProvider } from '@mui/material/styles';
-import "./components/UI/GlobalCSS.css";
 import { PopularCourse } from './components/PopularCourse';
 import { MainFeature } from './components/MainFeature';
 
