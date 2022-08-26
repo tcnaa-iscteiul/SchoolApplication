@@ -6,98 +6,98 @@ const primaryColor = lightGreen[500];
 const secondaryColor = purple[500];
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: primaryColor,
-    },
-    secondary: {
-      main: secondaryColor,
-    },
-  },
-  components: {
-    MuiContainer: {
-      styleOverrides: {
-        root: {
-          marginTop: "64px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+    palette: {
+        primary: {
+            main: primaryColor,
         },
-      },
-      variants: [
-        {
-          props: { maxWidth: "lg" },
-          style: {
-            mt: 4,
-            mb: 4,
-          },
+        secondary: {
+            main: secondaryColor,
         },
-      ],
     },
-    MuiAvatar: {
-      styleOverrides: {
-        colorDefault: primaryColor,
-      },
-    },
-    MuiIconButton: {
-      variants: [
-        {
-          props: { edge: "end" },
-          style: {
-            marginLeft: "auto",
-          },
+    components: {
+        MuiContainer: {
+            styleOverrides: {
+                root: {
+                    marginTop: "64px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                },
+            },
+            variants: [
+                {
+                    props: { maxWidth: "lg" },
+                    style: {
+                        mt: 4,
+                        mb: 4,
+                    },
+                },
+            ],
         },
-      ],
-    },
-    MuiTypography: {
-      variants: [
-        {
-          props: { variant: "h6" },
-          style: {
-            flexGrow: 1,
-          },
+        MuiAvatar: {
+            styleOverrides: {
+                colorDefault: primaryColor,
+            },
         },
-      ],
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          width: "100%",
+        MuiIconButton: {
+            variants: [
+                {
+                    props: { edge: "end" },
+                    style: {
+                        marginLeft: "auto",
+                    },
+                },
+            ],
         },
-      },
-    },
-    MuiFormControl: {
-      styleOverrides: {
-        root: {
-          width: "100%",
-          marginTop: "5%",
+        MuiTypography: {
+            variants: [
+                {
+                    props: { variant: "h6" },
+                    style: {
+                        flexGrow: 1,
+                    },
+                },
+            ],
         },
-      },
-    },
-    MuiDialogContentText: {
-      styleOverrides: {
-        root: {
-          minWidth: "400px",
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    width: "100%",
+                },
+            },
         },
-      },
-    },
-    MuiPaper: {
-      variants: [
-        {
-          props: { elevation: 1 },
-          style: {
-            padding: "192px",
-          },
+        MuiFormControl: {
+            styleOverrides: {
+                root: {
+                    width: "100%",
+                    marginTop: "5%",
+                },
+            },
         },
-        {
-          props: { elevation: 2 },
-          style: {
-            padding: "64px",
-          },
+        MuiDialogContentText: {
+            styleOverrides: {
+                root: {
+                    minWidth: "400px",
+                },
+            },
         },
-      ],
+        MuiPaper: {
+            variants: [
+                {
+                    props: { elevation: 1 },
+                    style: {
+                        padding: "192px",
+                    },
+                },
+                {
+                    props: { elevation: 2 },
+                    style: {
+                        padding: "64px",
+                    },
+                },
+            ],
+        },
     },
-  },
 });
 
 export const maxWidthModal = 200;
