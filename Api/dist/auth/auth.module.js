@@ -31,10 +31,10 @@ AuthModule = __decorate([
             jwt_1.JwtModule.register({
                 secret: process.env.JWT_SECRET,
                 signOptions: {
-                    expiresIn: "30s",
+                    expiresIn: '30s',
                 },
             }),
-            mail_module_1.MailModule
+            mail_module_1.MailModule,
         ],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService, local_strategy_1.LocalStrategy, auth_repository_1.AuthRepository, jwt_strategy_1.JwtStrategy],

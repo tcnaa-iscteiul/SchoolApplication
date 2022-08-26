@@ -21,17 +21,12 @@ ClassModule = __decorate([
     (0, common_1.Module)({
         imports: [
             user_module_1.UserModule,
-            mongoose_1.MongooseModule.forFeature([
-                { name: Class_schema_1.Class.name, schema: Class_schema_1.ClassSchema },
-            ]),
+            mongoose_1.MongooseModule.forFeature([{ name: Class_schema_1.Class.name, schema: Class_schema_1.ClassSchema }]),
             (0, common_2.forwardRef)(() => user_module_1.UserModule),
         ],
         controllers: [class_controller_1.ClassController],
-        providers: [
-            class_repository_1.ClassRepository,
-            class_service_1.ClassService,
-        ],
-        exports: [class_service_1.ClassService]
+        providers: [class_repository_1.ClassRepository, class_service_1.ClassService],
+        exports: [class_service_1.ClassService],
     })
 ], ClassModule);
 exports.ClassModule = ClassModule;

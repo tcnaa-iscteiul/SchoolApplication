@@ -23,7 +23,7 @@ AppModule = __decorate([
             user_module_1.UserModule,
             class_module_1.ClassModule,
             auth_module_1.AuthModule,
-        ]
+        ],
     })
 ], AppModule);
 exports.AppModule = AppModule;

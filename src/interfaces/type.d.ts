@@ -1,8 +1,8 @@
 type ClassesState = {
-    classes: IClass[]
-}
+  classes: IClass[];
+};
 
 type lists = {
-    subheader: string,
-    list: string[]
-}
+  subheader: string;
+  list: string[];
+};

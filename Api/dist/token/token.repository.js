@@ -30,7 +30,7 @@ let TokenRepository = class TokenRepository {
         if (objToken) {
             await this.tokenModel.findOneAndUpdate({ id: objToken.id }, {
                 hash,
-                expireAt
+                expireAt,
             }, {
                 new: true,
             });
@@ -39,7 +39,7 @@ let TokenRepository = class TokenRepository {
             await new this.tokenModel({
                 hash: hash,
                 email: email,
-                expireAt
+                expireAt,
             }).save();
         }
     }
@@ -51,7 +51,7 @@ let TokenRepository = class TokenRepository {
         }
         else {
             return new common_1.HttpException({
-                errorMessage: "Invalid Token",
+                errorMessage: 'Invalid Token',
             }, common_1.HttpStatus.UNAUTHORIZED);
         }
     }

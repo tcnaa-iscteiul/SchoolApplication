@@ -35,11 +35,11 @@ __decorate([
     __metadata("design:type", Date)
 ], Class.prototype, "endDate", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ type: mongoose.Schema.Types.ObjectId, ref: "User" }),
+    (0, mongoose_1.Prop)({ type: mongoose.Schema.Types.ObjectId, ref: 'User' }),
     __metadata("design:type", String)
 ], Class.prototype, "teacher", void 0);
 __decorate([
-    (0, mongoose_1.Prop)([{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]),
+    (0, mongoose_1.Prop)([{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]),
     __metadata("design:type", Array)
 ], Class.prototype, "students", void 0);
 Class = __decorate([

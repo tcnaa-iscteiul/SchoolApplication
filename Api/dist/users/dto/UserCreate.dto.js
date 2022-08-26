@@ -35,7 +35,7 @@ __decorate([
     __metadata("design:type", String)
 ], UserCreateDto.prototype, "lastName", void 0);
 __decorate([
-    (0, class_validator_1.IsPhoneNumber)("PT"),
+    (0, class_validator_1.IsPhoneNumber)('PT'),
     __metadata("design:type", String)
 ], UserCreateDto.prototype, "phone", void 0);
 __decorate([

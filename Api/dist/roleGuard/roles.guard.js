@@ -22,26 +22,23 @@ let RolesGuard = class RolesGuard {
     }
     async canActivate(context) {
         try {
-            const token = context
-                .getArgs()[0]
-                .headers.authorization.split(" ")[1];
+            const token = context.getArgs()[0].headers.authorization.split(' ')[1];
             const { email } = (0, jwt_decode_1.default)(token);
             const user = await this.userService.findEmail(email);
-            const roles = this.reflector.get("roles", context.getHandler());
+            const roles = this.reflector.get('roles', context.getHandler());
             const total_roles = roles.filter((role) => role === user.role && user.status === UserStatus_dto_1.Status.Active);
             return total_roles.length >= 1;
         }
         catch (err) {
             new common_1.HttpException({
-                errorMessage: "Missing Token",
+                errorMessage: 'Missing Token',
             }, common_1.HttpStatus.UNAUTHORIZED);
         }
     }
 };
 RolesGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [core_1.Reflector,
-        user_service_1.UserService])
+    __metadata("design:paramtypes", [core_1.Reflector, user_service_1.UserService])
 ], RolesGuard);
 exports.RolesGuard = RolesGuard;
 //# sourceMappingURL=roles.guard.js.map

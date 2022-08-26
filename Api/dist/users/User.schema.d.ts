@@ -26,22 +26,13 @@ import { Role } from './dto/UserRole.dto';
 import { Status } from './dto/UserStatus.dto';
 export declare type UserDocument = User & Document;
 export declare class User {
-  _id: string;
-  email: string;
-  password: string;
-  role: Role.Teacher;
-  status: Status.Active;
-  firstName: string;
-  lastName: string;
-  phone: string;
+    _id: string;
+    email: string;
+    password: string;
+    role: Role.Teacher;
+    status: Status.Active;
+    firstName: string;
+    lastName: string;
+    phone: string;
 }
-export declare const UserSchema: import('mongoose').Schema<
-  User,
-  import('mongoose').Model<User, any, any, any, any>,
-  {},
-  {},
-  any,
-  {},
-  'type',
-  User
->;
+export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, any>, {}, {}, any, {}, "type", User>;

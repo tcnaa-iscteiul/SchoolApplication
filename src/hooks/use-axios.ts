@@ -1,10 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import api from '../services/api';
+import { useState, useEffect, useCallback } from "react";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import api from "../services/api";
 
 const useAxios = (axiosParams: AxiosRequestConfig) => {
     const [response, setResponse] = useState<AxiosResponse>();
-    const [error, setError] = useState<string>('');
+    const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState(false);
 
     const fetchData = useCallback(async (params: AxiosRequestConfig) => {
@@ -24,8 +24,7 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
                 } else if (error.message) {
                     setError(error.message);
                 }
-            }
-            else {
+            } else {
                 setError("Something went wrong!");
             }
         } finally {
@@ -35,7 +34,7 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
 
     const sendData = () => {
         fetchData(axiosParams);
-    }
+    };
 
     useEffect(() => {
         if (axiosParams.method === "GET" || axiosParams.method === "get") {
@@ -43,8 +42,7 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
         }
     }, [axiosParams, fetchData]);
 
-
     return { response, error, loading, sendData };
-}
+};
 
 export default useAxios;

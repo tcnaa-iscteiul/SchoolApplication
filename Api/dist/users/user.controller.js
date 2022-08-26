@@ -48,7 +48,7 @@ let UserController = class UserController {
     }
 };
 __decorate([
-    (0, common_1.Get)("/all"),
+    (0, common_1.Get)('/all'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [UserSearch_dto_1.UserSearchDto]),
@@ -62,8 +62,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createUser", null);
 __decorate([
-    (0, common_1.Get)("/:id"),
-    __param(0, (0, common_1.Param)("id")),
+    (0, common_1.Get)('/:id'),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -90,8 +90,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getNrUsers", null);
 UserController = __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
-    (0, common_1.Controller)("user"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 exports.UserController = UserController;

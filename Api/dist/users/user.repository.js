@@ -45,7 +45,7 @@ let UserRepository = class UserRepository {
         }
         catch (error) {
             if (error.code === 11000) {
-                throw new common_1.ConflictException("Username already exists!");
+                throw new common_1.ConflictException('Username already exists!');
             }
             else {
                 throw new common_1.InternalServerErrorException();
@@ -83,7 +83,7 @@ let UserRepository = class UserRepository {
         return this.userModel.findOne({ email: email });
     }
     async update(user) {
-        const newUser = Object.fromEntries(Object.entries(user).filter(([_, v]) => v !== null && v !== ""));
+        const newUser = Object.fromEntries(Object.entries(user).filter(([_, v]) => v !== null && v !== ''));
         const result = await this.userModel.findOneAndUpdate({ email: user.email }, Object.assign({}, newUser), {
             new: true,
         });

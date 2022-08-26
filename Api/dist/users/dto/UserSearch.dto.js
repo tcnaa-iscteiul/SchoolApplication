@@ -66,7 +66,7 @@ __decorate([
 ], UserSearchDto.prototype, "lastName", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsPhoneNumber)("PT"),
+    (0, class_validator_1.IsPhoneNumber)('PT'),
     __metadata("design:type", String)
 ], UserSearchDto.prototype, "phone", void 0);
 exports.UserSearchDto = UserSearchDto;

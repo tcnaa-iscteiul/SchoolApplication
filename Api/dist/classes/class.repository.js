@@ -30,7 +30,7 @@ let ClassRepository = class ClassRepository {
         }
         catch (error) {
             if (error.code === 11000) {
-                throw new common_1.ConflictException("Class with this name already exists!");
+                throw new common_1.ConflictException('Class with this name already exists!');
             }
             else {
                 throw new common_1.InternalServerErrorException();
@@ -38,19 +38,17 @@ let ClassRepository = class ClassRepository {
         }
     }
     async findAll() {
-        return await this.classModel.find().populate("teacher students");
+        return await this.classModel.find().populate('teacher students');
     }
     async findWithFilters(filter) {
-        const name = Object.is(filter.name, undefined) ? "" : filter.name;
+        const name = Object.is(filter.name, undefined) ? '' : filter.name;
         const description = Object.is(filter.description, undefined)
-            ? ""
+            ? ''
             : filter.description;
         const startDate = Object.is(filter.startDate, undefined)
-            ? ""
+            ? ''
             : filter.startDate;
-        const endDate = Object.is(filter.endDate, undefined)
-            ? ""
-            : filter.endDate;
+        const endDate = Object.is(filter.endDate, undefined) ? '' : filter.endDate;
         return await this.classModel
             .find({
             $and: [
@@ -74,12 +72,12 @@ let ClassRepository = class ClassRepository {
                 },
             ],
         })
-            .populate("teacher students")
+            .populate('teacher students')
             .exec();
     }
     async delete(classSearchDto) {
         const result = await this.classModel
-            .findOneAndDelete({ name: classSearchDto.name, })
+            .findOneAndDelete({ name: classSearchDto.name })
             .exec();
         if (!result) {
             throw new common_1.NotFoundException(`Class with ID not found`);
@@ -183,10 +181,10 @@ let ClassRepository = class ClassRepository {
         const response = await this.userModel.aggregate([
             {
                 $lookup: {
-                    from: "classes",
-                    localField: "_id",
-                    foreignField: "students",
-                    as: "classes",
+                    from: 'classes',
+                    localField: '_id',
+                    foreignField: 'students',
+                    as: 'classes',
                 },
             },
             {
@@ -194,24 +192,24 @@ let ClassRepository = class ClassRepository {
                     newRoot: {
                         $mergeObjects: [
                             {
-                                $arrayElemAt: ["$classes", 0],
+                                $arrayElemAt: ['$classes', 0],
                             },
-                            "$$ROOT",
+                            '$$ROOT',
                         ],
                     },
                 },
             },
             {
                 $project: {
-                    " _id ": 1,
-                    " email ": 1,
-                    " password ": 1,
-                    " firstName ": 1,
-                    " lastName ": 1,
-                    " role ": 1,
-                    " status ": 1,
-                    "classes.name": 1,
-                    "classes._id": 1,
+                    ' _id ': 1,
+                    ' email ': 1,
+                    ' password ': 1,
+                    ' firstName ': 1,
+                    ' lastName ': 1,
+                    ' role ': 1,
+                    ' status ': 1,
+                    'classes.name': 1,
+                    'classes._id': 1,
                 },
             },
         ]);

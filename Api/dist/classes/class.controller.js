@@ -72,7 +72,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ClassController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)("/all"),
+    (0, common_1.Get)('/all'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [ClassSearch_dto_1.ClassSearchDto]),
@@ -96,7 +96,7 @@ __decorate([
 ], ClassController.prototype, "deleteClass", null);
 __decorate([
     (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
-    (0, common_1.Patch)("/student"),
+    (0, common_1.Patch)('/student'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [StudentToClass_dto_1.StudentToClassDto]),
@@ -104,7 +104,7 @@ __decorate([
 ], ClassController.prototype, "assignStudentsToClass", null);
 __decorate([
     (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
-    (0, common_1.Patch)("/removeStudent"),
+    (0, common_1.Patch)('/removeStudent'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [StudentToClass_dto_1.StudentToClassDto]),
@@ -112,7 +112,7 @@ __decorate([
 ], ClassController.prototype, "removeStudentsFromClass", null);
 __decorate([
     (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
-    (0, common_1.Patch)("/assign"),
+    (0, common_1.Patch)('/assign'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [AssignTeacherToClass_dto_1.TeacherToClassDto]),
@@ -120,14 +120,14 @@ __decorate([
 ], ClassController.prototype, "assignTeacherToClass", null);
 __decorate([
     (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
-    (0, common_1.Patch)("/remove"),
+    (0, common_1.Patch)('/remove'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [AssignTeacherToClass_dto_1.TeacherToClassDto]),
     __metadata("design:returntype", Promise)
 ], ClassController.prototype, "removeTeacherFromClass", null);
 __decorate([
-    (0, common_1.Get)("/nr"),
+    (0, common_1.Get)('/nr'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -139,8 +139,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ClassController.prototype, "getClassByUser", null);
 ClassController = __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("jwt")),
-    (0, common_1.Controller)("class"),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
+    (0, common_1.Controller)('class'),
     __metadata("design:paramtypes", [class_service_1.ClassService])
 ], ClassController);
 exports.ClassController = ClassController;

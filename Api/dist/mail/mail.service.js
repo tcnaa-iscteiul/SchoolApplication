@@ -20,8 +20,12 @@ let MailService = class MailService {
         return new Promise((res, rej) => {
             this.mailerService
                 .sendMail(data)
-                .then((body) => { res(body); })
-                .catch((error) => { rej(error); });
+                .then((body) => {
+                res(body);
+            })
+                .catch((error) => {
+                rej(error);
+            });
         });
     }
 };

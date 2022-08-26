@@ -55,7 +55,7 @@ let AuthRepository = class AuthRepository {
         }
         else {
             return new common_1.HttpException({
-                errorMessage: "Invalid Token",
+                errorMessage: 'Invalid Token',
             }, common_1.HttpStatus.UNAUTHORIZED);
         }
     }
@@ -71,7 +71,7 @@ let AuthRepository = class AuthRepository {
         }
         else {
             return new common_1.HttpException({
-                errorMessage: "Invalid URL",
+                errorMessage: 'Invalid URL',
             }, common_1.HttpStatus.UNAUTHORIZED);
         }
     }
@@ -79,13 +79,13 @@ let AuthRepository = class AuthRepository {
         const user = await this.userModel.findEmail(userSearch.email);
         if (!user) {
             return new common_1.HttpException({
-                errorMessage: "Invalid email",
+                errorMessage: 'Invalid email',
             }, common_1.HttpStatus.UNAUTHORIZED);
         }
         const { accessToken } = await this.login(user);
         const forgotLink = `http:localhost:3000/changePassword?token=${accessToken}`;
         await this.mailService.send({
-            from: "noreply@schoolApplication.com",
+            from: 'noreply@schoolApplication.com',
             to: user.email,
             subject: 'Forgot Password',
             html: `

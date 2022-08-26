@@ -19,14 +19,14 @@ MailModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot(),
             mailer_1.MailerModule.forRoot({
-                transport: ({
+                transport: {
                     host: process.env.EMAIL_HOST,
                     port: process.env.EMAIL_PORT,
                     auth: {
                         user: process.env.USER,
-                        pass: process.env.PASS
+                        pass: process.env.PASS,
                     },
-                })
+                },
             }),
         ],
         controllers: [mail_controller_1.MailController],

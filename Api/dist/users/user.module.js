@@ -18,11 +18,11 @@ let UserModule = class UserModule {
 UserModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forFeature([{ name: user_schema_1.User.name, schema: user_schema_1.UserSchema }])
+            mongoose_1.MongooseModule.forFeature([{ name: user_schema_1.User.name, schema: user_schema_1.UserSchema }]),
         ],
         controllers: [user_controller_1.UserController],
         providers: [user_service_1.UserService, user_repository_1.UserRepository],
-        exports: [user_service_1.UserService, user_repository_1.UserRepository]
+        exports: [user_service_1.UserService, user_repository_1.UserRepository],
     })
 ], UserModule);
 exports.UserModule = UserModule;

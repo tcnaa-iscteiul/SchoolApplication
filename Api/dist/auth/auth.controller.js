@@ -39,7 +39,7 @@ let AuthController = class AuthController {
     }
 };
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("local")),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('local')),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -47,14 +47,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.Post)("/create"),
+    (0, common_1.Post)('/create'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [UserCreate_dto_1.UserCreateDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "createUser", null);
 __decorate([
-    (0, common_1.Patch)("/changePassword"),
+    (0, common_1.Patch)('/changePassword'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [UserUpdatePassword_dto_1.UserUpdatePasswordDto]),
@@ -68,7 +68,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "forgotPassword", null);
 AuthController = __decorate([
-    (0, common_1.Controller)("auth"),
+    (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
         user_service_1.UserService])
 ], AuthController);

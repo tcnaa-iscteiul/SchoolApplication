@@ -1,1 +1,2 @@
-export declare class TokenModule {}
+export declare class TokenModule {
+}

@@ -47,7 +47,7 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_transformer_1.Transform)(({ value }) => new Date(value)),
     (0, class_validator_1.IsDate)(),
-    (0, class_validator_1.Validate)(class_validator_1.MinDate, ["startDate"]),
+    (0, class_validator_1.Validate)(class_validator_1.MinDate, ['startDate']),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Date)
 ], ClassUpdateDto.prototype, "endDate", void 0);
