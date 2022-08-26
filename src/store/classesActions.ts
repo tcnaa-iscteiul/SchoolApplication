@@ -1,18 +1,17 @@
+import { AxiosError } from 'axios';
+import { AppDispatch } from '.';
 import { Service } from '../services/Service';
 import { classesActions } from './classes-slice';
 
 export const fetchClassData = () => {
-    return async (dispatch: any) => {
+    return async (dispatch: AppDispatch) => {
         const fetchData = async () => {
             const response = await Service.getAllClasses();
             if (!response) {
                 throw new Error('Could not fetch classes!');
             }
-            const data = await response;
-
-            return data;
+            return response;
         };
-
         try {
             const classData = await fetchData();
             dispatch(
@@ -20,8 +19,15 @@ export const fetchClassData = () => {
                     classes: classData.data || [],
                 })
             );
-        } catch (error: any) {
-            throw new Error(error.message);
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.data) {
+                    throw new Error(error.response.data.message);
+                } else {
+                    throw new Error(error.message);
+                }
+
+            }
         }
     };
 };

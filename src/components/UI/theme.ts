@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { lightGreen, purple } from '@mui/material/colors';
+import { useMediaQuery } from '@mui/material';
 
 const primaryColor = lightGreen[500];
 const secondaryColor = purple[500];
@@ -99,7 +100,7 @@ const theme = createTheme({
     }
 });
 
+
 export const maxWidthModal = 200;
 export const maxWidthSpinner = 50;
-
 export default theme;

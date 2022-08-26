@@ -17,11 +17,11 @@ import { useDispatch } from 'react-redux';
 import { memo } from 'react';
 import useAxios from '../../hooks/use-axios';
 import { fetchUsersData } from '../../store/usersActions';
-import Title from './Title';
+import { useAppDispatch } from '../../hooks/use-redux';
 
 function CreateStudent() {
 
-    const dispatch: any = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [showModal, setShowModal] = useState<boolean>(false);
 

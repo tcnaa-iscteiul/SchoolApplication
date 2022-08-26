@@ -45,7 +45,6 @@ api.interceptors.response.use(response => {
                 reject(err)
             }
         } if (err.response.status === 408 || err.code === 'ECONNABORTED') {
-            console.log(`A timeout happend on url ${Config.API_URL}`);
             return Promise.reject(err);
         } else {
             reject(err)

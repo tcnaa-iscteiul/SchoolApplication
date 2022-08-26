@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { Status } from '../../interfaces/Status';
 import { Role } from '../../interfaces/Role';
 import { memo } from 'react';
-import { Box } from '@mui/material';
+import { useAppSelector } from '../../hooks/use-redux';
 
 type AllStudents = {
     students?: boolean,
@@ -21,8 +21,8 @@ type AllStudents = {
 
 function Dropdown(props: AllStudents) {
 
-    const users = useSelector((state: any) => state.students.students); //TODO: remove any
-    const classes = useSelector((state: any) => state.classes.classes); //TODO: remove any
+    const users = useAppSelector(state => state.students.students);
+    const classes = useAppSelector(state => state.classes.classes);
 
     const handleChange = (event: SelectChangeEvent) => {
         props.manageUser(event.target.value);

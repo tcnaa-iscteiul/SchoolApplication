@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 import {
     Drawer,
     IconButton,
@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 
 const pages = ["Main Feature", "Popular Course", "Login", "SignUp"];
 const links = ["feature", "courses", "signin", "signup"];
-
 
 const DrawerComp = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
@@ -25,7 +24,7 @@ const DrawerComp = () => {
                 <List>
                     <MenuItem onClick={() => setOpenDrawer(false)}>X</MenuItem>
                     {pages.map((page, index: number) => (
-                        <MenuItem component={Link} to={`/${links[index]}`}>{page}</MenuItem>
+                        <MenuItem key={page} component={Link} to={`/${links[index]}`}>{page}</MenuItem>
                     ))}
                 </List>
             </Drawer>

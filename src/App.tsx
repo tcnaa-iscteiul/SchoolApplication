@@ -1,11 +1,8 @@
-import React from 'react';
 import { Route, Routes, BrowserRouter as Router, Navigate } from 'react-router-dom';
 import SignIn from './pages/SignIn';
-import './App.css';
 import SignUp from './pages/SignUp';
 import HomePage from './pages/HomePage';
 import AdminDashboard from './pages/AdminDashboard';
-import { Fragment } from 'react';
 import StudentDashboard from './pages/StudentDashboard';
 import TeacherDashboard from './pages/TeacherDashboard';
 import PrivateRoutes from './PrivateRoutes';
@@ -22,7 +19,6 @@ import { Role } from './interfaces/Role';
 function App() {
 
     return (
-        <Fragment>
             <ThemeProvider theme={theme}>
                 <Router>
                     <Provider store={store}>
@@ -52,7 +48,6 @@ function App() {
                     </Provider>
                 </Router>
             </ThemeProvider>
-        </Fragment >
     );
 }
 

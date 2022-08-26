@@ -10,10 +10,12 @@ import { IClass } from '../../interfaces/IClass';
 import { Fragment, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { memo } from 'react';
+import { useAppSelector } from '../../hooks/use-redux';
 
 function DisplayClasses() {
     const [more, setMore] = useState<boolean>(false);
-    const allClasses = useSelector((state: any) => state.classes.classes);//TODO: remove any
+
+    const allClasses = useAppSelector(state => state.classes.classes);
 
     function showMoreHandler(event: React.MouseEvent) {
         event.preventDefault();

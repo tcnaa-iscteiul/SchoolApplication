@@ -9,7 +9,7 @@ const LoadSpinner = (): JSX.Element => {
     const fullScreen = useMediaQuery(`(max-width:${maxWidthSpinner}px)`);
 
     return (
-        <Dialog fullScreen={fullScreen} open={true}>
+        <Dialog fullScreen={fullScreen} open>
             <DialogContent >
                 <CircularProgress />
             </DialogContent>

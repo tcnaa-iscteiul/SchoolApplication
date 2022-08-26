@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -18,7 +17,7 @@ import Modal from '../components/UI/Modal';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
 import Layout from '../components/UI/Layout';
 import { Service } from '../services/Service';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../hooks/use-redux';
 import { authActions } from '../store/auth-slice';
 import { useNavigate } from 'react-router-dom';
 import { getCookie } from 'typescript-cookie';
@@ -30,7 +29,7 @@ export default function SignIn() {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

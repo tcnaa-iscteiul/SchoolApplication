@@ -13,14 +13,14 @@ import { IUser } from '../../interfaces';
 import { Role } from '../../interfaces/Role';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Dropdown from '../UI/Dropdown';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../hooks/use-redux';
 import useAxios from '../../hooks/use-axios';
 import { fetchUsersData } from '../../store/usersActions';
 import { memo } from 'react';
 
 function UpdateStudent() {
-    const dispatch: any = useDispatch();
-    const { students } = useSelector((state: any) => state.students);//TODO: remove any
+    const dispatch= useAppDispatch();
+    const { students } = useAppSelector((state) => state.students);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [user, setUser] = useState<string>('');
     const [firstName, setFirstName] = useState<string>('');
@@ -89,7 +89,6 @@ function UpdateStudent() {
         setUser(name);
     }
 
-    const allStudents = students.filter((user: IUser) => user.role === Role.Student);
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
@@ -100,8 +99,8 @@ function UpdateStudent() {
                         Update Student
                     </Typography>
                     <CssBaseline />
-                    <Dropdown students={allStudents} manageUser={clickHandler} value={user} />
-                    {user && <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+                    <Dropdown students={true} manageUser={clickHandler} value={user} />
+                    {user && <Box component="form" onSubmit={handleSubmit} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12} >
                                 <TextField

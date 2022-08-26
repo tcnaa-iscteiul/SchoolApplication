@@ -8,12 +8,11 @@ import DisplayTable from '../Admin/DisplayTable';
 import DisplayClasses from '../Admin/DisplayClasses';
 import UpdateStudent from '../Admin/UpdateStudent';
 import RemoveStudent from '../Admin/RemoveStudent';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { IUser } from '../../interfaces/IUser';
 import { Role } from '../../interfaces/Role';
 import { Status } from '../../interfaces/Status';
 import AddRemoveUClass from './AddRemoveUClass';
-import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsersData } from '../../store/usersActions';
 import { fetchClassData } from '../../store/classesActions';
 import { Typography } from '@mui/material';
@@ -23,17 +22,17 @@ import ChangePassword from '../ChangePassword';
 import { memo } from 'react';
 import useAxios from '../../hooks/use-axios';
 import { studentsActions } from '../../store/redux-slice';
+import { useAppSelector, useAppDispatch } from '../../hooks/use-redux';
 
 function StudentContainer() {
 
-    const dispatch: any = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const [email, setEmail] = React.useState<string>('');
-    const users = useSelector((state: any) => state.students.students);//TODO: remove any
+    const [email, setEmail] = useState<string>('');
+    const [showModal, setShowModal] = useState<boolean>(false);
 
-    const option = useSelector((state: any) => state.menu.option);//TODO: remove any
-
-    const [showModal, setShowModal] = React.useState<boolean>(false);
+    const users = useAppSelector(state => state.students.students);
+    const option = useAppSelector(state => state.menu.option);
 
     const { response, error, loading: isLoading, sendData } = useAxios({
         method: "Patch",
@@ -51,17 +50,11 @@ function StudentContainer() {
         dispatch(studentsActions.removeUser(email));
     }, [sendData]);
 
+
     useEffect(() => {
         dispatch(fetchUsersData());
         dispatch(fetchClassData());
     }, [dispatch, approveRequest]);
-
-
-    useEffect(() => {
-        if (users.changed) {
-            dispatch(fetchUsersData());
-        }
-    }, [users, dispatch]);
 
     const allStudents = users.filter((user: IUser) => user.role === Role.Student);
     const teachers = users.filter((user: IUser) => user.role === Role.Teacher);
@@ -96,7 +89,7 @@ function StudentContainer() {
     }
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <Container maxWidth="lg">
             {isLoading && <LoadingSpinner />}
             {showModal && <Modal open={showModal} onClose={handleCloseModal} message={error || "Student removed with success"} title={error ? "error" : "Success"} />}
             <Grid container spacing={3}>

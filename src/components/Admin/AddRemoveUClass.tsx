@@ -68,12 +68,12 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
                     {props.title}
                 </Typography>
                 <br />
-                {props.students && <Dropdown students={props.students} manageUser={(email: string) => { setUser(email) }} value={user} />}
-                {props.teacher && <Dropdown teachers={props.teacher} manageUser={(email: string) => { setUser(email) }} value={user} />}
+                {props.students && <Dropdown students manageUser={(email: string) => { setUser(email) }} value={user} />}
+                {props.teacher && <Dropdown teachers manageUser={(email: string) => { setUser(email) }} value={user} />}
                 <br /><br />
                 <Grid container spacing={2}>
                     <Grid item xs={12} >
-                        <Dropdown classes={true} manageUser={(name: string) => { setClasses(name) }} value={classes} />
+                        <Dropdown classes manageUser={(name: string) => { setClasses(name) }} value={classes} />
                     </Grid>
                     <Grid item xs={12}>
                         <Button

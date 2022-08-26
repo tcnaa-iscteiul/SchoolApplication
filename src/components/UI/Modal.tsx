@@ -29,9 +29,8 @@ export default function ResponsiveDialog(props:DialogProps) {
                 fullScreen={fullScreen}
                 open={props.open}
                 onClose={handleClose}
-                aria-labelledby="responsive-dialog-title"
             >
-                <DialogTitle id="responsive-dialog-title" color="primary">
+                <DialogTitle color="primary">
                     {props.title.toUpperCase()}
                 </DialogTitle>
                 <DialogContent>

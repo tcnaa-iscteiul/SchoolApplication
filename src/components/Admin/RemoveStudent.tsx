@@ -12,11 +12,11 @@ import Modal from '../UI/Modal';
 import { memo } from 'react';
 import useAxios from '../../hooks/use-axios';
 import { fetchUsersData } from '../../store/usersActions';
+import { useAppDispatch } from '../../hooks/use-redux';
 
 const RemoveStudent = (): JSX.Element => {
 
-    const dispatch: any = useDispatch();
-    const students = useSelector((state: any) => state.students.students);//TODO: remove any
+    const dispatch = useAppDispatch();
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const [user, setUser] = useState<string>('');
@@ -55,11 +55,10 @@ const RemoveStudent = (): JSX.Element => {
                 <Typography component="h1" variant="h5">
                     Remove Student
                 </Typography>
-                <Dropdown students={students} manageUser={manageUser} value={user} />
+                <Dropdown students={true} manageUser={manageUser} value={user} />
                 {user && <Button
                     fullWidth
                     type="submit"
-                    sx={{ mt: 3, mb: 2, width: 1 }}
                     variant="contained"
                     onClick={removeClickHandler }
                 >

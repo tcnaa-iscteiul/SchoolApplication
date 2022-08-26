@@ -10,18 +10,22 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import StudentContainer from '../Admin/StudentContainer';
 import ListItems from '../Admin/ListItems';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import IconButton, { IconButtonProps as MuiIconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import theme from './theme';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Button, IconButton } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { Button } from '@mui/material';
+import { useAppDispatch } from "../../hooks/use-redux";
 import { menuActions } from '../../store/menu-slice';
 import { useSignUp } from "../../hooks/useSignUp";
-import '../styles/Dashboard.css';
 import { useState } from 'react';
 const drawerWidth: number = 300;
 
 interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+}
+
+interface IconButtonProps extends MuiIconButtonProps {
     open?: boolean;
 }
 
@@ -69,6 +73,12 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
+const IconButtonToolbar = styled(IconButton, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})<IconButtonProps>(({ theme, open }) => ({
+    marginRight: '36px',
+    ...(open && { display: 'none' }),
+}));
 
 const StyledToolbar = styled(Toolbar)({
     display: 'flex',
@@ -92,9 +102,8 @@ type DashboardProps = {
 
 export default function DashboardContent(props: DashboardProps) {
 
-
     const { logout } = useSignUp();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const logoutHandler = async (event: React.MouseEvent) => {
         event.preventDefault();
@@ -113,21 +122,15 @@ export default function DashboardContent(props: DashboardProps) {
     return (
         <Box display="flex">
             <CssBaseline />
-            <AppBar position="absolute" open={open}>
+            <AppBar open={open}>
                 <Toolbar>
-                    <IconButton
-                        edge="start"
+                    <IconButtonToolbar
                         onClick={() => { setOpen(!open) }}
-                        sx={{
-                            marginRight: '36px',
-                            ...(open && { display: 'none' }),
-                        }}//TODO:remove inline style
                     >
                         <MenuIcon />
-                    </IconButton>
+                    </IconButtonToolbar>
 
                     <Typography
-                        component="h1"
                         variant="h6"
                         noWrap
                         onClick={clickDashboardHandler}
@@ -156,6 +159,7 @@ export default function DashboardContent(props: DashboardProps) {
         </Box>
     );
 }
+
 
 function MuiIconButton(MuiIconButton: any, arg1: { shouldForwardProp: (prop: PropertyKey) => boolean; }) {
     throw new Error('Function not implemented.');
