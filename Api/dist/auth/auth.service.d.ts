@@ -11,11 +11,11 @@ export declare class AuthService {
         role: any;
         status: any;
     }>;
-    loginToken(token: string): Promise<{
+    loginToken(token: string): Promise<import("@nestjs/common").HttpException | {
         accessToken: string;
         role: any;
         status: any;
-    } | import("@nestjs/common").HttpException>;
+    }>;
     changePassword(userUpdatePasswordDto: UserUpdatePasswordDto): Promise<void | import("@nestjs/common").HttpException>;
     forgotPassword(user: UserSearchDto): Promise<import("@nestjs/common").HttpException>;
 }

@@ -19,12 +19,12 @@ import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../roleGuard/role.decorator';
 import { Role } from '../users/dto/UserRole.dto';
 
-@UseGuards(AuthGuard('jwt'))
+//@UseGuards(AuthGuard('jwt'))
 @Controller('class')
 export class ClassController {
     constructor(private classService: ClassService) { }
 
-    @Roles(Role.Admin)
+   // @Roles(Role.Admin)
     @Post()
     async create(@Body() classCreateDto: ClassCreateDto): Promise<void> {
         return await this.classService.create(classCreateDto);
@@ -51,25 +51,25 @@ export class ClassController {
         return await this.classService.delete(param);
     }
 
-    @Roles(Role.Admin)
+  //  @Roles(Role.Admin)
     @Patch('/student')
     async assignStudentsToClass(@Body() classSearchDto: StudentToClassDto) {
         return await this.classService.assignStudentsToClass(classSearchDto);
     }
 
-    @Roles(Role.Admin)
+    //@Roles(Role.Admin)
     @Patch('/removeStudent')
     async removeStudentsFromClass(@Body() classSearchDto: StudentToClassDto) {
         return await this.classService.removeStudentsFromClass(classSearchDto);
     }
 
-    @Roles(Role.Admin)
+    //@Roles(Role.Admin)
     @Patch('/assign')
     async assignTeacherToClass(@Body() classSearchDto: TeacherToClassDto) {
         return await this.classService.assignTeacherToClass(classSearchDto);
     }
 
-    @Roles(Role.Admin)
+    //@Roles(Role.Admin)
     @Patch('/remove')
     async removeTeacherFromClass(@Body() classSearchDto: TeacherToClassDto) {
         return await this.classService.removeTeacherFromClass(classSearchDto);
@@ -81,7 +81,7 @@ export class ClassController {
     }
 
     @Get()
-    async getClassByUser() {
-        return await this.classService.getClassByUser();
+    async getClassByUser(@Body() email:string) {
+        return await this.classService.getClassByUser(email);
     }
 }

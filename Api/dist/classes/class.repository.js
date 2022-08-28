@@ -17,12 +17,12 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const class_schema_1 = require("./class.schema");
-const UserRole_dto_1 = require("../users/dto/UserRole.dto");
 const user_repository_1 = require("../users/user.repository");
 let ClassRepository = class ClassRepository {
-    constructor(classModel, userModel) {
+    constructor(classModel, userModel, userModelMongo) {
         this.classModel = classModel;
         this.userModel = userModel;
+        this.userModelMongo = userModelMongo;
     }
     async create(classCreateDto) {
         try {
@@ -98,11 +98,10 @@ let ClassRepository = class ClassRepository {
     }
     async assignStudentsToClass(classSearchDto) {
         const { name, newStudents } = classSearchDto;
+        console.log(name, newStudents);
         try {
-            const findStudent = await this.userModel.findOne({
-                email: newStudents,
-                role: UserRole_dto_1.Role.Student,
-            });
+            const findStudent = await this.userModel.findEmail(newStudents);
+            console.log(findStudent);
             if (!findStudent) {
                 throw new common_1.NotFoundException(`User with ID not found`);
             }
@@ -118,10 +117,7 @@ let ClassRepository = class ClassRepository {
     async removeStudentsFromClass(classSearchDto) {
         const { name, newStudents } = classSearchDto;
         try {
-            const findStudent = await this.userModel.findOne({
-                email: newStudents,
-                role: UserRole_dto_1.Role.Student,
-            });
+            const findStudent = await this.userModel.findEmail(newStudents);
             if (!findStudent) {
                 throw new common_1.NotFoundException(`User with ID not found`);
             }
@@ -137,10 +133,7 @@ let ClassRepository = class ClassRepository {
     async assignTeacherToClass(classSearchDto) {
         const { name, teacher } = classSearchDto;
         try {
-            const findTeacher = await this.userModel.findOne({
-                email: teacher,
-                role: UserRole_dto_1.Role.Teacher,
-            });
+            const findTeacher = await this.userModel.findEmail(teacher);
             if (!findTeacher) {
                 throw new common_1.NotFoundException(`User with ID not found`);
             }
@@ -156,10 +149,7 @@ let ClassRepository = class ClassRepository {
     async removeTeacherFromClass(classSearchDto) {
         const { name, teacher } = classSearchDto;
         try {
-            const findTeacher = await this.userModel.findOne({
-                email: teacher,
-                role: UserRole_dto_1.Role.Teacher,
-            });
+            const findTeacher = await this.userModel.findEmail(teacher);
             if (!findTeacher) {
                 throw new common_1.NotFoundException(`User with ID not found`);
             }
@@ -177,42 +167,9 @@ let ClassRepository = class ClassRepository {
         console.log(response);
         return response;
     }
-    async getClassByUser() {
-        const response = await this.userModel.aggregate([
-            {
-                $lookup: {
-                    from: 'classes',
-                    localField: '_id',
-                    foreignField: 'students',
-                    as: 'classes',
-                },
-            },
-            {
-                $replaceRoot: {
-                    newRoot: {
-                        $mergeObjects: [
-                            {
-                                $arrayElemAt: ['$classes', 0],
-                            },
-                            '$$ROOT',
-                        ],
-                    },
-                },
-            },
-            {
-                $project: {
-                    ' _id ': 1,
-                    ' email ': 1,
-                    ' password ': 1,
-                    ' firstName ': 1,
-                    ' lastName ': 1,
-                    ' role ': 1,
-                    ' status ': 1,
-                    'classes.name': 1,
-                    'classes._id': 1,
-                },
-            },
-        ]);
+    async getClassByUser(email) {
+        const response = await this.userModel.getClassByUser(email);
+        console.log(response);
         return response;
     }
 };
@@ -220,7 +177,9 @@ ClassRepository = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(class_schema_1.Class.name)),
     __param(1, (0, common_1.Inject)((0, common_1.forwardRef)(() => user_repository_1.UserRepository))),
+    __param(2, (0, common_1.Inject)((0, common_1.forwardRef)(() => user_repository_1.UserRepository))),
     __metadata("design:paramtypes", [mongoose_2.Model,
+        user_repository_1.UserRepository,
         mongoose_2.Model])
 ], ClassRepository);
 exports.ClassRepository = ClassRepository;

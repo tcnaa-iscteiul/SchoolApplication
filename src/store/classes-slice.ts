@@ -22,6 +22,7 @@ const ClassesSlice = createSlice({
           description: action.payload.description,
           startDate: action.payload.startDate,
           endDate: action.payload.endDate,
+          students: action.payload.students
         };
         state.classes.push(newClass);
         state.classes = state.classes.sort();

@@ -18,11 +18,11 @@ export declare class AuthRepository {
         role: any;
         status: any;
     }>;
-    loginToken(token: string): Promise<{
+    loginToken(token: string): Promise<HttpException | {
         accessToken: string;
         role: any;
         status: any;
-    } | HttpException>;
+    }>;
     changePassword(userUpdatePasswordDto: UserUpdatePasswordDto): Promise<void | HttpException>;
     forgotPassword(userSearch: UserSearchDto): Promise<HttpException>;
 }

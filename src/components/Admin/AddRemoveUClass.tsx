@@ -107,7 +107,7 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
                             />
                         )}
                     </Grid>
-                    <Grid item xs={12}>
+                   <Grid item xs={12}>
                         <Dropdown
                             classes
                             manageUser={(name: string) => {

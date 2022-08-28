@@ -17,6 +17,8 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { memo } from "react";
+import { fetchClassData } from "../../store/classesActions";
+import { useAppDispatch } from "../../hooks/use-redux";
 
 function CreateClass() {
     const { isLoading, error, createClass } = useSignUp();
@@ -25,6 +27,7 @@ function CreateClass() {
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);
 
+    const dispatch = useAppDispatch();
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 1);
 
@@ -94,6 +97,7 @@ function CreateClass() {
             endDate: endDate!,
         };
         createClass(newClass);
+        dispatch(fetchClassData());
         resetInputs();
         setShowModal(true);
     };

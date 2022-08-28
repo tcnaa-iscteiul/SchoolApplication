@@ -11,6 +11,9 @@ import { IUser } from "../../interfaces/IUser";
 import { Fragment, useState } from "react";
 import { CssBaseline } from "@mui/material";
 import { memo } from "react";
+import { useAppDispatch } from "../../hooks/use-redux";
+import { studentsActions } from "../../store/redux-slice";
+import { fetchUsersData } from "../../store/usersActions";
 
 type DisplayTableProps = {
     title: string;
@@ -18,9 +21,12 @@ type DisplayTableProps = {
     button?: boolean;
     buttonTitle?: string;
     approveRequest: (value: string) => void;
+    disableTeacher: (value: string) => void;
+    approve:boolean
 };
 
 function DisplayTable(props: DisplayTableProps) {
+
     const [more, setMore] = useState<boolean>(false);
 
     function preventDefault(event: React.MouseEvent) {
@@ -33,6 +39,10 @@ function DisplayTable(props: DisplayTableProps) {
         (more
             ? props.users
             : props.users.filter((user: IUser, index: number) => index < 5));
+
+    const clickHandler = (event:React.MouseEvent)=>{
+
+    }
 
     return (
         <Fragment>
@@ -60,8 +70,10 @@ function DisplayTable(props: DisplayTableProps) {
                                 {props.button && (
                                     <TableCell>
                                         <Button
-                                            onClick={() => {
-                                                props.approveRequest(user.email!);
+                                            onClick={()=>{
+                                                props.approve?    
+                                                props.approveRequest(user.email!):
+                                                props.disableTeacher(user.email!);
                                             }}
                                         >
                                             {props.buttonTitle}

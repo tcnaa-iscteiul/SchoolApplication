@@ -11,6 +11,7 @@ import {
 
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
+tomorrow.toLocaleString();
 
 export class ClassCreateDto {
   @IsAlpha()

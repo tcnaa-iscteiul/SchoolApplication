@@ -9,11 +9,11 @@ export declare class TokenRepository {
     private authService;
     constructor(tokenModel: Model<TokenDocument>, userService: UserService, authService: AuthRepository);
     save(hash: string, email: string, expireAt: string): Promise<void>;
-    refreshToken(oldToken: string): Promise<{
+    refreshToken(oldToken: string): Promise<HttpException | {
         accessToken: string;
         role: any;
         status: any;
-    } | HttpException>;
+    }>;
     getUserByToken(oldToken: string): Promise<import("../users/User.schema").User>;
     deleteToken(token: string): Promise<void>;
 }

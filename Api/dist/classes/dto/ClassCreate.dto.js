@@ -14,6 +14,7 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 const tomorrow = new Date();
 tomorrow.setDate(tomorrow.getDate() + 1);
+tomorrow.toLocaleString();
 class ClassCreateDto {
 }
 __decorate([

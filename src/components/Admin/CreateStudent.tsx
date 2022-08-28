@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useInput from "../../hooks/useInput";
 import { Fragment } from "react";
 import Modal from "../UI/Modal";
@@ -16,7 +16,6 @@ import useAxios from "../../hooks/use-axios";
 import { fetchUsersData } from "../../store/usersActions";
 import { useAppDispatch } from "../../hooks/use-redux";
 import CreateStudentFields from "./CreateStudentFields";
-import { Role } from "../../interfaces/Role";
 
 function CreateStudent() {
     const dispatch = useAppDispatch();
@@ -24,6 +23,7 @@ function CreateStudent() {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showFields, setShowFields] = useState<boolean>(false);
     const [email, setEmail] = useState<string>();
+    const [success, setSuccess] = useState<string>('');
 
     const re =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -60,18 +60,25 @@ function CreateStudent() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendData();
+        
+        
     };
-
-    useEffect(() => {
-        if (response?.data.length === 0) {
+useEffect(() => {
+        if (response?.data.length === 0&&response.statusText==='OK') {
             setShowModal(false);
             setEmail(enteredEmail);
             setShowFields(true);
-        } else {
+        } else if (response?.data.length !== 0&&response?.statusText==='OK'){
+            setShowModal(true);
+             setSuccess('Email already registered');
+            resetEmailInput();
+        }
+        else{
             setShowModal(true);
             resetEmailInput();
         }
-    }, [response]);
+    }, [response,error]);
+    
 
     const handleCloseModal = () => {
         if (!error) {
@@ -83,12 +90,12 @@ function CreateStudent() {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            {!isLoading && (showModal||error )&&(
+            {!isLoading &&(success||error)&&(
                 <Modal
                     open={showModal}
                     onClose={handleCloseModal}
-                    message={error || "Email already registered"}
-                    title={"Error"}
+                    message={error || success}
+                    title={error?"Error":"Success"}
                 />
             )}
             <Container component="main" maxWidth="xs">
@@ -134,7 +141,6 @@ function CreateStudent() {
                                 <Button
                                     fullWidth
                                     onClick={() => {
-                                        console.log(showFields);
                                         setShowFields(false);
                                     }}
                                     variant="contained"
@@ -148,7 +154,7 @@ function CreateStudent() {
                 </Box>
                 {showFields &&
                     <CreateStudentFields
-                        email={email!}
+                        email={enteredEmail}
                         resetInputs={resetInputs} />}
             </Container>
         </Fragment>

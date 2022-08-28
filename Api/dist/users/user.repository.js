@@ -103,6 +103,31 @@ let UserRepository = class UserRepository {
         const response = await this.userModel.find({ role: user.role }).count();
         return response;
     }
+    async getClassByUser(email) {
+        const response = await this.userModel.aggregate([
+            {
+                $lookup: {
+                    from: 'classes',
+                    localField: '_id',
+                    foreignField: 'students',
+                    as: 'classes',
+                },
+            },
+            {
+                $replaceRoot: {
+                    newRoot: {
+                        $mergeObjects: [
+                            {
+                                $arrayElemAt: ['$users', 1],
+                            },
+                            '$$ROOT',
+                        ],
+                    },
+                },
+            },
+        ]);
+        return response;
+    }
 };
 UserRepository = __decorate([
     (0, common_1.Injectable)(),

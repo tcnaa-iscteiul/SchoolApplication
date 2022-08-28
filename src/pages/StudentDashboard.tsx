@@ -1,5 +1,6 @@
 import Dashboard from "../components/UI/Dashboard";
 
+
 const studentDashboard: lists[] = [
   {
     subheader: "Manage Account",
@@ -11,7 +12,9 @@ const studentDashboard: lists[] = [
   },
 ];
 
+
 const StudentDashboard = () => {
+
   return <Dashboard options={studentDashboard} />;
 };
 export default StudentDashboard;

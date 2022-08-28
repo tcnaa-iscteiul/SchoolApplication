@@ -17,5 +17,5 @@ export declare class ClassController {
     assignTeacherToClass(classSearchDto: TeacherToClassDto): Promise<void>;
     removeTeacherFromClass(classSearchDto: TeacherToClassDto): Promise<void>;
     getNrClasses(): Promise<number>;
-    getClassByUser(): Promise<any[]>;
+    getClassByUser(email: string): Promise<any[]>;
 }

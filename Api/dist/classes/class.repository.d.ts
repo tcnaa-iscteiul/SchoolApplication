@@ -6,10 +6,12 @@ import { StudentToClassDto } from './dto/StudentToClass.dto';
 import { Class, ClassDocument } from './class.schema';
 import { UserDocument } from '../users/user.schema';
 import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
+import { UserRepository } from '../users/user.repository';
 export declare class ClassRepository {
     private classModel;
     private readonly userModel;
-    constructor(classModel: Model<ClassDocument>, userModel: Model<UserDocument>);
+    private readonly userModelMongo;
+    constructor(classModel: Model<ClassDocument>, userModel: UserRepository, userModelMongo: Model<UserDocument>);
     create(classCreateDto: ClassCreateDto): Promise<void>;
     findAll(): Promise<Omit<Class & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
@@ -24,5 +26,5 @@ export declare class ClassRepository {
     assignTeacherToClass(classSearchDto: TeacherToClassDto): Promise<void>;
     removeTeacherFromClass(classSearchDto: TeacherToClassDto): Promise<void>;
     getNrClasses(): Promise<number>;
-    getClassByUser(): Promise<any[]>;
+    getClassByUser(email: string): Promise<any[]>;
 }

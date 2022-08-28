@@ -81,11 +81,6 @@ function UpdateStudent() {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(user);
-        console.log(firstName);
-        console.log(surname);
-        console.log(telephone);
-
         sendData();
         setShowModal(true);
         resetInputs();
@@ -105,7 +100,7 @@ function UpdateStudent() {
     return (
         <Fragment>
             {isLoading && <LoadingSpinner />}
-            {(!isLoading || showModal) && (
+            {!isLoading  && (
                 <Modal
                     open={showModal}
                     onClose={handleCloseModal}

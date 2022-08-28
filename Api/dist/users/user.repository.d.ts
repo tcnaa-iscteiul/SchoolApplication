@@ -16,4 +16,5 @@ export declare class UserRepository {
     update(user: UserUpdateDto): Promise<void>;
     delete(user: UserUpdateDto): Promise<void>;
     getNrUsers(user: UserSearchDto): Promise<number>;
+    getClassByUser(email: string): Promise<any[]>;
 }

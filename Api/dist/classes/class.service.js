@@ -46,8 +46,8 @@ let ClassService = class ClassService {
     async getNrClasses() {
         return await this.classRepository.getNrClasses();
     }
-    async getClassByUser() {
-        return await this.classRepository.getClassByUser();
+    async getClassByUser(email) {
+        return await this.classRepository.getClassByUser(email);
     }
 };
 ClassService = __decorate([

@@ -8,7 +8,7 @@ import DisplayTable from "../Admin/DisplayTable";
 import DisplayClasses from "../Admin/DisplayClasses";
 import UpdateStudent from "../Admin/UpdateStudent";
 import RemoveStudent from "../Admin/RemoveStudent";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IUser } from "../../interfaces/IUser";
 import { Role } from "../../interfaces/Role";
 import { Status } from "../../interfaces/Status";
@@ -23,17 +23,21 @@ import { memo } from "react";
 import useAxios from "../../hooks/use-axios";
 import { studentsActions } from "../../store/redux-slice";
 import { useAppSelector, useAppDispatch } from "../../hooks/use-redux";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Service } from "../../services/Service";
 
 function StudentContainer() {
     const dispatch = useAppDispatch();
 
-    const [email, setEmail] = useState<string>("");
+    const [success, setSuccess] = useState<string>("");
     const [showModal, setShowModal] = useState<boolean>(false);
+    const[error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
     const users = useAppSelector((state) => state.students.students);
     const option = useAppSelector((state) => state.menu.option);
 
-    const {
+   /* const {
         response,
         error,
         loading: isLoading,
@@ -45,16 +49,32 @@ function StudentContainer() {
             email: email,
             status: Status.Active,
         },
-    });
+    });*/
 
-    const approveRequest = React.useCallback(
-        (value: string) => {
-            setEmail(value);
-            sendData();
-            setShowModal(true);
-            dispatch(studentsActions.removeUser(email));
-        },
-        [sendData]
+    const approveRequest = useCallback(
+        async(value:string) => {
+            setLoading(true);
+            await Service.updateUser({email:value,status:Status.Active}).then((response)=>{
+                if(!response.statusText){
+                    throw new Error("New Error");
+                }
+                dispatch(fetchUsersData());
+                setSuccess("Teacher approved with success");
+                setShowModal(true);
+            }).catch((err)=>{
+                if (err instanceof AxiosError) {
+                    setLoading(false);
+                    if (err.response?.data) {
+                      setError(err.response.data.message);
+                    } else if (err.message) {
+                      setError(err.message);
+                    }
+                  } else {
+                    setError("Something went wrong!");
+                  }
+            });
+            setLoading(false);
+      }, []
     );
 
     useEffect(() => {
@@ -72,7 +92,30 @@ function StudentContainer() {
             user.role === Role.Teacher && user.status === Status.Pending
     );
 
-    const disableTeacher = (value: string) => { };
+    const disableTeacher = useCallback( async(value:string) => {
+        setLoading(true);
+        setShowModal(true);
+        await Service.updateUser({email:value,status:Status.Inactive}).then((response)=>{
+            if(!response.statusText){
+                throw new Error("New Error");
+            }
+            dispatch(fetchUsersData());
+            setSuccess("Teacher disabled with success");
+            
+        }).catch((err)=>{
+            if (err instanceof AxiosError) {
+                setLoading(false);
+                if (err.response?.data) {
+                  setError(err.response.data.message);
+                } else if (err.message) {
+                  setError(err.message);
+                }
+              } else {
+                setError("Something went wrong!");
+              }
+        });
+        setLoading(false);
+  }, []);
 
     const components: JSX.Element[] = [
         <ChangePassword key={"Change Password"} />,
@@ -80,7 +123,9 @@ function StudentContainer() {
             key={"All Students"}
             title={"All Students"}
             users={allStudents}
-            approveRequest={() => { }}
+            approve={false}
+            approveRequest={()=>{}}
+            disableTeacher={()=>{}}
         />,
         <CreateStudent key={"Create Student"} />,
         <UpdateStudent key={"Update Student"} />,
@@ -89,7 +134,9 @@ function StudentContainer() {
             key={"All Teachers"}
             title={"All Teachers"}
             users={teachers}
-            approveRequest={() => {}}
+            approve={false}
+            approveRequest={()=>{}}
+            disableTeacher={()=>{}}
         />,
         <DisplayTable
             key={"Approve Request"}
@@ -98,6 +145,8 @@ function StudentContainer() {
             button={true}
             buttonTitle={"Confirm"}
             approveRequest={approveRequest}
+            disableTeacher={()=>{}}
+            approve={true}
         />,
         <DisplayTable
             key={"Disable Teacher"}
@@ -105,7 +154,9 @@ function StudentContainer() {
             users={activeTeachers}
             button={true}
             buttonTitle={"Disable"}
-            approveRequest={disableTeacher}
+            approveRequest={()=>{}}
+            disableTeacher={disableTeacher}
+            approve={false}
         />,
         <DisplayClasses key={"All Classes"} />,
         <CreateClass key={"Create Class"} />,
@@ -143,12 +194,12 @@ function StudentContainer() {
 
     return (
         <Container maxWidth="lg">
-            {isLoading && <LoadingSpinner />}
-            {showModal && (
+            {loading && <LoadingSpinner />}
+            {!loading &&(
                 <Modal
                     open={showModal}
                     onClose={handleCloseModal}
-                    message={error || "Student removed with success"}
+                    message={error || success}
                     title={error ? "error" : "Success"}
                 />
             )}

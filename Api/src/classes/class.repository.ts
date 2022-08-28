@@ -17,13 +17,16 @@ import { UserDocument } from '../users/user.schema';
 import { Role } from '../users/dto/UserRole.dto';
 import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
 import { UserRepository } from '../users/user.repository';
+import { response } from 'express';
 
 @Injectable()
 export class ClassRepository {
   constructor(
     @InjectModel(Class.name) private classModel: Model<ClassDocument>,
     @Inject(forwardRef(() => UserRepository))
-    private readonly userModel: Model<UserDocument>,
+    private readonly userModel: UserRepository,
+    @Inject(forwardRef(() => UserRepository))
+    private readonly userModelMongo:Model<UserDocument>
   ) {}
   //Create a class, and if already exists a class with the same name, return an error
   async create(classCreateDto: ClassCreateDto): Promise<void> {
@@ -113,11 +116,10 @@ export class ClassRepository {
     classSearchDto: StudentToClassDto,
   ): Promise<void> {
     const { name, newStudents } = classSearchDto;
+    console.log(name, newStudents);
     try {
-      const findStudent = await this.userModel.findOne({
-        email: newStudents,
-        role: Role.Student,
-      });
+      const findStudent = await this.userModel.findEmail(newStudents);
+      console.log(findStudent);
 
       if (!findStudent) {
         throw new NotFoundException(`User with ID not found`);
@@ -139,12 +141,9 @@ export class ClassRepository {
   ): Promise<void> {
     const { name, newStudents } = classSearchDto;
     try {
-      const findStudent = await this.userModel.findOne({
-        email: newStudents,
-        role: Role.Student,
-      });
+      const findStudent = await this.userModel.findEmail(newStudents);
 
-      if (!findStudent) {
+      if (!findStudent){
         throw new NotFoundException(`User with ID not found`);
       }
       const res = await this.classModel.findOneAndUpdate(
@@ -162,10 +161,7 @@ export class ClassRepository {
   async assignTeacherToClass(classSearchDto: TeacherToClassDto): Promise<void> {
     const { name, teacher } = classSearchDto;
     try {
-      const findTeacher = await this.userModel.findOne({
-        email: teacher,
-        role: Role.Teacher,
-      });
+      const findTeacher = await this.userModel.findEmail(teacher);
 
       if (!findTeacher) {
         throw new NotFoundException(`User with ID not found`);
@@ -187,10 +183,7 @@ export class ClassRepository {
   ): Promise<void> {
     const { name, teacher } = classSearchDto;
     try {
-      const findTeacher = await this.userModel.findOne({
-        email: teacher,
-        role: Role.Teacher,
-      });
+      const findTeacher =  await this.userModel.findEmail(teacher);
 
       if (!findTeacher) {
         throw new NotFoundException(`User with ID not found`);
@@ -213,8 +206,17 @@ export class ClassRepository {
     return response;
   }
 
+  async getClassByUser(email:string) {
+    const response = await this.userModel.getClassByUser(email);
+    console.log(response);
+    return response;
+  }
+
+
+/*
   async getClassByUser() {
-    const response = await this.userModel.aggregate([
+    
+    const response = await this.classModel.aggregate([
       {
         $lookup: {
           from: 'classes',
@@ -250,5 +252,5 @@ export class ClassRepository {
       },
     ]);
     return response;
-  }
+  }*/
 }

@@ -111,6 +111,35 @@ export class UserRepository {
 
   async getNrUsers(user: UserSearchDto) {
     const response = await this.userModel.find({ role: user.role }).count();
+  
+    return response;
+  }
+
+  async getClassByUser(email:string) {
+    
+    const response = await this.userModel.aggregate([
+      {
+        $lookup: {
+          from: 'classes',
+          localField: '_id',
+          foreignField: 'students',
+          as: 'classes',
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: {
+            $mergeObjects: [
+              {
+                $arrayElemAt: ['$users', 1],
+              },
+              '$$ROOT',
+            ],
+          },
+        },
+      },
+    ]);
+ 
     return response;
   }
 }
