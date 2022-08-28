@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { IUser } from "../interfaces";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IUser } from '../interfaces';
 
 interface CounterState {
   students: IUser[];
@@ -10,16 +10,16 @@ const initialState: CounterState = {
 };
 
 const StudentsSlice = createSlice({
-  name: "students",
+  name: 'students',
   initialState,
   reducers: {
-    replaceStudents(state, action) {
-      state.students = action.payload.students;
+    replaceStudents(state, action: PayloadAction<IUser[]>) {
+      state.students = action.payload;
     },
-    addStudent(state, action) {
+    addStudent(state, action: PayloadAction<IUser>) {
       if (
         !state.students.find(
-          (student: IUser) => student.email === action.payload.email
+          (student: IUser) => student.email === action.payload.email,
         )
       ) {
         const newStudent = {
@@ -34,14 +34,14 @@ const StudentsSlice = createSlice({
         state.students = state.students.sort();
       }
     },
-    removeUser(state, action) {
+    removeUser(state, action: PayloadAction<string>) {
       state.students = state.students.filter(
-        (student: IUser) => student.email !== action.payload
+        (student: IUser) => student.email !== action.payload,
       );
     },
-    updateUser(state, action) {
+    updateUser(state, action: PayloadAction<IUser>) {
       const found = state.students.filter(
-        (student: IUser) => student.email === action.payload.email
+        (student: IUser) => student.email === action.payload.email,
       );
       if (found[0]) {
         const updatedUser: IUser = {
@@ -52,13 +52,13 @@ const StudentsSlice = createSlice({
           phone: action.payload.phone || found[0].phone,
         };
         const index = state.students.findIndex(
-          (student: IUser) => student.email === action.payload.email
+          (student: IUser) => student.email === action.payload.email,
         );
         state.students[index] = { ...updatedUser };
       }
     },
-    getAllUsers: (state, action) => {
-      state.students = [action.payload.students];
+    getAllUsers: (state, action: PayloadAction<IUser[]>) => {
+      state.students = action.payload;
     },
   },
 });

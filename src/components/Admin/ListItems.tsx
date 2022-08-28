@@ -23,7 +23,8 @@ const ListItems = (props: DashboardProps): JSX.Element => {
         text: string
     ) => {
         event.preventDefault();
-        dispatch(menuActions.addOption({ option: text }));
+        dispatch(menuActions.addOption(text));
+       // dispatch(menuActions.addOption({ option: text }));
     };
 
     const itens = (list: string[]) =>

@@ -1,18 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { IClass } from "../interfaces/IClass";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IClass } from '../interfaces/IClass';
 
 const initialState: ClassesState = {
   classes: [],
 };
 
 const ClassesSlice = createSlice({
-  name: "classes",
+  name: 'classes',
   initialState,
   reducers: {
-    replaceClasses(state, action) {
-      state.classes = action.payload.classes;
+    replaceClasses(state, action: PayloadAction<IClass[]>) {
+      state.classes = action.payload;
     },
-    addClass(state, action) {
+    addClass(state, action: PayloadAction<IClass>) {
       if (
         !state.classes.find((clas: IClass) => clas.id === action.payload.id)
       ) {
@@ -27,9 +27,9 @@ const ClassesSlice = createSlice({
         state.classes = state.classes.sort();
       }
     },
-    removeClass(state, action) {
+    removeClass(state, action: PayloadAction<string>) {
       state.classes = state.classes.filter(
-        (clas: IClass) => clas.id !== action.payload
+        (clas: IClass) => clas.id !== action.payload,
       );
     },
   },

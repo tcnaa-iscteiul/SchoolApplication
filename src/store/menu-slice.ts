@@ -1,15 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: { option: string } = {
-  option: "",
+type MenuState = {
+  option: string;
+};
+
+const initialState: MenuState = {
+  option: '',
 };
 
 const MenuSlice = createSlice({
-  name: "menu",
+  name: 'menu',
   initialState,
   reducers: {
-    addOption(state, action) {
-      state.option = action.payload.option;
+    addOption(state, action: PayloadAction<string>) {
+      state.option = action.payload;
     },
   },
 });

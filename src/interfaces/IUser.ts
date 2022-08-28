@@ -1,5 +1,5 @@
-import { Role } from "./Role";
-import { Status } from "./Status";
+import { Role } from './Role';
+import { Status } from './Status';
 
 export interface IUser {
   id?: string;

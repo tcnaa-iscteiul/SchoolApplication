@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getCookie, removeCookie, setCookie } from "typescript-cookie";
-import { Status } from "../interfaces/Status";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getCookie, removeCookie, setCookie } from 'typescript-cookie';
+import { Status } from '../interfaces/Status';
 
 type Auth = {
   token: string;
@@ -9,35 +9,35 @@ type Auth = {
 };
 
 const initialState: Auth = {
-  token: getCookie("token") || "",
-  status: getCookie("status") || null,
-  role: getCookie("role") || null,
+  token: getCookie('token') || '',
+  status: getCookie('status') || null,
+  role: getCookie('role') || null,
 };
-//TODO:expiration time token
+// TODO:expiration time token
 
-export const isAuthenticated = initialState.token ? true : false;
+export const isAuthenticated = initialState.token;
 
 const AuthSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     logout(state) {
-      state.token = "";
+      state.token = '';
       state.status = null;
       state.role = null;
-      removeCookie("token");
-      removeCookie("status");
-      removeCookie("role");
+      removeCookie('token');
+      removeCookie('status');
+      removeCookie('role');
     },
-    login(state, action) {
+    login(state, action: PayloadAction<Auth>) {
       if (action.payload.status !== Status.Inactive) {
         state.token = action.payload.token;
         state.status = action.payload.status;
         state.role = action.payload.role;
 
-        setCookie("role", state.role);
-        setCookie("token", state.token);
-        setCookie("status", state.status);
+        setCookie('role', state.role);
+        setCookie('token', state.token);
+        setCookie('status', state.status);
 
         //  setTimeout(this.logout, 60);
       }

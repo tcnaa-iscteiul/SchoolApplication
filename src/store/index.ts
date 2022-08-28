@@ -1,8 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
-import ClassesSlice from "./classes-slice";
-import StudentsSlice from "./redux-slice";
-import MenuSlice from "./menu-slice";
-import AuthSlice from "./auth-slice";
+import { configureStore } from '@reduxjs/toolkit';
+import ClassesSlice from './classes-slice';
+import StudentsSlice from './redux-slice';
+import MenuSlice from './menu-slice';
+import AuthSlice from './auth-slice';
 
 const store = configureStore({
   reducer: {

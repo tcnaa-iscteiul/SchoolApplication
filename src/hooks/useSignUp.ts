@@ -1,12 +1,12 @@
-import { useCallback, useState } from "react";
-import { IUser } from "../interfaces/IUser";
-import { IClass } from "../interfaces/IClass";
-import { Service } from "../services/Service";
-import { useDispatch } from "react-redux";
-import { authActions } from "../store/auth-slice";
-import { useNavigate } from "react-router-dom";
-import { getCookie } from "typescript-cookie";
-import { AxiosError } from "axios";
+import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { getCookie } from 'typescript-cookie';
+import { AxiosError } from 'axios';
+import { IUser } from '../interfaces/IUser';
+import { IClass } from '../interfaces/IClass';
+import { Service } from '../services/Service';
+import { authActions } from '../store/auth-slice';
 
 export const useSignUp = () => {
   const dispatch = useDispatch();
@@ -23,8 +23,8 @@ export const useSignUp = () => {
       const { status } = await Service.signUp(user);
       console.log(status);
       if (status !== 201) {
-        console.log("aqui");
-        setError("Something went wrong!");
+        console.log('aqui');
+        setError('Something went wrong!');
         throw new Error();
       }
     } catch (error) {
@@ -35,7 +35,7 @@ export const useSignUp = () => {
           setError(error.message);
         }
       } else {
-        setError("Something went wrong!");
+        setError('Something went wrong!');
       }
     }
     setIsLoading(false);
@@ -58,7 +58,7 @@ export const useSignUp = () => {
           setError(error.message);
         }
       } else {
-        setError("Something went wrong!");
+        setError('Something went wrong!');
       }
     }
     setIsLoading(false);
@@ -80,7 +80,7 @@ export const useSignUp = () => {
           setError(error.message);
         }
       } else {
-        setError("Something went wrong!");
+        setError('Something went wrong!');
       }
     }
     setIsLoading(false);
@@ -103,7 +103,7 @@ export const useSignUp = () => {
           setError(error.message);
         }
       } else {
-        setError("Something went wrong!");
+        setError('Something went wrong!');
       }
     }
     setIsLoading(false);
@@ -114,7 +114,7 @@ export const useSignUp = () => {
     setError(undefined);
     try {
       const { data, status } = await Service.getAllUsers();
-      let users: IUser[] = [];
+      const users: IUser[] = [];
       data.map((item: IUser) => users.push(item));
       setUsers(users);
       if (status !== 201) {
@@ -128,7 +128,7 @@ export const useSignUp = () => {
           setError(error.message);
         }
       } else {
-        setError("Something went wrong!");
+        setError('Something went wrong!');
       }
     }
     setIsLoading(false);
@@ -145,11 +145,11 @@ export const useSignUp = () => {
 
   const logout = useCallback(async () => {
     setIsLoading(true);
-    setError("");
+    setError('');
     try {
-      const token = getCookie("token");
+      const token = getCookie('token');
       const { status } = await Service.deleteToken(token!);
-      navigate("/");
+      navigate('/');
       dispatch(authActions.logout());
       if (status !== 201) {
         throw new Error();
@@ -162,7 +162,7 @@ export const useSignUp = () => {
           setError(error.message);
         }
       } else {
-        setError("Something went wrong!");
+        setError('Something went wrong!');
       }
     }
     setIsLoading(false);

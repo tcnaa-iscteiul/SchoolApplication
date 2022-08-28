@@ -111,7 +111,7 @@ export default function DashboardContent(props: DashboardProps) {
   };
 
   const clickDashboardHandler = () => {
-    dispatch(menuActions.addOption({ option: "" }));
+    dispatch(menuActions.addOption(""));
   };
   const [open, setOpen] = useState(true);
 
@@ -158,11 +158,4 @@ export default function DashboardContent(props: DashboardProps) {
       </Main>
     </Box>
   );
-}
-
-function MuiIconButton(
-  MuiIconButton: any,
-  arg1: { shouldForwardProp: (prop: PropertyKey) => boolean }
-) {
-  throw new Error("Function not implemented.");
 }
