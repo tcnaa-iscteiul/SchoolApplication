@@ -31,19 +31,9 @@ function CreateClass() {
   const currentDate = new Date();
   currentDate.setDate(currentDate.getDate() + 1);
 
-  const [startDate, setStartDate] = useState<Date | null>(tomorrow);
-  const [endDate, setEndDate] = useState<Date | null>(tomorrow);
+  const [startDate, setStartDate] = useState<Date | undefined>(tomorrow);
+  const [endDate, setEndDate] = useState<Date | undefined>(tomorrow);
 
-  const [startDateBlur, setStartDateBlur] = useState<boolean>(false);
-  const [startEndBlur, setEndDateBlur] = useState<boolean>(false);
-
-  const handleStartDateChange = (newValue: Date | null) => {
-    setStartDate(newValue);
-  };
-
-  const handleEndDateChange = (newValue: Date | null) => {
-    setEndDate(newValue);
-  };
   const letters = /^[A-Za-z]+$/;
   const {
     value: enteredName,
@@ -66,7 +56,7 @@ function CreateClass() {
     reset: resetDescriptionInput,
   } = useInput((value: string) => value.trim() !== '' && value.length > 10);
 
-  const validateStartDate = !(startDate!.getTime() >= today.getTime());
+  const validateStartDate = startDate && startDate.getTime() <= today.getTime();
 
   const validateEndDate = !(
     endDate &&
@@ -93,8 +83,8 @@ function CreateClass() {
     const newClass: IClass = {
       name: enteredName,
       description: enteredDescription,
-      startDate: startDate!,
-      endDate: endDate!,
+      startDate: startDate || new Date(),
+      endDate: endDate || new Date(),
     };
     createClass(newClass);
     dispatch(fetchClassData());
@@ -166,15 +156,16 @@ function CreateClass() {
                     label="Start Date"
                     inputFormat="dd/MM/yyyy"
                     value={startDate}
-                    onChange={handleStartDateChange}
+                    onChange={(newValue: Date | null) => {
+                      if (newValue) {
+                        setStartDate(newValue);
+                      }
+                    }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         required
-                        onBlur={() => {
-                          setStartDateBlur(true);
-                        }}
-                        error={validateStartDate}
+                        error={startDate && validateStartDate}
                         helperText={
                           startDate instanceof Date &&
                           !isNaN(startDate.getTime()) &&
@@ -190,14 +181,15 @@ function CreateClass() {
                     label="End Date"
                     inputFormat="dd/MM/yyyy"
                     value={endDate}
-                    onChange={handleEndDateChange}
+                    onChange={(newValue: Date | null) => {
+                      if (newValue) {
+                        setEndDate(newValue);
+                      }
+                    }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         required
-                        onBlur={() => {
-                          setEndDateBlur(true);
-                        }}
                         error={validateEndDate}
                         helperText={
                           endDate instanceof Date &&

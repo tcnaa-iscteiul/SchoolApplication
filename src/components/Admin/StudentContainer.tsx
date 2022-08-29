@@ -20,10 +20,8 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
 import ChangePassword from '../ChangePassword';
 import { memo } from 'react';
-import useAxios from '../../hooks/use-axios';
-import { studentsActions } from '../../store/redux-slice';
 import { useAppSelector, useAppDispatch } from '../../hooks/use-redux';
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosError } from 'axios';
 import { Service } from '../../services/Service';
 
 function StudentContainer() {
@@ -125,8 +123,8 @@ function StudentContainer() {
       title={'All Students'}
       users={allStudents}
       approve={false}
-      approveRequest={() => {}}
-      disableTeacher={() => {}}
+      approveRequest={() => undefined}
+      disableTeacher={() => undefined}
     />,
     <CreateStudent key={'Create Student'} />,
     <UpdateStudent key={'Update Student'} />,
@@ -136,8 +134,8 @@ function StudentContainer() {
       title={'All Teachers'}
       users={teachers}
       approve={false}
-      approveRequest={() => {}}
-      disableTeacher={() => {}}
+      approveRequest={() => undefined}
+      disableTeacher={() => undefined}
     />,
     <DisplayTable
       key={'Approve Request'}
@@ -146,7 +144,7 @@ function StudentContainer() {
       button={true}
       buttonTitle={'Confirm'}
       approveRequest={approveRequest}
-      disableTeacher={() => {}}
+      disableTeacher={() => undefined}
       approve={true}
     />,
     <DisplayTable
@@ -155,7 +153,7 @@ function StudentContainer() {
       users={activeTeachers}
       button={true}
       buttonTitle={'Disable'}
-      approveRequest={() => {}}
+      approveRequest={() => undefined}
       disableTeacher={disableTeacher}
       approve={false}
     />,

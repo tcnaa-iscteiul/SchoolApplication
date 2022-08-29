@@ -23,7 +23,7 @@ let UserRepository = class UserRepository {
         this.userModel = userModel;
     }
     async create(userCreatedto) {
-        const { email, password, status, role, firstName, lastName, phone, } = userCreatedto;
+        const { email, password, status, role, firstName, lastName, phone } = userCreatedto;
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
         try {

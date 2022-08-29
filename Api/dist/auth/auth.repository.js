@@ -29,9 +29,9 @@ let AuthRepository = class AuthRepository {
     }
     async validateUser(email, password) {
         const user = await this.userModel.findEmail(email);
-        if (user
-            && (await bcrypt.compare(password, user.password))
-            && user.status === UserStatus_dto_1.Status.Active) {
+        if (user &&
+            (await bcrypt.compare(password, user.password)) &&
+            user.status === UserStatus_dto_1.Status.Active) {
             return user;
         }
         return null;

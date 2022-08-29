@@ -60,11 +60,10 @@ function UpdateStudent() {
       firstName: firstName,
       lastName: lastName,
       phone: phone,
-    }).filter(([_, v]) => v != null && v !== ''),
+    }).filter(([v]) => v != null && v !== ''),
   );
 
   const {
-    response,
     error,
     loading: isLoading,
     sendData,

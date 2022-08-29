@@ -94,8 +94,10 @@ function ChangePassword() {
   const handleCloseModal = async () => {
     setShowModal(false);
     if (sampleLocation.search && !error && !response?.data) {
-      await Service.deleteToken(token!);
-      navigate('/signin');
+      if (token) {
+        await Service.deleteToken(token);
+        navigate('/signin');
+      }
     }
   };
 

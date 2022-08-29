@@ -16,7 +16,7 @@ import { UserUpdateDto } from './dto/UserUpdate.dto';
 import { UserSearchDto } from './dto/UserSearch.dto';
 import { User } from './user.schema';
 
-// @UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}

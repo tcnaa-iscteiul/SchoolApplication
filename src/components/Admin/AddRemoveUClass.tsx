@@ -32,6 +32,7 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
     event.preventDefault();
     try {
       setIsLoading(true);
+      /*
       props.students &&
         props.add &&
         (await Service.assignStudentToClass(classes!, user!));
@@ -43,7 +44,7 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
         (await Service.assignTeacherToClass(classes!, user!));
       props.teacher &&
         props.remove &&
-        (await Service.removeTeacherToClass(classes!, user!));
+        (await Service.removeTeacherToClass(classes!, user!));*/
       setUser('');
       setClasses('');
     } catch (error) {

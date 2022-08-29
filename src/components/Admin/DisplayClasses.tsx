@@ -8,7 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 import { IClass } from '../../interfaces/IClass';
 import { Fragment, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { memo } from 'react';
 import { useAppSelector } from '../../hooks/use-redux';
 

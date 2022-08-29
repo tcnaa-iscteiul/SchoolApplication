@@ -130,7 +130,7 @@ export const useSignUp = () => {
     }
     setIsLoading(false);
   }, []);
-
+  /*
   const calculateRemainingTime = (expirationTime: string) => {
     const currentTime = new Date().getTime();
     const adjExpirationTime = new Date(expirationTime).getTime();
@@ -138,14 +138,19 @@ export const useSignUp = () => {
     const remainingTime = adjExpirationTime - currentTime;
 
     return remainingTime;
-  };
+  };*/
 
   const logout = useCallback(async () => {
     setIsLoading(true);
     setError('');
     try {
       const token = getCookie('token');
-      const { status } = await Service.deleteToken(token!);
+      if (!token) {
+        navigate('/');
+        dispatch(authActions.logout());
+        return;
+      }
+      const { status } = await Service.deleteToken(token);
       navigate('/');
       dispatch(authActions.logout());
       if (status !== 201) {

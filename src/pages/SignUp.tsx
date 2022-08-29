@@ -97,7 +97,6 @@ export default function SignUp() {
   } = useInput((value: string) => value === enteredPassword);
 
   const {
-    response,
     error,
     loading: isLoading,
     sendData,

@@ -22,7 +22,7 @@ export default function ResponsiveDialog(props: DialogProps) {
     props.onClose();
   };
 
-  let content: string = props.message;
+  const content: string = props.message;
 
   return (
     <Dialog fullScreen={fullScreen} open={props.open} onClose={handleClose}>

@@ -32,7 +32,6 @@ export default function ForgotPassword() {
   } = useInput((value: string) => re.test(value));
 
   const {
-    response,
     error,
     loading: isLoading,
     sendData,

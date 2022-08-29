@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useInput from '../../hooks/useInput';
 import { Fragment } from 'react';
 import Modal from '../UI/Modal';
@@ -22,7 +22,6 @@ function CreateStudent() {
 
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showFields, setShowFields] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>();
   const [message, setMessage] = useState<string>('');
 
   const re =
@@ -64,7 +63,6 @@ function CreateStudent() {
   useEffect(() => {
     if (response?.data.length === 0 && response.statusText === 'OK') {
       setShowModal(false);
-      setEmail(enteredEmail);
       setShowFields(true);
     } else if (response?.data.length !== 0 && response?.statusText === 'OK') {
       setShowModal(true);

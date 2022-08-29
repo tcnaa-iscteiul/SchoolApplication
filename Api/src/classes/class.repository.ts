@@ -8,14 +8,12 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { response } from 'express';
 import { ClassCreateDto } from './dto/ClassCreate.dto';
 import { ClassUpdateDto } from './dto/ClassUpdate.dto';
 import { ClassSearchDto } from './dto/ClassSearch.dto';
 import { StudentToClassDto } from './dto/StudentToClass.dto';
 import { Class, ClassDocument } from './class.schema';
 import { UserDocument } from '../users/user.schema';
-import { Role } from '../users/dto/UserRole.dto';
 import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
 import { UserRepository } from '../users/user.repository';
 

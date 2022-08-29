@@ -6,14 +6,12 @@ import { Fragment } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
-import { useSelector, useDispatch } from 'react-redux';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import Modal from '../UI/Modal';
 import { memo } from 'react';
 import useAxios from '../../hooks/use-axios';
 import { fetchUsersData } from '../../store/usersActions';
 import { useAppDispatch } from '../../hooks/use-redux';
-import { Grid, TextField } from '@mui/material';
 
 const RemoveStudent = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -25,7 +23,7 @@ const RemoveStudent = (): JSX.Element => {
     setUser(email);
   };
 
-  const { response, error, loading, sendData } = useAxios({
+  const { error, loading, sendData } = useAxios({
     method: 'Delete',
     url: 'user',
     data: {

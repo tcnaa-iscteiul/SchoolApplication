@@ -14,8 +14,10 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // Add configurations here
-    config.headers!.Authorization = `Bearer ${getCookie('token')}`;
-    return config;
+    if (config.headers) {
+      config.headers.Authorization = `Bearer ${getCookie('token')}`;
+      return config;
+    }
   },
   (err) => Promise.reject(err),
 );
@@ -23,13 +25,16 @@ api.interceptors.request.use(
 // For POST requests
 api.interceptors.response.use(
   (response) => response,
-  (err) => new Promise((resolve, reject) => {
-    const originalReq = err.config;
-    if (err.response.status === 401 && err.config && !err.config._retry) {
-      originalReq._retry = true;
-      const token = getCookie('token');
-      if (token) {
-          originalReq.headers!.Authorization = `Bearer ${getCookie('token')}`;
+  (err) =>
+    new Promise((resolve, reject) => {
+      const originalReq = err.config;
+      if (err.response.status === 401 && err.config && !err.config._retry) {
+        originalReq._retry = true;
+        const token = getCookie('token');
+        if (token) {
+          if (originalReq.headers) {
+            originalReq.headers.Authorization = `Bearer ${getCookie('token')}`;
+          }
           const res = api
             .put(`${Config.API_URL}token/refresh`, { oldToken: token })
             .then((res) => {
@@ -38,15 +43,15 @@ api.interceptors.response.use(
               return axios(originalReq);
             });
           resolve(res);
-      } else {
-        reject(err);
+        } else {
+          reject(err);
+        }
       }
-    }
-    if (err.response.status === 408 || err.code === 'ECONNABORTED') {
-      return Promise.reject(err);
-    }
-    reject(err);
-  }),
+      if (err.response.status === 408 || err.code === 'ECONNABORTED') {
+        return Promise.reject(err);
+      }
+      reject(err);
+    }),
 );
 
 export default api;

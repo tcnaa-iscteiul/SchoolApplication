@@ -11,9 +11,6 @@ import { IUser } from '../../interfaces/IUser';
 import { Fragment, useState } from 'react';
 import { CssBaseline } from '@mui/material';
 import { memo } from 'react';
-import { useAppDispatch } from '../../hooks/use-redux';
-import { studentsActions } from '../../store/redux-slice';
-import { fetchUsersData } from '../../store/usersActions';
 
 type DisplayTableProps = {
   title: string;
@@ -38,8 +35,6 @@ function DisplayTable(props: DisplayTableProps) {
     (more
       ? props.users
       : props.users.filter((user: IUser, index: number) => index < 5));
-
-  const clickHandler = (event: React.MouseEvent) => {};
 
   return (
     <Fragment>
@@ -68,9 +63,11 @@ function DisplayTable(props: DisplayTableProps) {
                   <TableCell>
                     <Button
                       onClick={() => {
-                        props.approve
-                          ? props.approveRequest(user.email!)
-                          : props.disableTeacher(user.email!);
+                        if (user.email) {
+                          props.approve
+                            ? props.approveRequest(user.email)
+                            : props.disableTeacher(user.email);
+                        }
                       }}
                     >
                       {props.buttonTitle}

@@ -12,7 +12,6 @@ import {
 import { Link } from 'react-router-dom';
 import DrawerComp from './Drawer';
 import theme from './theme';
-import media from './theme';
 import '../styles/Header.css';
 
 const Header = (props: any): JSX.Element => {

@@ -21,7 +21,7 @@ import { useAppDispatch } from '../../hooks/use-redux';
 import { menuActions } from '../../store/menu-slice';
 import { useSignUp } from '../../hooks/useSignUp';
 import { useState } from 'react';
-const drawerWidth: number = 300;
+const drawerWidth = 300;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -77,7 +77,7 @@ const AppBar = styled(MuiAppBar, {
 
 const IconButtonToolbar = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<IconButtonProps>(({ theme, open }) => ({
+})<IconButtonProps>(({ open }) => ({
   marginRight: '36px',
   ...(open && { display: 'none' }),
 }));
