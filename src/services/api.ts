@@ -23,13 +23,12 @@ api.interceptors.request.use(
 // For POST requests
 api.interceptors.response.use(
   (response) => response,
-  (err) =>
-    new Promise((resolve, reject) => {
-      const originalReq = err.config;
-      if (err.response.status === 401 && err.config && !err.config._retry) {
-        originalReq._retry = true;
-        const token = getCookie('token');
-        if (token) {
+  (err) => new Promise((resolve, reject) => {
+    const originalReq = err.config;
+    if (err.response.status === 401 && err.config && !err.config._retry) {
+      originalReq._retry = true;
+      const token = getCookie('token');
+      if (token) {
           originalReq.headers!.Authorization = `Bearer ${getCookie('token')}`;
           const res = api
             .put(`${Config.API_URL}token/refresh`, { oldToken: token })
@@ -39,15 +38,15 @@ api.interceptors.response.use(
               return axios(originalReq);
             });
           resolve(res);
-        } else {
-          reject(err);
-        }
+      } else {
+        reject(err);
       }
-      if (err.response.status === 408 || err.code === 'ECONNABORTED') {
-        return Promise.reject(err);
-      }
-      reject(err);
-    }),
+    }
+    if (err.response.status === 408 || err.code === 'ECONNABORTED') {
+      return Promise.reject(err);
+    }
+    reject(err);
+  }),
 );
 
 export default api;

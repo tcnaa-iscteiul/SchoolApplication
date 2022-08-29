@@ -1,7 +1,7 @@
-import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Status } from "./interfaces/Status";
+import React from 'react';
+import { Outlet, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Status } from './interfaces/Status';
 
 const PrivateRoutes = ({ allowedRoles }: { allowedRoles: string }) => {
   const { token, role, status } = useSelector((state: any) => state.auth);

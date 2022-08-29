@@ -7,7 +7,7 @@ import {
   IsEmail,
   IsAlpha,
 } from 'class-validator';
-import { Role, Status } from '../dto/UserSearch.dto';
+import { Role, Status } from './UserSearch.dto';
 
 export class UserCreateDto {
   id: string;

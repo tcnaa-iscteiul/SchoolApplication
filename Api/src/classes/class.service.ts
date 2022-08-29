@@ -14,6 +14,7 @@ export class ClassService {
   async create(classCreateDto: ClassCreateDto): Promise<void> {
     return await this.classRepository.create(classCreateDto);
   }
+
   async getAll(): Promise<Class[]> {
     return await this.classRepository.findAll();
   }
@@ -35,6 +36,7 @@ export class ClassService {
   ): Promise<void> {
     return await this.classRepository.assignStudentsToClass(classSearchDto);
   }
+
   async removeStudentsFromClass(
     classSearchDto: StudentToClassDto,
   ): Promise<void> {
@@ -55,7 +57,7 @@ export class ClassService {
     return await this.classRepository.getNrClasses();
   }
 
-  async getClassByUser(email:string) {
+  async getClassByUser(email: string) {
     return await this.classRepository.getClassByUser(email);
   }
 }

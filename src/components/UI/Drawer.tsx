@@ -1,10 +1,10 @@
-import { Fragment, useState } from "react";
-import { Drawer, IconButton, List, MenuItem } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Link } from "react-router-dom";
+import { Fragment, useState } from 'react';
+import { Drawer, IconButton, List, MenuItem } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
 
-const pages = ["Main Feature", "Popular Course", "Login", "SignUp"];
-const links = ["feature", "courses", "signin", "signup"];
+const pages = ['Main Feature', 'Popular Course', 'Login', 'SignUp'];
+const links = ['feature', 'courses', 'signin', 'signup'];
 
 const DrawerComp = () => {
   const [openDrawer, setOpenDrawer] = useState(false);

@@ -45,8 +45,8 @@ export class AuthRepository {
     const { email } = user;
     const payload: JwtPayload = { email };
     const accessToken: string = await this.jwtService.sign(payload);
-    const role = user.role;
-    const status = user.status;
+    const { role } = user;
+    const { status } = user;
     const expireAt = new Date();
 
     expireAt.setDate(expireAt.getDate() + 1);
@@ -60,14 +60,13 @@ export class AuthRepository {
     const user = await this.tokenService.getUserByToken(token);
     if (user) {
       return this.login(user);
-    } else {
-      return new HttpException(
-        {
-          errorMessage: 'Invalid Token',
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
     }
+    return new HttpException(
+      {
+        errorMessage: 'Invalid Token',
+      },
+      HttpStatus.UNAUTHORIZED,
+    );
   }
 
   async changePassword(userUpdatePasswordDto: UserUpdatePasswordDto) {
@@ -75,19 +74,18 @@ export class AuthRepository {
 
     const user = await this.tokenService.getUserByToken(token);
     if (user) {
-      const salt = await bcrypt.genSalt(); //generate a salt
-      const hashedPassword = await bcrypt.hash(password, salt); //hash the password with the salt
+      const salt = await bcrypt.genSalt(); // generate a salt
+      const hashedPassword = await bcrypt.hash(password, salt); // hash the password with the salt
       user.password = hashedPassword;
       const response = await this.userModel.update(user);
       return response;
-    } else {
-      return new HttpException(
-        {
-          errorMessage: 'Invalid URL',
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
     }
+    return new HttpException(
+      {
+        errorMessage: 'Invalid URL',
+      },
+      HttpStatus.UNAUTHORIZED,
+    );
   }
 
   async forgotPassword(userSearch: UserSearchDto) {

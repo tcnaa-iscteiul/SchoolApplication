@@ -1,26 +1,26 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiDrawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import StudentContainer from "../Admin/StudentContainer";
-import ListItems from "../Admin/ListItems";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiDrawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import StudentContainer from '../Admin/StudentContainer';
+import ListItems from '../Admin/ListItems';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import IconButton, {
   IconButtonProps as MuiIconButtonProps,
-} from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import theme from "./theme";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Button } from "@mui/material";
-import { useAppDispatch } from "../../hooks/use-redux";
-import { menuActions } from "../../store/menu-slice";
-import { useSignUp } from "../../hooks/useSignUp";
-import { useState } from "react";
+} from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import theme from './theme';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Button } from '@mui/material';
+import { useAppDispatch } from '../../hooks/use-redux';
+import { menuActions } from '../../store/menu-slice';
+import { useSignUp } from '../../hooks/useSignUp';
+import { useState } from 'react';
 const drawerWidth: number = 300;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -32,25 +32,25 @@ interface IconButtonProps extends MuiIconButtonProps {
 }
 
 const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open',
 })(({ open }) => ({
-  "& .MuiDrawer-paper": {
-    position: "relative",
-    whiteSpace: "nowrap",
+  '& .MuiDrawer-paper': {
+    position: 'relative',
+    whiteSpace: 'nowrap',
     width: drawerWidth,
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
     ...(!open && {
-      overflowX: "hidden",
-      transition: theme.transitions.create("width", {
+      overflowX: 'hidden',
+      transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
       width: theme.spacing(7),
-      [theme.breakpoints.up("sm")]: {
+      [theme.breakpoints.up('sm')]: {
         width: theme.spacing(9),
       },
     }),
@@ -58,17 +58,17 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
+  transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -76,16 +76,16 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const IconButtonToolbar = styled(IconButton, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open',
 })<IconButtonProps>(({ theme, open }) => ({
-  marginRight: "36px",
-  ...(open && { display: "none" }),
+  marginRight: '36px',
+  ...(open && { display: 'none' }),
 }));
 
 const StyledToolbar = styled(Toolbar)({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
   left: 0,
   px: [1],
 });
@@ -93,8 +93,8 @@ const StyledToolbar = styled(Toolbar)({
 const Main = styled(Box)({
   backgroundColor: theme.palette.grey[100],
   flexGrow: 1,
-  height: "100vh",
-  overflow: "auto",
+  height: '100vh',
+  overflow: 'auto',
 });
 
 type DashboardProps = {
@@ -111,7 +111,7 @@ export default function DashboardContent(props: DashboardProps) {
   };
 
   const clickDashboardHandler = () => {
-    dispatch(menuActions.addOption(""));
+    dispatch(menuActions.addOption(''));
   };
   const [open, setOpen] = useState(true);
 

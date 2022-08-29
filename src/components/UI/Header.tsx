@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment } from 'react';
 import {
   AppBar,
   Box,
@@ -8,15 +8,15 @@ import {
   Toolbar,
   Typography,
   useMediaQuery,
-} from "@mui/material";
-import { Link } from "react-router-dom";
-import DrawerComp from "./Drawer";
-import theme from "./theme";
-import media from "./theme";
-import "../styles/Header.css";
+} from '@mui/material';
+import { Link } from 'react-router-dom';
+import DrawerComp from './Drawer';
+import theme from './theme';
+import media from './theme';
+import '../styles/Header.css';
 
 const Header = (props: any): JSX.Element => {
-  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+  const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Fragment>
@@ -30,13 +30,13 @@ const Header = (props: any): JSX.Element => {
           ) : (
             <>
               <Box>
-                <MenuItem component={Link} to={"/home"}>
+                <MenuItem component={Link} to={'/home'}>
                   Home
                 </MenuItem>
-                <MenuItem component={Link} to={"/courses"}>
+                <MenuItem component={Link} to={'/courses'}>
                   Popular Course
                 </MenuItem>
-                <MenuItem component={Link} to={"/feature"}>
+                <MenuItem component={Link} to={'/feature'}>
                   Main Feature
                 </MenuItem>
               </Box>

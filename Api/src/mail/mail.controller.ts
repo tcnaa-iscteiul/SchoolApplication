@@ -1,4 +1,4 @@
-﻿import { Controller, Get, Body } from '@nestjs/common';
+import { Controller, Get, Body } from '@nestjs/common';
 import { IMailGunData } from './interface/mail.interface';
 import { MailService } from './mail.service';
 

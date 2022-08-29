@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { response } from 'express';
 import { ClassCreateDto } from './dto/ClassCreate.dto';
 import { ClassUpdateDto } from './dto/ClassUpdate.dto';
 import { ClassSearchDto } from './dto/ClassSearch.dto';
@@ -17,7 +18,6 @@ import { UserDocument } from '../users/user.schema';
 import { Role } from '../users/dto/UserRole.dto';
 import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
 import { UserRepository } from '../users/user.repository';
-import { response } from 'express';
 
 @Injectable()
 export class ClassRepository {
@@ -26,9 +26,10 @@ export class ClassRepository {
     @Inject(forwardRef(() => UserRepository))
     private readonly userModel: UserRepository,
     @Inject(forwardRef(() => UserRepository))
-    private readonly userModelMongo:Model<UserDocument>
+    private readonly userModelMongo: Model<UserDocument>,
   ) {}
-  //Create a class, and if already exists a class with the same name, return an error
+
+  // Create a class, and if already exists a class with the same name, return an error
   async create(classCreateDto: ClassCreateDto): Promise<void> {
     try {
       new this.classModel(classCreateDto).save();
@@ -41,12 +42,12 @@ export class ClassRepository {
     }
   }
 
-  //Find all the classes and populate the table with the data of the teacher and students
+  // Find all the classes and populate the table with the data of the teacher and students
   async findAll() {
     return await this.classModel.find().populate('teacher students');
   }
 
-  //Find with filters (name, description, startDate or endDate)
+  // Find with filters (name, description, startDate or endDate)
   async findWithFilters(filter: ClassSearchDto) {
     const name = Object.is(filter.name, undefined) ? '' : filter.name;
     const description = Object.is(filter.description, undefined)
@@ -90,7 +91,7 @@ export class ClassRepository {
       .exec();
 
     if (!result) {
-      throw new NotFoundException(`Class with ID not found`);
+      throw new NotFoundException('Class with ID not found');
     }
   }
 
@@ -108,7 +109,7 @@ export class ClassRepository {
       },
     );
     if (!result) {
-      throw new NotFoundException(`Class with ID not found`);
+      throw new NotFoundException('Class with ID not found');
     }
   }
 
@@ -122,20 +123,21 @@ export class ClassRepository {
       console.log(findStudent);
 
       if (!findStudent) {
-        throw new NotFoundException(`User with ID not found`);
+        throw new NotFoundException('User with ID not found');
       }
 
       const res = await this.classModel.findOneAndUpdate(
-        { name: name },
+        { name },
         { $addToSet: { students: findStudent._id } },
       );
       if (!res) {
-        throw new NotFoundException(`User with ID not found`);
+        throw new NotFoundException('User with ID not found');
       }
     } catch (err) {
       throw new NotFoundException(err.message);
     }
   }
+
   async removeStudentsFromClass(
     classSearchDto: StudentToClassDto,
   ): Promise<void> {
@@ -143,15 +145,15 @@ export class ClassRepository {
     try {
       const findStudent = await this.userModel.findEmail(newStudents);
 
-      if (!findStudent){
-        throw new NotFoundException(`User with ID not found`);
+      if (!findStudent) {
+        throw new NotFoundException('User with ID not found');
       }
       const res = await this.classModel.findOneAndUpdate(
-        { name: name },
+        { name },
         { $pull: { students: findStudent._id } },
       );
       if (!res) {
-        throw new NotFoundException(`User with ID not found`);
+        throw new NotFoundException('User with ID not found');
       }
     } catch (err) {
       throw new NotFoundException(err.message);
@@ -164,36 +166,37 @@ export class ClassRepository {
       const findTeacher = await this.userModel.findEmail(teacher);
 
       if (!findTeacher) {
-        throw new NotFoundException(`User with ID not found`);
+        throw new NotFoundException('User with ID not found');
       }
 
       const res = await this.classModel.findOneAndUpdate(
-        { name: name },
+        { name },
         { teacher: findTeacher._id },
       );
       if (!res) {
-        throw new NotFoundException(`User with ID not found`);
+        throw new NotFoundException('User with ID not found');
       }
     } catch (err) {
       throw new NotFoundException(err.message);
     }
   }
+
   async removeTeacherFromClass(
     classSearchDto: TeacherToClassDto,
   ): Promise<void> {
     const { name, teacher } = classSearchDto;
     try {
-      const findTeacher =  await this.userModel.findEmail(teacher);
+      const findTeacher = await this.userModel.findEmail(teacher);
 
       if (!findTeacher) {
-        throw new NotFoundException(`User with ID not found`);
+        throw new NotFoundException('User with ID not found');
       }
       const res = await this.classModel.findOneAndUpdate(
-        { name: name },
+        { name },
         { teacher: null },
       );
       if (!res) {
-        throw new NotFoundException(`User with ID not found`);
+        throw new NotFoundException('User with ID not found');
       }
     } catch (err) {
       throw new NotFoundException(err.message);
@@ -206,16 +209,15 @@ export class ClassRepository {
     return response;
   }
 
-  async getClassByUser(email:string) {
+  async getClassByUser(email: string) {
     const response = await this.userModel.getClassByUser(email);
     console.log(response);
     return response;
   }
 
-
-/*
+  /*
   async getClassByUser() {
-    
+
     const response = await this.classModel.aggregate([
       {
         $lookup: {
@@ -252,5 +254,5 @@ export class ClassRepository {
       },
     ]);
     return response;
-  }*/
+  } */
 }

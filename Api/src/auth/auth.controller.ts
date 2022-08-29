@@ -1,4 +1,12 @@
-import { Controller, Post, Req, UseGuards, Body, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Req,
+  UseGuards,
+  Body,
+  Patch,
+  HttpCode,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserCreateDto } from '../users/dto/UserCreate.dto';
 import { UserSearchDto } from '../users/dto/UserSearch.dto';
@@ -19,6 +27,7 @@ export class AuthController {
     return await this.authService.login(req.user);
   }
 
+  @HttpCode(200)
   @Post('/create')
   async createUser(@Body() userCreateDto: UserCreateDto): Promise<void> {
     return await this.userService.create(userCreateDto);

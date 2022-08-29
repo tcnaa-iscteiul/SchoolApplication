@@ -9,14 +9,14 @@ import {
   UseGuards,
   Query,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { UserCreateDto } from './dto/UserCreate.dto';
 import { UserUpdateDto } from './dto/UserUpdate.dto';
 import { UserSearchDto } from './dto/UserSearch.dto';
 import { User } from './user.schema';
-import { AuthGuard } from '@nestjs/passport';
 
-//@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -25,9 +25,8 @@ export class UserController {
   async getAllUsers(@Query() param: UserSearchDto): Promise<User[]> {
     if (Object.keys(param).length) {
       return this.userService.userSearch(param);
-    } else {
-      return this.userService.getAll();
     }
+    return this.userService.getAll();
   }
 
   @Post()

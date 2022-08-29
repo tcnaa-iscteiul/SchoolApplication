@@ -10,8 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserUpdateDto = void 0;
-const UserSearch_dto_1 = require("../dto/UserSearch.dto");
 const class_validator_1 = require("class-validator");
+const UserSearch_dto_1 = require("./UserSearch.dto");
 class UserUpdateDto {
 }
 __decorate([

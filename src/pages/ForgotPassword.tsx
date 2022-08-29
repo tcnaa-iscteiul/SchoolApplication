@@ -1,21 +1,21 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Link as LinkRouter } from "react-router-dom";
-import { useState } from "react";
-import useInput from "../hooks/useInput";
-import InputAdornment from "@mui/material/InputAdornment";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Modal from "../components/UI/Modal";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
-import Layout from "../components/UI/Layout";
-import useAxios from "../hooks/use-axios";
-import "../components/styles/SignIn.css";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { Link as LinkRouter } from 'react-router-dom';
+import { useState } from 'react';
+import useInput from '../hooks/useInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Modal from '../components/UI/Modal';
+import LoadingSpinner from '../components/UI/LoadingSpinner';
+import Layout from '../components/UI/Layout';
+import useAxios from '../hooks/use-axios';
+import '../components/styles/SignIn.css';
 
 export default function ForgotPassword() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -37,8 +37,8 @@ export default function ForgotPassword() {
     loading: isLoading,
     sendData,
   } = useAxios({
-    method: "Post",
-    url: "auth/forgotPassword",
+    method: 'Post',
+    url: 'auth/forgotPassword',
     data: {
       email: enteredEmail,
     },
@@ -63,8 +63,8 @@ export default function ForgotPassword() {
         <Modal
           open={showModal}
           onClose={handleCloseModal}
-          message={error || "Email sent successfully"}
-          title={error ? "error" : "Success"}
+          message={error || 'Email sent successfully'}
+          title={error ? 'error' : 'Success'}
         />
       )}
       <Container component="main" maxWidth="xs">
@@ -93,7 +93,7 @@ export default function ForgotPassword() {
               helperText={
                 emailInputHasError &&
                 enteredEmail &&
-                "Please insert a valid email"
+                'Please insert a valid email'
               }
               InputProps={{
                 startAdornment: (

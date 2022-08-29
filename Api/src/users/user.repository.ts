@@ -6,23 +6,23 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
 import { UserCreateDto } from './dto/UserCreate.dto';
 import { User, UserDocument } from './User.schema';
 import { UserUpdateDto } from './dto/UserUpdate.dto';
 import { UserSearchDto } from './dto/UserSearch.dto';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async create(userCreatedto: UserCreateDto): Promise<void> {
-    //hash the password and the store in db
+    // hash the password and the store in db
     const { email, password, status, role, firstName, lastName, phone } =
       userCreatedto;
 
-    const salt = await bcrypt.genSalt(); //generate a salt
-    const hashedPassword = await bcrypt.hash(password, salt); //hash the password with the salt
+    const salt = await bcrypt.genSalt(); // generate a salt
+    const hashedPassword = await bcrypt.hash(password, salt); // hash the password with the salt
     try {
       await new this.userModel({
         email: email.toLowerCase(),
@@ -79,8 +79,9 @@ export class UserRepository {
   }
 
   async findEmail(email: string): Promise<User | undefined> {
-    return this.userModel.findOne({ email: email });
+    return this.userModel.findOne({ email });
   }
+
   async update(user: UserUpdateDto): Promise<void> {
     const newUser = Object.fromEntries(
       Object.entries(user).filter(([_, v]) => v !== null && v !== ''),
@@ -96,7 +97,7 @@ export class UserRepository {
       },
     );
     if (!result) {
-      throw new NotFoundException(`User with ID not found`);
+      throw new NotFoundException('User with ID not found');
     }
   }
 
@@ -105,18 +106,17 @@ export class UserRepository {
       email: user.email,
     });
     if (!result) {
-      throw new NotFoundException(`User with ID not found`);
+      throw new NotFoundException('User with ID not found');
     }
   }
 
   async getNrUsers(user: UserSearchDto) {
     const response = await this.userModel.find({ role: user.role }).count();
-  
+
     return response;
   }
 
-  async getClassByUser(email:string) {
-    
+  async getClassByUser(email: string) {
     const response = await this.userModel.aggregate([
       {
         $lookup: {
@@ -139,7 +139,7 @@ export class UserRepository {
         },
       },
     ]);
- 
+
     return response;
   }
 }

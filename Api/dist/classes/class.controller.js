@@ -33,9 +33,7 @@ let ClassController = class ClassController {
         if (Object.keys(param).length) {
             return this.classService.classSearch(param);
         }
-        else {
-            return this.classService.getAll();
-        }
+        return this.classService.getAll();
     }
     async updateClass(classUpdateDto) {
         return await this.classService.update(classUpdateDto);

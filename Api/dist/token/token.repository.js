@@ -26,7 +26,7 @@ let TokenRepository = class TokenRepository {
         this.authService = authService;
     }
     async save(hash, email, expireAt) {
-        const objToken = await this.tokenModel.findOne({ email: email });
+        const objToken = await this.tokenModel.findOne({ email });
         if (objToken) {
             await this.tokenModel.findOneAndUpdate({ id: objToken.id }, {
                 hash,
@@ -37,8 +37,8 @@ let TokenRepository = class TokenRepository {
         }
         else {
             await new this.tokenModel({
-                hash: hash,
-                email: email,
+                hash,
+                email,
                 expireAt,
             }).save();
         }
@@ -49,11 +49,9 @@ let TokenRepository = class TokenRepository {
             const user = await this.userService.findEmail(objToken.email);
             return this.authService.login(user);
         }
-        else {
-            return new common_1.HttpException({
-                errorMessage: 'Invalid Token',
-            }, common_1.HttpStatus.UNAUTHORIZED);
-        }
+        return new common_1.HttpException({
+            errorMessage: 'Invalid Token',
+        }, common_1.HttpStatus.UNAUTHORIZED);
     }
     async getUserByToken(oldToken) {
         const objToken = await this.tokenModel.findOne({ hash: oldToken });
@@ -66,16 +64,14 @@ let TokenRepository = class TokenRepository {
             const user = await this.userService.findEmail(objToken.email);
             return user;
         }
-        else {
-            return null;
-        }
+        return null;
     }
     async deleteToken(token) {
         const result = await this.tokenModel.findOneAndDelete({
-            token: token,
+            token,
         });
         if (!result) {
-            throw new common_1.NotFoundException(`Token with ID not found`);
+            throw new common_1.NotFoundException('Token with ID not found');
         }
     }
 };

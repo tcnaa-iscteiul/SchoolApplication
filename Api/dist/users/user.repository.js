@@ -16,14 +16,14 @@ exports.UserRepository = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
-const User_schema_1 = require("./User.schema");
 const bcrypt = require("bcrypt");
+const User_schema_1 = require("./User.schema");
 let UserRepository = class UserRepository {
     constructor(userModel) {
         this.userModel = userModel;
     }
     async create(userCreatedto) {
-        const { email, password, status, role, firstName, lastName, phone } = userCreatedto;
+        const { email, password, status, role, firstName, lastName, phone, } = userCreatedto;
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
         try {
@@ -80,7 +80,7 @@ let UserRepository = class UserRepository {
         });
     }
     async findEmail(email) {
-        return this.userModel.findOne({ email: email });
+        return this.userModel.findOne({ email });
     }
     async update(user) {
         const newUser = Object.fromEntries(Object.entries(user).filter(([_, v]) => v !== null && v !== ''));
@@ -88,7 +88,7 @@ let UserRepository = class UserRepository {
             new: true,
         });
         if (!result) {
-            throw new common_1.NotFoundException(`User with ID not found`);
+            throw new common_1.NotFoundException('User with ID not found');
         }
     }
     async delete(user) {
@@ -96,7 +96,7 @@ let UserRepository = class UserRepository {
             email: user.email,
         });
         if (!result) {
-            throw new common_1.NotFoundException(`User with ID not found`);
+            throw new common_1.NotFoundException('User with ID not found');
         }
     }
     async getNrUsers(user) {

@@ -1,7 +1,7 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import { IChildren } from "../../interfaces/IChildren";
-import { Fragment } from "react";
+import * as React from 'react';
+import Typography from '@mui/material/Typography';
+import { IChildren } from '../../interfaces/IChildren';
+import { Fragment } from 'react';
 
 export default function Title(props: IChildren) {
   return (

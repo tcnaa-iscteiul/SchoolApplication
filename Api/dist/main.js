@@ -10,7 +10,7 @@ async function bootstrap() {
         origin: '*',
     });
     app.useGlobalPipes(new common_1.ValidationPipe());
-    await app.listen(process.env.PORT || 3000, function () {
+    await app.listen(process.env.PORT || 3000, () => {
         console.log('CORS-enabled web server listening on port 80');
     });
 }

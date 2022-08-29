@@ -1,5 +1,5 @@
-import { BottomNavigation } from "@mui/material";
-import Layout from "../components/UI/Layout";
+import { BottomNavigation } from '@mui/material';
+import Layout from '../components/UI/Layout';
 
 const HomePage = () => {
   return (

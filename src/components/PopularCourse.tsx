@@ -1,5 +1,5 @@
-import { BottomNavigation } from "@mui/material";
-import Layout from "./UI/Layout";
+import { BottomNavigation } from '@mui/material';
+import Layout from './UI/Layout';
 
 export const PopularCourse = () => {
   return (

@@ -23,7 +23,7 @@ export class TokenRepository {
   ) {}
 
   async save(hash: string, email: string, expireAt: string) {
-    const objToken = await this.tokenModel.findOne({ email: email });
+    const objToken = await this.tokenModel.findOne({ email });
 
     if (objToken) {
       await this.tokenModel.findOneAndUpdate(
@@ -38,8 +38,8 @@ export class TokenRepository {
       );
     } else {
       await new this.tokenModel({
-        hash: hash,
-        email: email,
+        hash,
+        email,
         expireAt,
       }).save();
     }
@@ -50,14 +50,13 @@ export class TokenRepository {
     if (objToken) {
       const user = await this.userService.findEmail(objToken.email);
       return this.authService.login(user);
-    } else {
-      return new HttpException(
-        {
-          errorMessage: 'Invalid Token',
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
     }
+    return new HttpException(
+      {
+        errorMessage: 'Invalid Token',
+      },
+      HttpStatus.UNAUTHORIZED,
+    );
   }
 
   async getUserByToken(oldToken: string) {
@@ -70,17 +69,16 @@ export class TokenRepository {
       }
       const user = await this.userService.findEmail(objToken.email);
       return user;
-    } else {
-      return null;
     }
+    return null;
   }
 
   async deleteToken(token: string): Promise<void> {
     const result = await this.tokenModel.findOneAndDelete({
-      token: token,
+      token,
     });
     if (!result) {
-      throw new NotFoundException(`Token with ID not found`);
+      throw new NotFoundException('Token with ID not found');
     }
   }
 }

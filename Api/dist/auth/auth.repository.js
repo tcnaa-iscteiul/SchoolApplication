@@ -29,9 +29,9 @@ let AuthRepository = class AuthRepository {
     }
     async validateUser(email, password) {
         const user = await this.userModel.findEmail(email);
-        if (user &&
-            (await bcrypt.compare(password, user.password)) &&
-            user.status === UserStatus_dto_1.Status.Active) {
+        if (user
+            && (await bcrypt.compare(password, user.password))
+            && user.status === UserStatus_dto_1.Status.Active) {
             return user;
         }
         return null;
@@ -40,8 +40,8 @@ let AuthRepository = class AuthRepository {
         const { email } = user;
         const payload = { email };
         const accessToken = await this.jwtService.sign(payload);
-        const role = user.role;
-        const status = user.status;
+        const { role } = user;
+        const { status } = user;
         const expireAt = new Date();
         expireAt.setDate(expireAt.getDate() + 1);
         const expired = expireAt.toISOString();
@@ -53,11 +53,9 @@ let AuthRepository = class AuthRepository {
         if (user) {
             return this.login(user);
         }
-        else {
-            return new common_1.HttpException({
-                errorMessage: 'Invalid Token',
-            }, common_1.HttpStatus.UNAUTHORIZED);
-        }
+        return new common_1.HttpException({
+            errorMessage: 'Invalid Token',
+        }, common_1.HttpStatus.UNAUTHORIZED);
     }
     async changePassword(userUpdatePasswordDto) {
         const { token, password } = userUpdatePasswordDto;
@@ -69,11 +67,9 @@ let AuthRepository = class AuthRepository {
             const response = await this.userModel.update(user);
             return response;
         }
-        else {
-            return new common_1.HttpException({
-                errorMessage: 'Invalid URL',
-            }, common_1.HttpStatus.UNAUTHORIZED);
-        }
+        return new common_1.HttpException({
+            errorMessage: 'Invalid URL',
+        }, common_1.HttpStatus.UNAUTHORIZED);
     }
     async forgotPassword(userSearch) {
         const user = await this.userModel.findEmail(userSearch.email);

@@ -1,26 +1,26 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { useState } from "react";
-import useInput from "../hooks/useInput";
-import PasswordStrengthBar from "react-password-strength-bar";
-import { Fragment } from "react";
-import Modal from "./UI/Modal";
-import LoadingSpinner from "./UI/LoadingSpinner";
-import useAxios from "../hooks/use-axios";
-import { getCookie } from "typescript-cookie";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { Service } from "../services/Service";
-import { memo } from "react";
-import { IconButton, InputAdornment } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import "./styles/SignIn.css";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { useState } from 'react';
+import useInput from '../hooks/useInput';
+import PasswordStrengthBar from 'react-password-strength-bar';
+import { Fragment } from 'react';
+import Modal from './UI/Modal';
+import LoadingSpinner from './UI/LoadingSpinner';
+import useAxios from '../hooks/use-axios';
+import { getCookie } from 'typescript-cookie';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { Service } from '../services/Service';
+import { memo } from 'react';
+import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import './styles/SignIn.css';
 
 function ChangePassword() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -31,7 +31,7 @@ function ChangePassword() {
   const navigate = useNavigate();
 
   const mediumRegex = new RegExp(
-    "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
+    '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
   );
   const {
     value: enteredPassword,
@@ -52,12 +52,12 @@ function ChangePassword() {
   } = useInput((value: string) => value === enteredPassword);
 
   const sampleLocation = useLocation();
-  let token = getCookie("token");
+  let token = getCookie('token');
   if (!token) {
     try {
-      token = sampleLocation.search.split("=")[1];
+      token = sampleLocation.search.split('=')[1];
     } catch (err) {
-      throw new Error("Token not found!");
+      throw new Error('Token not found!');
     }
   }
 
@@ -67,8 +67,8 @@ function ChangePassword() {
     loading: isLoading,
     sendData,
   } = useAxios({
-    method: "Patch",
-    url: "auth/changePassword",
+    method: 'Patch',
+    url: 'auth/changePassword',
     data: {
       token: token,
       password: enteredPassword,
@@ -95,7 +95,7 @@ function ChangePassword() {
     setShowModal(false);
     if (sampleLocation.search && !error && !response?.data) {
       await Service.deleteToken(token!);
-      navigate("/signin");
+      navigate('/signin');
     }
   };
 
@@ -114,8 +114,8 @@ function ChangePassword() {
         <Modal
           open={showModal}
           onClose={handleCloseModal}
-          message={error || "Password updateded with success"}
-          title={error ? "error" : "Success"}
+          message={error || 'Password updateded with success'}
+          title={error ? 'error' : 'Success'}
         />
       )}
       <Container component="main" maxWidth="xs">
@@ -134,12 +134,12 @@ function ChangePassword() {
                   helperText={
                     passwordInputHasError &&
                     enteredPassword &&
-                    "Please insert a valid password"
+                    'Please insert a valid password'
                   }
                   onBlur={passwordBlurHandler}
                   required
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   label="Password"
                   id="password"
                   autoComplete="current-password"
@@ -164,7 +164,7 @@ function ChangePassword() {
                   required
                   name="confirmPassword"
                   label="Confirm Password"
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showConfirmPassword ? 'text' : 'password'}
                   id="confirmPassword"
                   error={confirmPasswordInputHasError}
                   value={enteredConfirmPassword}
@@ -172,7 +172,7 @@ function ChangePassword() {
                   helperText={
                     confirmPasswordInputHasError &&
                     !enteredConfirmPassword &&
-                    "The passwords does not match"
+                    'The passwords does not match'
                   }
                   onBlur={confirmPasswordBlurHandler}
                   InputProps={{

@@ -1,4 +1,3 @@
-import { Role, Status } from '../dto/UserSearch.dto';
 import {
   IsString,
   MaxLength,
@@ -10,6 +9,7 @@ import {
   IsOptional,
   IsMongoId,
 } from 'class-validator';
+import { Role, Status } from './UserSearch.dto';
 
 export class UserUpdateDto {
   @IsOptional()

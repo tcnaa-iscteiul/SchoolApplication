@@ -1,26 +1,26 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Link as LinkRouter } from "react-router-dom";
-import { useState } from "react";
-import useInput from "../hooks/useInput";
-import PasswordStrengthBar from "react-password-strength-bar";
-import Modal from "../components/UI/Modal";
-import { Status } from "../interfaces/Status";
-import { Role } from "../interfaces/Role";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
-import Layout from "../components/UI/Layout";
-import { IconButton, InputAdornment } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import useAxios from "../hooks/use-axios";
-import "../components/styles/SignIn.css";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { Link as LinkRouter } from 'react-router-dom';
+import { useState } from 'react';
+import useInput from '../hooks/useInput';
+import PasswordStrengthBar from 'react-password-strength-bar';
+import Modal from '../components/UI/Modal';
+import { Status } from '../interfaces/Status';
+import { Role } from '../interfaces/Role';
+import LoadingSpinner from '../components/UI/LoadingSpinner';
+import Layout from '../components/UI/Layout';
+import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import useAxios from '../hooks/use-axios';
+import '../components/styles/SignIn.css';
 
 export default function SignUp() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -37,7 +37,7 @@ export default function SignUp() {
     reset: resetFirstNameInput,
   } = useInput(
     (value: string) =>
-      value.trim() !== "" && value.length > 1 && letters.test(value)
+      value.trim() !== '' && value.length > 1 && letters.test(value),
   );
   const {
     value: enteredLastName,
@@ -48,7 +48,7 @@ export default function SignUp() {
     reset: resetLastNameInput,
   } = useInput(
     (value: string) =>
-      value.trim() !== "" && value.length > 2 && letters.test(value)
+      value.trim() !== '' && value.length > 2 && letters.test(value),
   );
   const re =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -70,14 +70,14 @@ export default function SignUp() {
     reset: resetPhoneInput,
   } = useInput(
     (value: string) =>
-      value.trim() !== "" &&
+      value.trim() !== '' &&
       value.length === 9 &&
       number.test(value) &&
-      value.startsWith("9")
+      value.startsWith('9'),
   );
 
   const mediumRegex = new RegExp(
-    "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})"
+    '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
   );
   const {
     value: enteredPassword,
@@ -102,8 +102,8 @@ export default function SignUp() {
     loading: isLoading,
     sendData,
   } = useAxios({
-    method: "Post",
-    url: "auth/create",
+    method: 'Post',
+    url: 'auth/create',
     data: {
       email: enteredEmail,
       password: enteredPassword,
@@ -158,8 +158,8 @@ export default function SignUp() {
         <Modal
           open={showModal}
           onClose={handleCloseModal}
-          message={error || "Account created with success!"}
-          title={error ? "error" : "Success"}
+          message={error || 'Account created with success!'}
+          title={error ? 'error' : 'Success'}
         />
       )}
       <Container component="main" maxWidth="xs">
@@ -187,7 +187,7 @@ export default function SignUp() {
                   helperText={
                     firstNameInputHasError &&
                     enteredFirstName &&
-                    "Please insert a valid name"
+                    'Please insert a valid name'
                   }
                 />
               </Grid>
@@ -204,7 +204,7 @@ export default function SignUp() {
                   helperText={
                     lastNameInputHasError &&
                     enteredLastName &&
-                    "Please insert a valid  last name"
+                    'Please insert a valid  last name'
                   }
                 />
               </Grid>
@@ -223,7 +223,7 @@ export default function SignUp() {
                   helperText={
                     emailInputHasError &&
                     enteredEmail &&
-                    "Please insert a valid email"
+                    'Please insert a valid email'
                   }
                 />
               </Grid>
@@ -240,7 +240,7 @@ export default function SignUp() {
                   helperText={
                     phoneInputHasError &&
                     enteredPhone &&
-                    "Please insert a valid phone number"
+                    'Please insert a valid phone number'
                   }
                 />
               </Grid>
@@ -252,12 +252,12 @@ export default function SignUp() {
                   helperText={
                     passwordInputHasError &&
                     enteredPassword &&
-                    "Please insert a valid password"
+                    'Please insert a valid password'
                   }
                   onBlur={passwordBlurHandler}
                   required
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   label="Password"
                   id="password"
                   autoComplete="current-password"
@@ -282,7 +282,7 @@ export default function SignUp() {
                   required
                   name="confirmPassword"
                   label="Confirm Password"
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showConfirmPassword ? 'text' : 'password'}
                   id="confirmPassword"
                   error={confirmPasswordInputHasError}
                   value={enteredConfirmPassword}
@@ -290,7 +290,7 @@ export default function SignUp() {
                   helperText={
                     confirmPasswordInputHasError &&
                     !enteredConfirmPassword &&
-                    "The passwords does not match"
+                    'The passwords does not match'
                   }
                   onBlur={confirmPasswordBlurHandler}
                   InputProps={{

@@ -80,7 +80,7 @@ let ClassRepository = class ClassRepository {
             .findOneAndDelete({ name: classSearchDto.name })
             .exec();
         if (!result) {
-            throw new common_1.NotFoundException(`Class with ID not found`);
+            throw new common_1.NotFoundException('Class with ID not found');
         }
     }
     async update(classUpdateDto) {
@@ -93,7 +93,7 @@ let ClassRepository = class ClassRepository {
             new: true,
         });
         if (!result) {
-            throw new common_1.NotFoundException(`Class with ID not found`);
+            throw new common_1.NotFoundException('Class with ID not found');
         }
     }
     async assignStudentsToClass(classSearchDto) {
@@ -103,11 +103,11 @@ let ClassRepository = class ClassRepository {
             const findStudent = await this.userModel.findEmail(newStudents);
             console.log(findStudent);
             if (!findStudent) {
-                throw new common_1.NotFoundException(`User with ID not found`);
+                throw new common_1.NotFoundException('User with ID not found');
             }
-            const res = await this.classModel.findOneAndUpdate({ name: name }, { $addToSet: { students: findStudent._id } });
+            const res = await this.classModel.findOneAndUpdate({ name }, { $addToSet: { students: findStudent._id } });
             if (!res) {
-                throw new common_1.NotFoundException(`User with ID not found`);
+                throw new common_1.NotFoundException('User with ID not found');
             }
         }
         catch (err) {
@@ -119,11 +119,11 @@ let ClassRepository = class ClassRepository {
         try {
             const findStudent = await this.userModel.findEmail(newStudents);
             if (!findStudent) {
-                throw new common_1.NotFoundException(`User with ID not found`);
+                throw new common_1.NotFoundException('User with ID not found');
             }
-            const res = await this.classModel.findOneAndUpdate({ name: name }, { $pull: { students: findStudent._id } });
+            const res = await this.classModel.findOneAndUpdate({ name }, { $pull: { students: findStudent._id } });
             if (!res) {
-                throw new common_1.NotFoundException(`User with ID not found`);
+                throw new common_1.NotFoundException('User with ID not found');
             }
         }
         catch (err) {
@@ -135,11 +135,11 @@ let ClassRepository = class ClassRepository {
         try {
             const findTeacher = await this.userModel.findEmail(teacher);
             if (!findTeacher) {
-                throw new common_1.NotFoundException(`User with ID not found`);
+                throw new common_1.NotFoundException('User with ID not found');
             }
-            const res = await this.classModel.findOneAndUpdate({ name: name }, { teacher: findTeacher._id });
+            const res = await this.classModel.findOneAndUpdate({ name }, { teacher: findTeacher._id });
             if (!res) {
-                throw new common_1.NotFoundException(`User with ID not found`);
+                throw new common_1.NotFoundException('User with ID not found');
             }
         }
         catch (err) {
@@ -151,11 +151,11 @@ let ClassRepository = class ClassRepository {
         try {
             const findTeacher = await this.userModel.findEmail(teacher);
             if (!findTeacher) {
-                throw new common_1.NotFoundException(`User with ID not found`);
+                throw new common_1.NotFoundException('User with ID not found');
             }
-            const res = await this.classModel.findOneAndUpdate({ name: name }, { teacher: null });
+            const res = await this.classModel.findOneAndUpdate({ name }, { teacher: null });
             if (!res) {
-                throw new common_1.NotFoundException(`User with ID not found`);
+                throw new common_1.NotFoundException('User with ID not found');
             }
         }
         catch (err) {

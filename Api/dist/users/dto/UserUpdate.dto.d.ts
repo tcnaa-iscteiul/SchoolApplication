@@ -1,4 +1,4 @@
-import { Role, Status } from '../dto/UserSearch.dto';
+import { Role, Status } from './UserSearch.dto';
 export declare class UserUpdateDto {
     id?: string;
     email?: string;

@@ -26,9 +26,7 @@ let UserController = class UserController {
         if (Object.keys(param).length) {
             return this.userService.userSearch(param);
         }
-        else {
-            return this.userService.getAll();
-        }
+        return this.userService.getAll();
     }
     createUser(userCreateDto) {
         return this.userService.create(userCreateDto);

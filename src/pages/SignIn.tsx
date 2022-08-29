@@ -1,32 +1,32 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Link } from "react-router-dom";
-import { useCallback, useState } from "react";
-import useInput from "../hooks/useInput";
-import InputAdornment from "@mui/material/InputAdornment";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import { IUser } from "../interfaces";
-import Modal from "../components/UI/Modal";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
-import Layout from "../components/UI/Layout";
-import { Service } from "../services/Service";
-import { useAppDispatch } from "../hooks/use-redux";
-import { authActions } from "../store/auth-slice";
-import { useNavigate } from "react-router-dom";
-import { getCookie } from "typescript-cookie";
-import { AxiosError } from "axios";
-import "../components/styles/SignIn.css";
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { Link } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import useInput from '../hooks/useInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { IUser } from '../interfaces';
+import Modal from '../components/UI/Modal';
+import LoadingSpinner from '../components/UI/LoadingSpinner';
+import Layout from '../components/UI/Layout';
+import { Service } from '../services/Service';
+import { useAppDispatch } from '../hooks/use-redux';
+import { authActions } from '../store/auth-slice';
+import { useNavigate } from 'react-router-dom';
+import { getCookie } from 'typescript-cookie';
+import { AxiosError } from 'axios';
+import '../components/styles/SignIn.css';
 
 export default function SignIn() {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -48,29 +48,29 @@ export default function SignIn() {
     valueChangeHandler: passwordChangedHandler,
     valueBlurHandler: passwordBlurHandler,
     reset: resetPasswordInput,
-  } = useInput((value: string) => value.trim() !== "" && value.length >= 8);
+  } = useInput((value: string) => value.trim() !== '' && value.length >= 8);
 
   const signIn = useCallback(
     async (user: IUser) => {
-      const token = getCookie("token");
+      const token = getCookie('token');
       if (token) {
-        navigate("/" + getCookie("role"));
+        navigate('/' + getCookie('role'));
       } else {
         setIsLoading(true);
-        setError("");
+        setError('');
         try {
           const { data, status } = await Service.signIn(user);
-          navigate("/" + data.role);
+          navigate('/' + data.role);
           if (status !== 201) {
-            console.log("aqui");
-            throw new Error("New Error");
+            console.log('aqui');
+            throw new Error('New Error');
           }
           dispatch(
             authActions.login({
               token: data.accessToken,
               role: data.role,
               status: data.status,
-            })
+            }),
           );
           //  const remainingTime = calculateRemainingTime(data);
           // setTimeout(logout, 216000000);
@@ -82,13 +82,13 @@ export default function SignIn() {
               setError(error.message);
             }
           } else {
-            setError("Something went wrong!");
+            setError('Something went wrong!');
           }
         }
         setIsLoading(false);
       }
     },
-    [dispatch, navigate]
+    [dispatch, navigate],
   );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -117,7 +117,7 @@ export default function SignIn() {
           open={showModal}
           onClose={handleCloseModal}
           message={error}
-          title={"error"}
+          title={'error'}
         />
       )}
       <Container component="main" maxWidth="xs">
@@ -145,7 +145,7 @@ export default function SignIn() {
                   helperText={
                     emailInputHasError &&
                     enteredEmail &&
-                    "Please insert a valid email"
+                    'Please insert a valid email'
                   }
                   InputProps={{
                     startAdornment: (
@@ -170,7 +170,7 @@ export default function SignIn() {
                   helperText={
                     passwordInputHasError &&
                     enteredPassword &&
-                    "Please insert a valid password"
+                    'Please insert a valid password'
                   }
                 />
               </Grid>

@@ -9,9 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MailModule = void 0;
 const common_1 = require("@nestjs/common");
 const mailer_1 = require("@nestjs-modules/mailer");
+const config_1 = require("@nestjs/config");
 const mail_service_1 = require("./mail.service");
 const mail_controller_1 = require("./mail.controller");
-const config_1 = require("@nestjs/config");
 let MailModule = class MailModule {
 };
 MailModule = __decorate([
