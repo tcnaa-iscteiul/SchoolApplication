@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCookie } from 'typescript-cookie';
 import { AxiosError } from 'axios';
 import { IUser } from '../interfaces/IUser';
-import { IClass } from '../interfaces/IClass';
+import * as IClass from '../interfaces/IClass';
 import { Service } from '../services/Service';
 import { authActions } from '../store/auth-slice';
 
@@ -21,18 +21,16 @@ export const useSignUp = () => {
     setError(undefined);
     try {
       const { status } = await Service.signUp(user);
-      console.log(status);
       if (status !== 201) {
-        console.log('aqui');
         setError('Something went wrong!');
         throw new Error();
       }
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        if (error.response?.data) {
-          setError(error.response.data.message);
-        } else if (error.message) {
-          setError(error.message);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError<Error, Response>) {
+        if (err.response?.data) {
+          setError(err.response.data.message);
+        } else if (err.message) {
+          setError(err.message);
         }
       } else {
         setError('Something went wrong!');
@@ -41,7 +39,7 @@ export const useSignUp = () => {
     setIsLoading(false);
   }, []);
 
-  const createClass = useCallback(async (clas: IClass) => {
+  const createClass = useCallback(async (clas: IClass.IClass) => {
     setIsLoading(true);
     setError(undefined);
     try {
@@ -91,7 +89,6 @@ export const useSignUp = () => {
     setError(undefined);
     try {
       const { status } = await Service.deleteUser(user);
-      console.log(status);
       if (status !== 200) {
         throw new Error();
       }
@@ -178,7 +175,8 @@ export const useSignUp = () => {
             if (status !== 201) {
                 throw new Error();
             }
-            dispatch(authActions.login({ token: data.accessToken, role: data.role, status: data.status }));
+            dispatch(authActions.login({ token: data.accessToken,
+              role: data.role, status: data.status }));
             const remainingTime = calculateRemainingTime(data);
            // setTimeout(logout, 216000000);
         }
