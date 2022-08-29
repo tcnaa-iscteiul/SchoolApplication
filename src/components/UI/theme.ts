@@ -1,6 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 import { lightGreen, purple } from '@mui/material/colors';
-import { useMediaQuery } from '@mui/material';
 
 const primaryColor = lightGreen[500];
 const secondaryColor = purple[500];

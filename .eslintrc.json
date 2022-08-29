@@ -11,7 +11,8 @@
     "prettier"
   ],
   "parserOptions": {
-    "project": "./tsconfig.eslint.json"
+    "project": "tsconfig.json",
+    "sourceType": "module"
   },
   "rules": {
     "no-param-reassign": [
@@ -32,7 +33,11 @@
         "ts": "never",
         "tsx": "never"
       }
-    ]
+    ],
+    "import/prefer-default-export": "off",
+    "no-shadow":"off",
+    "no-unsafe-argumet":"off",
+    "no-unsafe-member":"off"
   },
   "settings": {
     "import/resolver": {

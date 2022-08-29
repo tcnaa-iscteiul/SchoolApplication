@@ -12,10 +12,9 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
     try {
       const result = await api.request(params);
       setResponse(result);
-      if (result.data.status !== 200) {
-        setError(result.data.response?.errorMessage);
+      if (result.statusText !== 'OK') {
+        setError(result.data.response!.errorMessage);
       }
-
     } catch (error) {
       setLoading(false);
       if (error instanceof AxiosError) {
@@ -35,7 +34,6 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
   const sendData = () => {
     fetchData(axiosParams);
   };
-
 
   useEffect(() => {
     if (axiosParams.method === 'GET' || axiosParams.method === 'get') {
