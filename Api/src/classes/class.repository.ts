@@ -30,7 +30,7 @@ export class ClassRepository {
   // Create a class, and if already exists a class with the same name, return an error
   async create(classCreateDto: ClassCreateDto): Promise<void> {
     try {
-      new this.classModel(classCreateDto).save();
+      await new this.classModel(classCreateDto).save();
     } catch (error) {
       if (error.code === 11000) {
         throw new ConflictException('Class with this name already exists!');

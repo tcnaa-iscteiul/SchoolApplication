@@ -12,7 +12,6 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
     try {
       const result = await api.request(params);
       setResponse(result);
-      console.log(result);
       if (result.statusText !== 'OK') {
         const { response } = result.data;
         setError(response.errorMessage);

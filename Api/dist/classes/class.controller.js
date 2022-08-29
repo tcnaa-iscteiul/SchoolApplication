@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClassController = void 0;
 const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
 const AssignTeacherToClass_dto_1 = require("./dto/AssignTeacherToClass.dto");
 const ClassCreate_dto_1 = require("./dto/ClassCreate.dto");
 const ClassSearch_dto_1 = require("./dto/ClassSearch.dto");
@@ -61,6 +62,7 @@ let ClassController = class ClassController {
     }
 };
 __decorate([
+    (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -91,6 +93,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ClassController.prototype, "deleteClass", null);
 __decorate([
+    (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
     (0, common_1.Patch)('/student'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -98,6 +101,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ClassController.prototype, "assignStudentsToClass", null);
 __decorate([
+    (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
     (0, common_1.Patch)('/removeStudent'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -105,6 +109,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ClassController.prototype, "removeStudentsFromClass", null);
 __decorate([
+    (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
     (0, common_1.Patch)('/assign'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -112,6 +117,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ClassController.prototype, "assignTeacherToClass", null);
 __decorate([
+    (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
     (0, common_1.Patch)('/remove'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -132,6 +138,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ClassController.prototype, "getClassByUser", null);
 ClassController = __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Controller)('class'),
     __metadata("design:paramtypes", [class_service_1.ClassService])
 ], ClassController);

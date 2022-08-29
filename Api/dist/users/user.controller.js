@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
 const user_service_1 = require("./user.service");
 const UserCreate_dto_1 = require("./dto/UserCreate.dto");
 const UserUpdate_dto_1 = require("./dto/UserUpdate.dto");
@@ -87,6 +88,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getNrUsers", null);
 UserController = __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);

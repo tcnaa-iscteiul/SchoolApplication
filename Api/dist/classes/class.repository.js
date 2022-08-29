@@ -26,7 +26,7 @@ let ClassRepository = class ClassRepository {
     }
     async create(classCreateDto) {
         try {
-            new this.classModel(classCreateDto).save();
+            await new this.classModel(classCreateDto).save();
         }
         catch (error) {
             if (error.code === 11000) {
