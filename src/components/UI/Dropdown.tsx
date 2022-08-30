@@ -1,4 +1,3 @@
-import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -12,7 +11,7 @@ import { useAppSelector } from '../../hooks/use-redux';
 
 type AllStudents = {
   students?: boolean;
-  classes?: boolean;
+  classes?: IClass[];
   manageUser: (email: string) => void;
   teachers?: boolean;
   value: string;
@@ -46,7 +45,7 @@ function Dropdown(props: AllStudents) {
           item.role === Role.Teacher && item.status === Status.Active,
       )
     : [];
-  const classItems: IClass[] = (props.classes && classes) || [];
+  const classItems: IClass[] = (props.classes && props.classes) || [];
   return (
     <FormControl>
       <InputLabel>
@@ -62,14 +61,14 @@ function Dropdown(props: AllStudents) {
         MenuProps={MenuProps}
       >
         {menuItems &&
-          menuItems.map((user, index: number) => (
-            <MenuItem key={index} value={user.email}>
+          menuItems.map((user) => (
+            <MenuItem key={user.id} value={user.email}>
               {user.firstName} {user.lastName}-{user.email}
             </MenuItem>
           ))}
         {classItems &&
-          classItems.map((clas, index: number) => (
-            <MenuItem key={index} value={clas.name}>
+          classItems.map((clas) => (
+            <MenuItem key={clas.id} value={clas.name}>
               {clas.name}
             </MenuItem>
           ))}

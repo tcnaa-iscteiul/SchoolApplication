@@ -46,7 +46,7 @@ export class ClassController {
 
   @Roles(Role.Admin)
   @Delete()
-  async deleteClass(@Query() param: ClassUpdateDto) {
+  async deleteClass(@Body() param: ClassUpdateDto) {
     return await this.classService.delete(param);
   }
 

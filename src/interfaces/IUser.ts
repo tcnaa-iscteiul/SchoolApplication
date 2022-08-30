@@ -3,7 +3,7 @@ import { Status } from './Status';
 
 export interface IUser {
   id?: string;
-  email?: string;
+  email: string;
   password?: string;
   status?: Status;
   role?: Role;

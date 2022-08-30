@@ -6,6 +6,6 @@ export interface IClass {
   startDate: Date;
   endDate: Date;
   teacher?: IUser;
-  students?: IUser[];
+  students: IUser[];
   id?: string;
 }

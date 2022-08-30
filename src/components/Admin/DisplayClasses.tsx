@@ -23,7 +23,9 @@ function DisplayClasses() {
 
   const classes =
     (more && allClasses) ||
-    allClasses.filter((user: IClass, index: number) => index < 5);
+    allClasses.filter((clas: IClass, index: number) => {
+      return index < 5;
+    });
 
   return (
     <Fragment>
@@ -38,8 +40,8 @@ function DisplayClasses() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {classes.map((clas: IClass, index: number) => (
-            <TableRow key={index}>
+          {classes.map((clas: IClass) => (
+            <TableRow key={clas.id}>
               <TableCell>{clas.name}</TableCell>
               <TableCell>{clas.description}</TableCell>
               <TableCell>{clas.startDate.toString()}</TableCell>

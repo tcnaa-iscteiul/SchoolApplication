@@ -2,10 +2,12 @@ import Dashboard from '../components/UI/Dashboard';
 
 const adminDashboard: lists[] = [
   {
+    id: '1',
     subheader: 'Manage Account',
     list: ['Change Password'],
   },
   {
+    id: '2',
     subheader: 'Manage Students',
     list: [
       'All Students',
@@ -15,10 +17,12 @@ const adminDashboard: lists[] = [
     ],
   },
   {
+    id: '3',
     subheader: 'Manage Teachers',
     list: ['All Teachers', 'Approve Request', 'Disable Teacher'],
   },
   {
+    id: '4',
     subheader: 'Manage Classes',
     list: [
       'All Classes',

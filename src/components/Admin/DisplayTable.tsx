@@ -52,8 +52,8 @@ function DisplayTable(props: DisplayTableProps) {
         </TableHead>
         <TableBody>
           {users &&
-            users.map((user: IUser, index: number) => (
-              <TableRow key={index}>
+            users.map((user: IUser) => (
+              <TableRow key={user.id}>
                 <TableCell>{user.firstName}</TableCell>
                 <TableCell>{user.lastName}</TableCell>
                 <TableCell>{user.email}</TableCell>

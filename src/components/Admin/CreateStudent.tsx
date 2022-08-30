@@ -33,7 +33,7 @@ function CreateStudent() {
     valueChangeHandler: emailChangedHandler,
     valueBlurHandler: emailBlurHandler,
     reset: resetEmailInput,
-  } = useInput((value: string) => re.test(value));
+  } = useInput((value: string) => re.test(value) && value.length < 100);
 
   const {
     response,

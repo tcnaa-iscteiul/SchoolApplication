@@ -65,7 +65,7 @@ const RemoveStudent = (): JSX.Element => {
           </Typography>
           <CssBaseline />
         </Box>
-        <Dropdown students={true} manageUser={manageUser} value={user} />
+        <Dropdown students manageUser={manageUser} value={user} />
         <br />
         {user && (
           <Button

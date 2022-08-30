@@ -13,8 +13,9 @@ import { Link } from 'react-router-dom';
 import DrawerComp from './Drawer';
 import theme from './theme';
 import '../styles/Header.css';
+import { IChildren } from '../../interfaces/IChildren';
 
-const Header = (props: any): JSX.Element => {
+const Header = (props: IChildren): JSX.Element => {
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
 
   return (

@@ -12,6 +12,10 @@ import Modal from '../UI/Modal';
 import { memo } from 'react';
 import { AxiosError } from 'axios';
 import { Grid } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../hooks/use-redux';
+import { IUser } from '../../interfaces';
+import { IClass } from '../../interfaces/IClass';
+import { fetchClassData } from '../../store/classesActions';
 
 type AllStudents = {
   title: string;
@@ -23,30 +27,34 @@ type AllStudents = {
 
 const AddRemoveUClass = (props: AllStudents): JSX.Element => {
   const [user, setUser] = useState<string>('');
-  const [classes, setClasses] = useState<string>('');
+  const [classNotAssigned, setClassNotAssigned] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  const classes = useAppSelector((state) => state.classes.classes);
+  const dispatch = useAppDispatch();
 
   const clickHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
       setIsLoading(true);
-      /*
+
       props.students &&
         props.add &&
-        (await Service.assignStudentToClass(classes!, user!));
+        (await Service.assignStudentToClass(classNotAssigned, user));
       props.students &&
         props.remove &&
-        (await Service.removeStudentToClass(classes!, user!));
+        (await Service.removeStudentToClass(classNotAssigned, user));
       props.teacher &&
         props.add &&
-        (await Service.assignTeacherToClass(classes!, user!));
+        (await Service.assignTeacherToClass(classNotAssigned, user));
       props.teacher &&
         props.remove &&
-        (await Service.removeTeacherToClass(classes!, user!));*/
+        (await Service.removeTeacherToClass(classNotAssigned, user));
       setUser('');
-      setClasses('');
+      setClassNotAssigned('');
+      dispatch(fetchClassData());
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.data) {
@@ -59,11 +67,44 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
       }
     }
     setIsLoading(false);
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  //Classes where user is not assigned to
+  const filteredClasses = user
+    ? classes.filter((clas: IClass) => {
+        if (props.students) {
+          const response = clas.students.map((student: IUser) => {
+            if (student.email === user) return clas;
+          });
+          const [objs] = response;
+          if (objs !== clas) return clas;
+        }
+        if (props.teacher) {
+          if (clas.teacher?.email !== user) return clas;
+        }
+      })
+    : [];
+
+  //Classes where user is assigned
+  const notAssigned = user
+    ? classes.filter((clas: IClass) => {
+        if (props.students) {
+          const response = clas.students.map((student: IUser) => {
+            if (student.email === user) return clas;
+          });
+          const [objs] = response;
+          if (objs === clas) return clas;
+        }
+        if (props.teacher) {
+          if (clas.teacher?.email === user) return clas;
+        }
+      })
+    : [];
 
   return (
     <Fragment>
@@ -110,11 +151,11 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
           </Grid>
           <Grid item xs={12}>
             <Dropdown
-              classes
+              classes={props.add ? filteredClasses : notAssigned}
               manageUser={(name: string) => {
-                setClasses(name);
+                setClassNotAssigned(name);
               }}
-              value={classes}
+              value={classNotAssigned}
             />
           </Grid>
           <Grid item xs={12}>
@@ -122,7 +163,7 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
               fullWidth
               type="submit"
               variant="contained"
-              disabled={!(user && classes)}
+              disabled={!user && !classNotAssigned}
               onClick={clickHandler}
             >
               {props.add ? 'Add' : 'Remove'}

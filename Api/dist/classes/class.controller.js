@@ -87,7 +87,7 @@ __decorate([
 __decorate([
     (0, role_decorator_1.Roles)(UserRole_dto_1.Role.Admin),
     (0, common_1.Delete)(),
-    __param(0, (0, common_1.Query)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [ClassUpdate_dto_1.ClassUpdateDto]),
     __metadata("design:returntype", Promise)

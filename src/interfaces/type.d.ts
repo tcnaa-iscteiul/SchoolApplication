@@ -3,6 +3,7 @@ type ClassesState = {
 };
 
 type lists = {
+  id: string;
   subheader: string;
   list: string[];
 };

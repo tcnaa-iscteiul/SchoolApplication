@@ -3,7 +3,12 @@ import { Drawer, IconButton, List, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 
-const pages = ['Main Feature', 'Popular Course', 'Login', 'SignUp'];
+const pages = [
+  { id: 1, value: 'Main Feature' },
+  { id: '2', value: 'Popular Course' },
+  { id: '3', value: 'Login' },
+  { id: '4', value: 'SignUp' },
+];
 const links = ['feature', 'courses', 'signin', 'signup'];
 
 const DrawerComp = () => {
@@ -19,8 +24,8 @@ const DrawerComp = () => {
         <List>
           <MenuItem onClick={() => setOpenDrawer(false)}>X</MenuItem>
           {pages.map((page, index: number) => (
-            <MenuItem key={page} component={Link} to={`/${links[index]}`}>
-              {page}
+            <MenuItem key={page.id} component={Link} to={`/${links[index]}`}>
+              {page.value}
             </MenuItem>
           ))}
         </List>

@@ -85,6 +85,7 @@ function CreateClass() {
       description: enteredDescription,
       startDate: startDate || new Date(),
       endDate: endDate || new Date(),
+      students: [],
     };
     createClass(newClass);
     dispatch(fetchClassData());

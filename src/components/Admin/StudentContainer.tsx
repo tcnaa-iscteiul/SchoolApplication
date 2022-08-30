@@ -23,6 +23,7 @@ import { memo } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks/use-redux';
 import { AxiosError } from 'axios';
 import { Service } from '../../services/Service';
+import GridClasses from './GridClasses';
 
 function StudentContainer() {
   const dispatch = useAppDispatch();
@@ -157,7 +158,7 @@ function StudentContainer() {
       disableTeacher={disableTeacher}
       approve={false}
     />,
-    <DisplayClasses key={'All Classes'} />,
+    <GridClasses key={'All Classes'} />,
     <CreateClass key={'Create Class'} />,
     <AddRemoveUClass
       key={'Add/Remove Students'}
@@ -168,7 +169,7 @@ function StudentContainer() {
     <AddRemoveUClass
       key={'Add/Remove Students'}
       students={true}
-      title={'Remove Students to Class '}
+      title={'Remove Students from Class '}
       remove={true}
     />,
     <AddRemoveUClass
@@ -180,7 +181,7 @@ function StudentContainer() {
     <AddRemoveUClass
       key={'Add/Remove Teachers'}
       teacher={true}
-      title={'Remove Teacher to Class '}
+      title={'Remove Teacher from Class '}
       remove={true}
     />,
   ];
