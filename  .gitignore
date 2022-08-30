@@ -1,10 +1,13 @@
 # compiled output
-/dist
-/node_modules
-/Api/dist
-/Api/node_modules
-/frontend/dist
-/frontend/node_modules
+dist/
+node_modules/
+node/
+**/Api/dist/
+**/Api/node_modules/**
+**/frontend/node/**
+**/Api/node/**
+**/frontend/dist
+**/frontend/node_modules/**
 
 # Logs
 logs
