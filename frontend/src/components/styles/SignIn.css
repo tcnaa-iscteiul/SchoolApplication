@@ -1,0 +1,10 @@
+.MuiContainer-root .MuiBox-root {
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+    .MuiContainer-root .MuiBox-root .MuiAvatar-root {
+        background-color: purple;
+    }
