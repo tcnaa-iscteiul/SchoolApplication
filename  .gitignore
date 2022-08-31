@@ -1,4 +1,6 @@
 # compiled output
+teste.js
+.env
 dist/
 node_modules/
 node/
