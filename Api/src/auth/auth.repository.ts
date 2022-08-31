@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/User.schema';
+import { User } from '../users/user.schema';
 import { JwtPayload } from './strategy/jwt-payload.interface';
 import { UserRepository } from '../users/user.repository';
 import { TokenRepository } from '../token/token.repository';

@@ -8,7 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { UserCreateDto } from './dto/UserCreate.dto';
-import { User, UserDocument } from './User.schema';
+import { User, UserDocument } from './user.schema';
 import { UserUpdateDto } from './dto/UserUpdate.dto';
 import { UserSearchDto } from './dto/UserSearch.dto';
 
