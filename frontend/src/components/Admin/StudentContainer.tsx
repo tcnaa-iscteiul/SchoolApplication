@@ -5,7 +5,6 @@ import Paper from '@mui/material/Paper';
 import CreateStudent from '../Admin/CreateStudent';
 import CreateClass from '../Admin/CreateClass';
 import DisplayTable from '../Admin/DisplayTable';
-import DisplayClasses from '../Admin/DisplayClasses';
 import UpdateStudent from '../Admin/UpdateStudent';
 import RemoveStudent from '../Admin/RemoveStudent';
 import { useCallback, useEffect, useState } from 'react';

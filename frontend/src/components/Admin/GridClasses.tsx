@@ -1,4 +1,3 @@
-import * as React from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
@@ -94,7 +93,7 @@ export default function FullFeaturedCrudGrid() {
     });
 
     const editedRow = rows.find((row) => row.id === id);
-    if (editedRow!.isNew) {
+    if (editedRow?.isNew) {
       setRows(rows.filter((row) => row.id !== id));
     }
   };

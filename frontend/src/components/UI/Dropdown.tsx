@@ -28,7 +28,6 @@ const MenuProps = {
 
 function Dropdown(props: AllStudents) {
   const users = useAppSelector((state) => state.students.students);
-  const classes = useAppSelector((state) => state.classes.classes);
 
   const handleChange = (event: SelectChangeEvent) => {
     props.manageUser(event.target.value);

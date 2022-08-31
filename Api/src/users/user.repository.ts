@@ -84,7 +84,7 @@ export class UserRepository {
 
   async update(user: UserUpdateDto): Promise<void> {
     const newUser = Object.fromEntries(
-      Object.entries(user).filter(([_, v]) => v !== null && v !== ''),
+      Object.entries(user).filter(([v]) => v !== null && v !== ''),
     );
 
     const result = await this.userModel.findOneAndUpdate(
@@ -116,7 +116,7 @@ export class UserRepository {
     return response;
   }
 
-  async getClassByUser(email: string) {
+  async getClassByUser() {
     const response = await this.userModel.aggregate([
       {
         $lookup: {
