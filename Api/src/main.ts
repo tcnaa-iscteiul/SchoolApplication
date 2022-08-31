@@ -65,6 +65,7 @@ async function bootstrap() {
   });*/
 
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen('https://school-application-api.vercel.app/');
+
+  await app.listen(process.env.PORT);
 }
 bootstrap();
