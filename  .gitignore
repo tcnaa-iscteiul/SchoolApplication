@@ -3,6 +3,7 @@ dist/
 node_modules/
 node/
 **/Api/dist/
+**/Api/.env
 **/Api/node_modules/**
 **/frontend/node/**
 **/Api/node/**
