@@ -207,8 +207,8 @@ export class ClassRepository {
     return response;
   }
 
-  async getClassByUser(email: string) {
-    const response = await this.userModel.getClassByUser(email);
+  async getClassByUser() {
+    const response = await this.userModel.getClassByUser();
     console.log(response);
     return response;
   }

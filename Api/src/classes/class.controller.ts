@@ -80,7 +80,7 @@ export class ClassController {
   }
 
   @Get()
-  async getClassByUser(@Body() email: string) {
-    return await this.classService.getClassByUser(email);
+  async getClassByUser() {
+    return await this.classService.getClassByUser();
   }
 }

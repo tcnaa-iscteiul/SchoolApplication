@@ -57,7 +57,7 @@ export class ClassService {
     return await this.classRepository.getNrClasses();
   }
 
-  async getClassByUser(email: string) {
-    return await this.classRepository.getClassByUser(email);
+  async getClassByUser() {
+    return await this.classRepository.getClassByUser();
   }
 }
