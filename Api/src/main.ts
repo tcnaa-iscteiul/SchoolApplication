@@ -4,7 +4,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+ // const app = await NestFactory.create(AppModule);
+ const app = await NestFactory.create(AppModule, { cors: true });
   /*
     app.use((req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*');
@@ -57,10 +58,11 @@ async function bootstrap() {
         next();
     });
     */
+   /*
   app.enableCors({
     allowedHeaders: '*',
     origin: '*',
-  });
+  });*/
 
   app.useGlobalPipes(new ValidationPipe());
   await app.listen('https://school-application-api.vercel.app/');
