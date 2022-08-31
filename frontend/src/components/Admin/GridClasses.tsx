@@ -246,7 +246,7 @@ export default function FullFeaturedCrudGrid() {
           open={showModal}
           onClose={handleCloseModal}
           message={error || success || 'Something went wrong!'}
-          title={error ? 'error' : 'Success'}
+          title={error ? 'Error' : 'Success'}
         />
       )}
       <Title>All Classes</Title>
