@@ -3,14 +3,14 @@
     "public": false,
     "builds": [
       {
-        "src": "/Api/src/main.ts",
+        "src": "/src/main.ts",
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "/Api/src/main.ts",
+        "dest": "/src/main.ts",
         "methods": [
           "GET",
           "POST",
