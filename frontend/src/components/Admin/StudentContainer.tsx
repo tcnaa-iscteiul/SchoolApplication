@@ -23,6 +23,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks/use-redux';
 import { AxiosError } from 'axios';
 import { Service } from '../../services/Service';
 import GridClasses from './GridClasses';
+import UserInClass from './UserInClass';
 
 function StudentContainer() {
   const dispatch = useAppDispatch();
@@ -182,6 +183,10 @@ function StudentContainer() {
       teacher={true}
       title={'Remove Teacher from Class '}
       remove={true}
+    />,
+    <UserInClass
+      key={'Display Users in Class'}
+      title={'Display Users in Class '}
     />,
   ];
 

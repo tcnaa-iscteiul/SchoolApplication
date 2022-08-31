@@ -29,6 +29,7 @@ const adminDashboard: lists[] = [
       'Create Class',
       'Add/Remove Students',
       'Add/Remove Teachers',
+      'Display Users in Class',
     ],
   },
 ];

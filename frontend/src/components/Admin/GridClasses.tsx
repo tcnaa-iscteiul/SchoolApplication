@@ -1,3 +1,4 @@
+import * as React from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
@@ -22,6 +23,7 @@ import Title from './Title';
 import Modal from '../UI/Modal';
 import useAxios from '../../hooks/use-axios';
 import LoadingSpinner from '../UI/LoadingSpinner';
+import { Fragment, useState } from 'react';
 
 export default function FullFeaturedCrudGrid() {
   const classes = useAppSelector((state) => state.classes.classes);
@@ -34,12 +36,10 @@ export default function FullFeaturedCrudGrid() {
       endDate: item.endDate,
     };
   });
-  const [rows, setRows] = React.useState(formatClasses);
-  const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
-    {},
-  );
-  const [success, setSuccess] = React.useState<string>();
-  const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [rows, setRows] = useState(formatClasses);
+  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const [success, setSuccess] = useState<string>();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const params = {
     method: '',
@@ -64,10 +64,64 @@ export default function FullFeaturedCrudGrid() {
   };
 
   const handleEditClick = (id: GridRowId) => () => {
+    console.log('clicked');
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
+    console.log('edit');
+
+    params.method = 'Patch';
+    params.url = 'class';
+    const newRow = rows.find((row) => row.id === id);
+    const today = new Date();
+    const timeEnd = new Date(newRow?.endDate);
+    const startDate = new Date(newRow?.startDate);
+    const validationEndTime = timeEnd.getTime() <= today.getTime();
+    const validationStartTime = startDate.getTime() <= today.getTime();
+
+    let updatedRow = { name: '', description: '', startDate: '', endDate: '' };
+    if (validationEndTime) {
+      updatedRow = {
+        name: newRow?.name,
+        description: newRow?.description,
+        startDate: newRow?.startDate,
+        endDate: newRow?.endDate,
+      };
+    } else if (validationStartTime) {
+      updatedRow = {
+        name: newRow?.name,
+        description: newRow?.description,
+        startDate: newRow?.startDate,
+        endDate: '',
+      };
+    } else {
+      updatedRow = {
+        name: newRow?.name,
+        description: newRow?.description,
+        startDate: '',
+        endDate: '',
+      };
+    }
+
+    const { name, description, sDate, endDate } = Object.fromEntries(
+      Object.entries({
+        name: updatedRow.name,
+        description: updatedRow?.description,
+        startDate: updatedRow?.startDate,
+        endDate: updatedRow?.endDate,
+      }).filter(([v]) => v != null && v !== ''),
+    );
+
+    params.data = {
+      name: name,
+      description: description,
+      startDate: sDate,
+      endDate: endDate,
+    };
+    sendData();
+    setShowModal(true);
+
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
@@ -81,7 +135,7 @@ export default function FullFeaturedCrudGrid() {
       params.data = { name: name.name };
       sendData();
       setShowModal(true);
-      setSuccess('Class removes with success');
+      setSuccess('Class removed with success');
     }
     setRows(rows.filter((row) => row.id !== id));
   };
@@ -100,21 +154,10 @@ export default function FullFeaturedCrudGrid() {
 
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    const oldRow = rows.filter((row) => row.id === newRow.id);
     console.log(newRow);
-
-    params.method = 'Patch';
-    params.url = 'class';
-    if (newRow) {
-      params.data = {
-        name: newRow.name,
-        description: newRow.description,
-        startDate: newRow.startDate,
-        endDate: newRow.endDate,
-      };
-    }
-    sendData();
-    setShowModal(true);
+    console.log(oldRow);
+    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
 
@@ -147,6 +190,10 @@ export default function FullFeaturedCrudGrid() {
       width: 200,
       cellClassName: 'actions',
       getActions: ({ id }) => {
+        const actualRow = rows.find((row) => row.id === id);
+        const today = new Date();
+        const timeEnd = new Date(actualRow?.endDate);
+        const validation = timeEnd.getTime() >= today.getTime();
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -189,8 +236,10 @@ export default function FullFeaturedCrudGrid() {
     setShowModal(false);
   };
 
+  const [pageSize, setPageSize] = useState<number>(5);
+
   return (
-    <React.Fragment>
+    <Fragment>
       {loading && <LoadingSpinner />}
       {!loading && (
         <Modal
@@ -213,8 +262,19 @@ export default function FullFeaturedCrudGrid() {
         componentsProps={{
           toolbar: { setRows, setRowModesModel },
         }}
+        pagination={true}
+        pageSize={pageSize}
+        //autoPageSize={true}
+        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        //rowsPerPageOptions={[5, 10, 15]}
         experimentalFeatures={{ newEditingApi: true }}
+        isCellEditable={(params) => {
+          const date = new Date(params.row.startDate);
+          const today = new Date();
+          if (date.getTime() >= today.getTime()) return true;
+          else return false;
+        }}
       />
-    </React.Fragment>
+    </Fragment>
   );
 }
