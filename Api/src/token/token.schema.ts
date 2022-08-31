@@ -1,19 +1,19 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
 
 export type TokenDocument = Token & Document;
 
 @Schema()
 export class Token {
-    id: string;
+  id: string;
 
-    @Prop()
-    hash: string;
+  @Prop()
+  hash: string;
 
-    @Prop()
-    email: string;
+  @Prop()
+  email: string;
 
-    @Prop()
-    expireAt: string;
+  @Prop()
+  expireAt: string;
 }
 export const TokenSchema = SchemaFactory.createForClass(Token);
