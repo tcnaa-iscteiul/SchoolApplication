@@ -10,7 +10,7 @@
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "Api/src/main.ts",
+        "dest": "/Api/src/main.ts",
         "methods": [
           "GET",
           "POST",
