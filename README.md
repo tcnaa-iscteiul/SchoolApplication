@@ -6,8 +6,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-###  cd frontend 
-###   npm install
+###  `cd frontend `
+###   `npm install`
 ###   `npm start`
 
 Runs the app in the development mode.\
@@ -29,28 +29,28 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 # Getting Started with Api
 In the project directory, you can run:
 
-###  cd Api
-### npm install
+###  `cd Api`
+### `npm install`
 
 ## Running the app
 Runs the app in the development mode.\
 Open [http://localhost:3333](http://localhost:3333) to view it in the browser.
 
-```bash
+
 # development
-$ npm run start
+### npm run start
 
 # watch mode
-$ npm run start:dev
+### npm run start:dev
 
 # production mode
-$ npm run start:prod
+### `npm run start:prod`
 
-## Working on dev mode if at the root of directory install the dependencies (school-application)
+Working on dev mode if at the root of directory install the dependencies (school-application)
 
-#npm install
+### `npm install`
 
 # Run both projects
 
-#npm start
+### `npm start`
 
