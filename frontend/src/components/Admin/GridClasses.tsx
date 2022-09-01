@@ -15,6 +15,8 @@ import {
   GridEventListener,
   GridRowId,
   GridRowModel,
+  GridPreProcessEditCellProps,
+  GridCellEditStopParams,
 } from '@mui/x-data-grid';
 import { randomId } from '@mui/x-data-grid-generator';
 import { useAppSelector } from '../../hooks/use-redux';
@@ -24,6 +26,14 @@ import Modal from '../UI/Modal';
 import useAxios from '../../hooks/use-axios';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { Fragment, useState } from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import Alert, { AlertProps } from '@mui/material/Alert';
+import { getBackdropUtilityClass } from '@mui/material';
 
 export default function FullFeaturedCrudGrid() {
   const classes = useAppSelector((state) => state.classes.classes);
@@ -40,6 +50,12 @@ export default function FullFeaturedCrudGrid() {
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [success, setSuccess] = useState<string>();
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [id, setId] = useState<string>();
+
+  const [snackbar, setSnackbar] = React.useState<Pick<
+    AlertProps,
+    'children' | 'severity'
+  > | null>(null);
 
   const params = {
     method: '',
@@ -49,18 +65,11 @@ export default function FullFeaturedCrudGrid() {
 
   const { error, loading, sendData } = useAxios(params);
 
-  const handleRowEditStart = (
-    params: GridRowParams,
-    event: MuiEvent<React.SyntheticEvent>,
-  ) => {
-    event.defaultMuiPrevented = true;
-  };
-
-  const handleRowEditStop: GridEventListener<'rowEditStop'> = (
-    params,
-    event,
-  ) => {
-    event.defaultMuiPrevented = true;
+  const handleRowEditStop = (newCell: GridCellEditStopParams) => {
+    console.log(newCell);
+    const row = rows.find((r) => r.id === newCell.id);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    processRowUpdate(rows.find((row) => row.id === newCell.id)!);
   };
 
   const handleEditClick = (id: GridRowId) => () => {
@@ -119,8 +128,8 @@ export default function FullFeaturedCrudGrid() {
       startDate: sDate,
       endDate: endDate,
     };
-    sendData();
-    setShowModal(true);
+    //  sendData();
+    //  setShowModal(true);
 
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
@@ -155,10 +164,31 @@ export default function FullFeaturedCrudGrid() {
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = { ...newRow, isNew: false };
     const oldRow = rows.filter((row) => row.id === newRow.id);
-    console.log(newRow);
+
+    console.log();
     console.log(oldRow);
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
+  };
+
+  const handleErrorEvent: GridEventListener<'componentError'> = (
+    params, // any
+    event, // MuiEvent<{}>
+    details, // GridCallbackDetails
+  ) => {
+    setSnackbar({ children: 'Field is not valid', severity: 'error' });
+  };
+
+  const renderConfirmDialog = () => {
+    return (
+      <Dialog maxWidth="xs" open={true}>
+        <DialogTitle>Are you sure?</DialogTitle>
+        <DialogContent></DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>No</Button>
+        </DialogActions>
+      </Dialog>
+    );
   };
 
   const columns: GridColumns = [
@@ -168,10 +198,22 @@ export default function FullFeaturedCrudGrid() {
       headerName: 'Description',
       width: 180,
       editable: true,
+      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+        const hasError = params.props.value.length < 5;
+        console.log(hasError);
+        hasError
+          ? setSnackbar({ children: 'Field is not valid', severity: 'error' })
+          : setSnackbar({
+              children: 'User successfully saved',
+              severity: 'success',
+            });
+        return { ...params.props, error: hasError };
+      },
     },
     {
       field: 'startDate',
       headerName: 'Start Date',
+      valueFormatter: ({ value }) => `${new Date(value).toDateString()}`,
       type: 'date',
       width: 220,
       editable: true,
@@ -190,37 +232,7 @@ export default function FullFeaturedCrudGrid() {
       width: 200,
       cellClassName: 'actions',
       getActions: ({ id }) => {
-        const actualRow = rows.find((row) => row.id === id);
-        const today = new Date();
-        const timeEnd = new Date(actualRow?.endDate);
-        const validation = timeEnd.getTime() >= today.getTime();
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />,
-          ];
-        }
-
         return [
-          <GridActionsCellItem
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
@@ -238,6 +250,7 @@ export default function FullFeaturedCrudGrid() {
 
   const [pageSize, setPageSize] = useState<number>(5);
 
+  const handleCloseSnackbar = () => setSnackbar(null);
   return (
     <Fragment>
       {loading && <LoadingSpinner />}
@@ -254,11 +267,20 @@ export default function FullFeaturedCrudGrid() {
         autoHeight
         rows={rows}
         columns={columns}
-        editMode="row"
+        loading={rows.length === 0 ? true : false}
+        editMode="cell"
         rowModesModel={rowModesModel}
-        onRowEditStart={handleRowEditStart}
-        onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
+        onError={handleErrorEvent}
+        onCellDoubleClick={(params) => {
+          console.log(params);
+        }}
+        onCellEditStop={(params, event) => {
+          console.log(event);
+        }}
+        onCellEditCommit={(params, event) => {
+          console.log(params, event);
+        }}
         componentsProps={{
           toolbar: { setRows, setRowModesModel },
         }}
@@ -269,12 +291,24 @@ export default function FullFeaturedCrudGrid() {
         //rowsPerPageOptions={[5, 10, 15]}
         experimentalFeatures={{ newEditingApi: true }}
         isCellEditable={(params) => {
-          const date = new Date(params.row.startDate);
           const today = new Date();
-          if (date.getTime() >= today.getTime()) return true;
+          if (params.colDef.field === 'description') return true;
+          else if (
+            (params.colDef.field === 'startDate' ||
+              params.colDef.field === 'endDate') &&
+            new Date(
+              params.getValue(params.id, params.colDef.field),
+            ).getTime() > today.getTime()
+          )
+            return true;
           else return false;
         }}
       />
+      {!!snackbar && (
+        <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={6000}>
+          <Alert {...snackbar} onClose={handleCloseSnackbar} />
+        </Snackbar>
+      )}
     </Fragment>
   );
 }

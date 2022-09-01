@@ -8,12 +8,11 @@ import { UserModule } from '../users/user.module';
 
 @Module({
   imports: [
-    UserModule,
     MongooseModule.forFeature([{ name: Class.name, schema: ClassSchema }]),
     forwardRef(() => UserModule),
   ],
   controllers: [ClassController],
   providers: [ClassRepository, ClassService],
-  exports: [ClassService],
+  exports: [ClassService, ClassRepository],
 })
 export class ClassModule {}

@@ -22,11 +22,9 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
       if (error instanceof AxiosError) {
         if (error.response?.data) {
           setError(error.response.data.message);
-        } else if (error.message) {
+        } else {
           setError(error.message);
         }
-      } else {
-        setError('Something went wrong!');
       }
     } finally {
       setLoading(false);

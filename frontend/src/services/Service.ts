@@ -15,6 +15,8 @@ const createClass = (clas: IClass) => api.post('/class', clas);
 const getAllUsers = (): Promise<AxiosResponse> => api.get('user/all');
 const getAllClasses = () => api.get('class/all');
 
+const getClassByUser = () => api.get('class');
+
 const deleteClass = (clas: IClass) => api.delete('class', { data: clas });
 
 const updateClass = (clas: IClass) => api.patch('class', clas);
@@ -41,6 +43,7 @@ export const Service = {
   signUp,
   getAllUsers,
   getAllClasses,
+  getClassByUser,
   createClass,
   deleteClass,
   updateClass,

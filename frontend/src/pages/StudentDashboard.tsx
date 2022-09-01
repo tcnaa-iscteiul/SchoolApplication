@@ -1,4 +1,8 @@
+import { useCallback, useEffect } from 'react';
 import Dashboard from '../components/UI/Dashboard';
+import { useAppDispatch, useAppSelector } from '../hooks/use-redux';
+import { IClass } from '../interfaces/IClass';
+import { fetchUserClassData } from '../store/menuActions';
 
 const studentDashboard: lists[] = [
   {
@@ -14,6 +18,23 @@ const studentDashboard: lists[] = [
 ];
 
 const StudentDashboard = () => {
+  const userClasses: IClass[] = useAppSelector((state) => state.menu.userClass);
+
+  const dispatch = useAppDispatch();
+  const listClasses: string[] = [];
+  useEffect(() => {
+    dispatch(fetchUserClassData());
+  }, [dispatch]);
+
+  useCallback(() => {
+    userClasses.forEach((element: IClass) => {
+      listClasses.push(element.name);
+    });
+  }, [dispatch, userClasses]);
+
+  console.log(listClasses);
+  console.log(userClasses);
+
   return <Dashboard options={studentDashboard} />;
 };
 export default StudentDashboard;

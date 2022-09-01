@@ -18,6 +18,7 @@ import { Class } from './class.schema';
 import { ClassService } from './class.service';
 import { Roles } from '../roleGuard/role.decorator';
 import { Role } from '../users/dto/UserRole.dto';
+import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('class')
@@ -80,7 +81,7 @@ export class ClassController {
   }
 
   @Get()
-  async getClassByUser() {
-    return await this.classService.getClassByUser();
+  async getClassByUser(@Body() userSearch: UserSearchDto) {
+    return await this.classService.getClassByUser(userSearch);
   }
 }

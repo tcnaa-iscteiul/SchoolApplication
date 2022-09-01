@@ -6,6 +6,7 @@ import { ClassUpdateDto } from './dto/ClassUpdate.dto';
 import { StudentToClassDto } from './dto/StudentToClass.dto';
 import { ClassRepository } from './class.repository';
 import { Class } from './class.schema';
+import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
 
 @Injectable()
 export class ClassService {
@@ -57,7 +58,7 @@ export class ClassService {
     return await this.classRepository.getNrClasses();
   }
 
-  async getClassByUser() {
-    return await this.classRepository.getClassByUser();
+  async getClassByUser(userSearch: UserSearchDto) {
+    return await this.classRepository.getClassByUser(userSearch);
   }
 }

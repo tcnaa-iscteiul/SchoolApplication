@@ -16,6 +16,7 @@ import { Class, ClassDocument } from './class.schema';
 import { UserDocument } from '../users/user.schema';
 import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
 import { UserRepository } from '../users/user.repository';
+import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
 
 @Injectable()
 export class ClassRepository {
@@ -115,10 +116,8 @@ export class ClassRepository {
     classSearchDto: StudentToClassDto,
   ): Promise<void> {
     const { name, newStudents } = classSearchDto;
-    console.log(name, newStudents);
     try {
       const findStudent = await this.userModel.findEmail(newStudents);
-      console.log(findStudent);
 
       if (!findStudent) {
         throw new NotFoundException('User with ID not found');
@@ -203,43 +202,54 @@ export class ClassRepository {
 
   async getNrClasses() {
     const response = await this.classModel.count();
-    console.log(response);
+
     return response;
   }
 
-  async getClassByUser() {
+  async getClassByUser(userSearch: UserSearchDto) {
     const response = await this.userModel.getClassByUser();
-    console.log(response);
-    return response;
+    const { email } = userSearch;
+    const allClasses = response.filter((item) => item.email === email);
+    const classes = allClasses[0].classes;
+    return classes.map((item) => item.name);
+    /*
+    const r = [
+      ...response.map((item) =>
+        item?.classes.map((clas: ClassSearchDto) => clas.name),
+      ),
+    ];
+    console.log(email);
+    console.log(r.find((item) => console.log(item)));
+
+    const result = response
+      .map((item) => {
+        if (item.email === email) {
+          return item;
+        }
+      })
+      .filter((item) => item != null);*/
+
+    //  const [allClasses] = [...result.map((item) => item.classes)];
+
+    // return response;
   }
 
   /*
-  async getClassByUser() {
+  async getClassByUser(userSearch: UserSearchDto) {
 
     const response = await this.classModel.aggregate([
       {
         $lookup: {
-          from: 'classes',
+          from: 'students',
           localField: '_id',
-          foreignField: 'students',
-          as: 'classes',
-        },
-      },
-      {
-        $replaceRoot: {
-          newRoot: {
-            $mergeObjects: [
-              {
-                $arrayElemAt: ['$classes', 0],
-              },
-              '$$ROOT',
-            ],
-          },
+          foreignField: 'users',
+          as: 'students',
         },
       },
       {
         $project: {
           ' _id ': 1,
+          ' name' : 1,
           ' email ': 1,
           ' password ': 1,
           ' firstName ': 1,
@@ -247,10 +257,11 @@ export class ClassRepository {
           ' role ': 1,
           ' status ': 1,
           'classes.name': 1,
-          'classes._id': 1,
+          'students.name': 1,
         },
       },
     ]);
+    console.log(response);
     return response;
-  } */
+  }*/
 }

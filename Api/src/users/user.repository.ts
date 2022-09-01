@@ -139,7 +139,6 @@ export class UserRepository {
         },
       },
     ]);
-
     return response;
   }
 }

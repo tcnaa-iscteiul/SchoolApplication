@@ -1,2 +1,2 @@
 {"devDependencies":{"concurrently":"^7.3.0"},"scripts":{
-    "start":"concurrently --kill-others \"cd Api && nest start\" \"cd frontend && npm start\""}}
+    "start":"concurrently --kill-others \"cd Api && nest start --watch\" \"cd frontend && npm start\""}}
