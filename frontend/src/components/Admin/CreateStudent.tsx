@@ -64,6 +64,7 @@ function CreateStudent() {
     if (response?.data.length === 0 && response.statusText === 'OK') {
       setShowModal(false);
       setShowFields(true);
+      setMessage('');
     } else if (response?.data.length !== 0 && response?.statusText === 'OK') {
       setShowModal(true);
       setMessage('Email already registered');
@@ -84,7 +85,7 @@ function CreateStudent() {
   return (
     <Fragment>
       {isLoading && <LoadingSpinner />}
-      {!isLoading && (message || error) && (
+      {!isLoading && (error || message !== '') && (
         <Modal
           open={showModal}
           onClose={handleCloseModal}

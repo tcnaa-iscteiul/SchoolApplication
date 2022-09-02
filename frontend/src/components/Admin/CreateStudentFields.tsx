@@ -117,7 +117,6 @@ function CreateStudentFields(props: StudentProps) {
       props.resetInputs();
       dispatch(fetchUsersData());
     }
-    console.log(response);
     setShowModal(false);
   };
 

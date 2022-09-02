@@ -19,7 +19,7 @@ import {
   GridCellEditStopParams,
 } from '@mui/x-data-grid';
 import { randomId } from '@mui/x-data-grid-generator';
-import { useAppSelector } from '../../hooks/use-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/use-redux';
 import { IClass } from '../../interfaces/IClass';
 import Title from './Title';
 import Modal from '../UI/Modal';
@@ -27,13 +27,8 @@ import useAxios from '../../hooks/use-axios';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { Fragment, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
 import Alert, { AlertProps } from '@mui/material/Alert';
-import { getBackdropUtilityClass } from '@mui/material';
+import { fetchClassData } from '../../store/classesActions';
 
 export default function FullFeaturedCrudGrid() {
   const classes = useAppSelector((state) => state.classes.classes);
@@ -50,7 +45,11 @@ export default function FullFeaturedCrudGrid() {
   const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
   const [success, setSuccess] = useState<string>();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [id, setId] = useState<string>();
+  const [id, setId] = useState<string | number>();
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [field, setField] = useState<string>('');
+
+  const dispatch = useAppDispatch();
 
   const [snackbar, setSnackbar] = React.useState<Pick<
     AlertProps,
@@ -69,7 +68,6 @@ export default function FullFeaturedCrudGrid() {
     console.log(newCell);
     const row = rows.find((r) => r.id === newCell.id);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    processRowUpdate(rows.find((row) => row.id === newCell.id)!);
   };
 
   const handleEditClick = (id: GridRowId) => () => {
@@ -78,8 +76,6 @@ export default function FullFeaturedCrudGrid() {
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
-    console.log('edit');
-
     params.method = 'Patch';
     params.url = 'class';
     const newRow = rows.find((row) => row.id === id);
@@ -128,10 +124,28 @@ export default function FullFeaturedCrudGrid() {
       startDate: sDate,
       endDate: endDate,
     };
-    //  sendData();
-    //  setShowModal(true);
+    sendData();
+    React.useEffect(() => {
+      if (error === '')
+        snackbar &&
+          setSnackbar({
+            children: 'Updated with success',
+            severity: 'success',
+          });
+      else
+        snackbar &&
+          setSnackbar({ children: 'Field is not valid', severity: 'error' });
+    }, [sendData]);
 
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const deleteClick = (id: GridRowId) => () => {
+    console.log('clicked');
+    setShowDialog(true);
+    setId(id);
+    const name = rows.find((row) => row.id === id);
+    setSuccess(`Are you sure that you want to delete the class ${name?.name}?`);
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
@@ -146,6 +160,7 @@ export default function FullFeaturedCrudGrid() {
       setShowModal(true);
       setSuccess('Class removed with success');
     }
+    setShowDialog(false);
     setRows(rows.filter((row) => row.id !== id));
   };
 
@@ -164,8 +179,15 @@ export default function FullFeaturedCrudGrid() {
   const processRowUpdate = (newRow: GridRowModel) => {
     const updatedRow = { ...newRow, isNew: false };
     const oldRow = rows.filter((row) => row.id === newRow.id);
-
-    console.log();
+    if (newRow.field === 'description') {
+      console.log([newRow.description].length);
+      const isValid =
+        newRow.description !== '' && [newRow.description].length > 15;
+      isValid
+        ? setSnackbar({ children: 'Updated with success', severity: 'success' })
+        : setSnackbar({ children: 'Field is not valid', severity: 'error' });
+    }
+    console.log(newRow);
     console.log(oldRow);
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
@@ -179,16 +201,11 @@ export default function FullFeaturedCrudGrid() {
     setSnackbar({ children: 'Field is not valid', severity: 'error' });
   };
 
-  const renderConfirmDialog = () => {
-    return (
-      <Dialog maxWidth="xs" open={true}>
-        <DialogTitle>Are you sure?</DialogTitle>
-        <DialogContent></DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal}>No</Button>
-        </DialogActions>
-      </Dialog>
-    );
+  const handleCloseModal = () => {
+    setShowModal(false);
+    if (error !== '') {
+      dispatch(fetchClassData());
+    }
   };
 
   const columns: GridColumns = [
@@ -200,13 +217,7 @@ export default function FullFeaturedCrudGrid() {
       editable: true,
       preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
         const hasError = params.props.value.length < 5;
-        console.log(hasError);
-        hasError
-          ? setSnackbar({ children: 'Field is not valid', severity: 'error' })
-          : setSnackbar({
-              children: 'User successfully saved',
-              severity: 'success',
-            });
+        setField(params.props.value);
         return { ...params.props, error: hasError };
       },
     },
@@ -236,7 +247,7 @@ export default function FullFeaturedCrudGrid() {
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={handleDeleteClick(id)}
+            onClick={deleteClick(id)}
             color="inherit"
           />,
         ];
@@ -244,24 +255,40 @@ export default function FullFeaturedCrudGrid() {
     },
   ];
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
-
   const [pageSize, setPageSize] = useState<number>(5);
 
   const handleCloseSnackbar = () => setSnackbar(null);
   return (
     <Fragment>
-      {loading && <LoadingSpinner />}
-      {!loading && (
-        <Modal
-          open={showModal}
-          onClose={handleCloseModal}
-          message={error || success || 'Something went wrong!'}
-          title={error ? 'Error' : 'Success'}
-        />
-      )}
+      <Fragment>
+        {loading && <LoadingSpinner />}
+        {!loading && (
+          <Modal
+            open={showModal}
+            onClose={handleCloseModal}
+            message={error || success || 'Something went wrong!'}
+            title={error ? 'Error' : 'Success'}
+          />
+        )}
+        {showDialog && (
+          <Modal
+            open={showDialog}
+            onClose={() => {
+              setShowDialog(false);
+            }}
+            message={success || ''}
+            title={'Confirm'}
+            button={true}
+            onConfirm={
+              id
+                ? handleDeleteClick(id)
+                : () => {
+                    setShowDialog(false);
+                  }
+            }
+          />
+        )}{' '}
+      </Fragment>
       <Title>All Classes</Title>
       <DataGrid
         autoHeight
@@ -273,11 +300,9 @@ export default function FullFeaturedCrudGrid() {
         processRowUpdate={processRowUpdate}
         onError={handleErrorEvent}
         onCellDoubleClick={(params) => {
-          console.log(params);
+          handleEditClick(params.id);
         }}
-        onCellEditStop={(params, event) => {
-          console.log(event);
-        }}
+        onCellEditStop={processRowUpdate}
         onCellEditCommit={(params, event) => {
           console.log(params, event);
         }}

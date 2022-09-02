@@ -9,7 +9,6 @@ const useAxios = (axiosParams: AxiosRequestConfig) => {
 
   const fetchData = useCallback(async (params: AxiosRequestConfig) => {
     setLoading(true);
-    console.log(params);
     try {
       const result = await api.request(params);
       setResponse(result);

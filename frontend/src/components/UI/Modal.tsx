@@ -13,6 +13,8 @@ type DialogProps = {
   title: string;
   message: string;
   onClose: () => void;
+  onConfirm?: () => void;
+  button?: boolean;
 };
 
 export default function ResponsiveDialog(props: DialogProps) {
@@ -20,6 +22,10 @@ export default function ResponsiveDialog(props: DialogProps) {
 
   const handleClose = () => {
     props.onClose();
+  };
+
+  const handleConfirm = () => {
+    if (props.onConfirm) props.onConfirm();
   };
 
   const content: string = props.message;
@@ -31,8 +37,13 @@ export default function ResponsiveDialog(props: DialogProps) {
         <DialogContentText>{content}</DialogContentText>
         <DialogActions>
           <Button onClick={handleClose} variant="contained" autoFocus>
-            Ok
+            {props.button ? 'Cancel' : 'OK'}
           </Button>
+          {props.button && (
+            <Button onClick={handleConfirm} variant="contained" autoFocus>
+              Ok
+            </Button>
+          )}
         </DialogActions>
       </DialogContent>
     </Dialog>
