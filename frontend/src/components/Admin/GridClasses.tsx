@@ -1,22 +1,13 @@
 import * as React from 'react';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
 import {
   GridRowsProp,
   GridRowModesModel,
-  GridRowModes,
   DataGrid,
   GridColumns,
-  GridRowParams,
-  MuiEvent,
   GridActionsCellItem,
-  GridEventListener,
   GridRowId,
   GridRowModel,
-  GridPreProcessEditCellProps,
-  GridCellEditStopParams,
 } from '@mui/x-data-grid';
 import { randomId } from '@mui/x-data-grid-generator';
 import { useAppDispatch, useAppSelector } from '../../hooks/use-redux';
@@ -29,6 +20,7 @@ import { Fragment, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertProps } from '@mui/material/Alert';
 import { fetchClassData } from '../../store/classesActions';
+import { fetchUserClassData } from '../../store/menuActions';
 
 export default function FullFeaturedCrudGrid() {
   const classes = useAppSelector((state) => state.classes.classes);
@@ -47,7 +39,6 @@ export default function FullFeaturedCrudGrid() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [id, setId] = useState<string | number>();
   const [showDialog, setShowDialog] = useState<boolean>(false);
-  const [field, setField] = useState<string>('');
 
   const dispatch = useAppDispatch();
 
@@ -56,92 +47,15 @@ export default function FullFeaturedCrudGrid() {
     'children' | 'severity'
   > | null>(null);
 
-  const params = {
+  const paramsAxios = {
     method: '',
     url: '',
     data: {},
   };
 
-  const { error, loading, sendData } = useAxios(params);
-
-  const handleRowEditStop = (newCell: GridCellEditStopParams) => {
-    console.log(newCell);
-    const row = rows.find((r) => r.id === newCell.id);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  };
-
-  const handleEditClick = (id: GridRowId) => () => {
-    console.log('clicked');
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = (id: GridRowId) => () => {
-    params.method = 'Patch';
-    params.url = 'class';
-    const newRow = rows.find((row) => row.id === id);
-    const today = new Date();
-    const timeEnd = new Date(newRow?.endDate);
-    const startDate = new Date(newRow?.startDate);
-    const validationEndTime = timeEnd.getTime() <= today.getTime();
-    const validationStartTime = startDate.getTime() <= today.getTime();
-
-    let updatedRow = { name: '', description: '', startDate: '', endDate: '' };
-    if (validationEndTime) {
-      updatedRow = {
-        name: newRow?.name,
-        description: newRow?.description,
-        startDate: newRow?.startDate,
-        endDate: newRow?.endDate,
-      };
-    } else if (validationStartTime) {
-      updatedRow = {
-        name: newRow?.name,
-        description: newRow?.description,
-        startDate: newRow?.startDate,
-        endDate: '',
-      };
-    } else {
-      updatedRow = {
-        name: newRow?.name,
-        description: newRow?.description,
-        startDate: '',
-        endDate: '',
-      };
-    }
-
-    const { name, description, sDate, endDate } = Object.fromEntries(
-      Object.entries({
-        name: updatedRow.name,
-        description: updatedRow?.description,
-        startDate: updatedRow?.startDate,
-        endDate: updatedRow?.endDate,
-      }).filter(([v]) => v != null && v !== ''),
-    );
-
-    params.data = {
-      name: name,
-      description: description,
-      startDate: sDate,
-      endDate: endDate,
-    };
-    sendData();
-    React.useEffect(() => {
-      if (error === '')
-        snackbar &&
-          setSnackbar({
-            children: 'Updated with success',
-            severity: 'success',
-          });
-      else
-        snackbar &&
-          setSnackbar({ children: 'Field is not valid', severity: 'error' });
-    }, [sendData]);
-
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
+  const { error, loading, sendData } = useAxios(paramsAxios);
 
   const deleteClick = (id: GridRowId) => () => {
-    console.log('clicked');
     setShowDialog(true);
     setId(id);
     const name = rows.find((row) => row.id === id);
@@ -152,10 +66,10 @@ export default function FullFeaturedCrudGrid() {
     const name = rows.find((row) => {
       if (row.id === id) return row.name;
     });
-    params.method = 'Delete';
-    params.url = 'class';
+    paramsAxios.method = 'Delete';
+    paramsAxios.url = 'class';
     if (name) {
-      params.data = { name: name.name };
+      paramsAxios.data = { name: name.name };
       sendData();
       setShowModal(true);
       setSuccess('Class removed with success');
@@ -164,41 +78,57 @@ export default function FullFeaturedCrudGrid() {
     setRows(rows.filter((row) => row.id !== id));
   };
 
-  const handleCancelClick = (id: GridRowId) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow?.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
-    }
-  };
-
   const processRowUpdate = (newRow: GridRowModel) => {
-    const updatedRow = { ...newRow, isNew: false };
+    let updatedRow = { ...newRow, isNew: false };
     const oldRow = rows.filter((row) => row.id === newRow.id);
-    if (newRow.field === 'description') {
-      console.log([newRow.description].length);
+    let valid = false;
+    const today = new Date();
+    if (oldRow[0]?.description !== newRow.description) {
       const isValid =
-        newRow.description !== '' && [newRow.description].length > 15;
-      isValid
-        ? setSnackbar({ children: 'Updated with success', severity: 'success' })
-        : setSnackbar({ children: 'Field is not valid', severity: 'error' });
+        newRow.description !== '' &&
+        newRow.description.length >= 15 &&
+        newRow.description.length <= 100;
+      valid = isValid;
     }
-    console.log(newRow);
-    console.log(oldRow);
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    if (oldRow[0]?.startDate !== newRow.startDate) {
+      const startDate = new Date(newRow.startDate);
+      const isValid =
+        startDate.getTime() >= today.getTime() &&
+        startDate.getTime() <= new Date(newRow.endDate).getTime();
+      valid = isValid;
+    }
+    if (oldRow[0]?.endDate !== newRow.endDate) {
+      const endDate = new Date(newRow.endDate);
+      const isValid =
+        endDate.getTime() >= today.getTime() &&
+        endDate.getTime() >= new Date(newRow.startDate).getTime();
+      valid = isValid;
+    }
+
+    if (valid) {
+      //  setSnackbar({ children: 'Updated with success', severity: 'success' });
+      setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+      paramsAxios.data = {
+        name: newRow.name,
+        description: newRow.description,
+        startDate: newRow.startDate,
+        endDate: newRow.endDate,
+      };
+      paramsAxios.method = 'Patch';
+      paramsAxios.url = 'class';
+      sendData();
+      setShowModal(true);
+    } else {
+      updatedRow = { ...oldRow, isNew: false };
+    }
     return updatedRow;
   };
 
-  const handleErrorEvent: GridEventListener<'componentError'> = (
-    params, // any
-    event, // MuiEvent<{}>
-    details, // GridCallbackDetails
-  ) => {
-    setSnackbar({ children: 'Field is not valid', severity: 'error' });
+  const handleRowUpdateError = () => {
+    setSnackbar({
+      children: error !== '' ? error : 'Field is not valid',
+      severity: 'error',
+    });
   };
 
   const handleCloseModal = () => {
@@ -215,11 +145,6 @@ export default function FullFeaturedCrudGrid() {
       headerName: 'Description',
       width: 180,
       editable: true,
-      preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-        const hasError = params.props.value.length < 5;
-        setField(params.props.value);
-        return { ...params.props, error: hasError };
-      },
     },
     {
       field: 'startDate',
@@ -232,6 +157,7 @@ export default function FullFeaturedCrudGrid() {
     {
       field: 'endDate',
       headerName: 'End Date',
+      valueFormatter: ({ value }) => `${new Date(value).toDateString()}`,
       type: 'date',
       width: 220,
       editable: true,
@@ -257,7 +183,12 @@ export default function FullFeaturedCrudGrid() {
 
   const [pageSize, setPageSize] = useState<number>(5);
 
-  const handleCloseSnackbar = () => setSnackbar(null);
+  const handleCloseSnackbar = () => {
+    setSnackbar(null);
+    if (snackbar?.severity === 'success' && error === '') {
+      dispatch(fetchUserClassData());
+    }
+  };
   return (
     <Fragment>
       <Fragment>
@@ -266,7 +197,7 @@ export default function FullFeaturedCrudGrid() {
           <Modal
             open={showModal}
             onClose={handleCloseModal}
-            message={error || success || 'Something went wrong!'}
+            message={error || 'Updated with success'}
             title={error ? 'Error' : 'Success'}
           />
         )}
@@ -290,6 +221,11 @@ export default function FullFeaturedCrudGrid() {
         )}{' '}
       </Fragment>
       <Title>All Classes</Title>
+      {!!snackbar && (
+        <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={10000}>
+          <Alert {...snackbar} onClose={handleCloseSnackbar} />
+        </Snackbar>
+      )}
       <DataGrid
         autoHeight
         rows={rows}
@@ -297,15 +233,8 @@ export default function FullFeaturedCrudGrid() {
         loading={rows.length === 0 ? true : false}
         editMode="cell"
         rowModesModel={rowModesModel}
+        onProcessRowUpdateError={handleRowUpdateError}
         processRowUpdate={processRowUpdate}
-        onError={handleErrorEvent}
-        onCellDoubleClick={(params) => {
-          handleEditClick(params.id);
-        }}
-        onCellEditStop={processRowUpdate}
-        onCellEditCommit={(params, event) => {
-          console.log(params, event);
-        }}
         componentsProps={{
           toolbar: { setRows, setRowModesModel },
         }}
@@ -329,11 +258,6 @@ export default function FullFeaturedCrudGrid() {
           else return false;
         }}
       />
-      {!!snackbar && (
-        <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={6000}>
-          <Alert {...snackbar} onClose={handleCloseSnackbar} />
-        </Snackbar>
-      )}
     </Fragment>
   );
 }
