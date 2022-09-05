@@ -5,9 +5,10 @@ import {
   NotFoundException,
   forwardRef,
   Inject,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { ClassCreateDto } from './dto/ClassCreate.dto';
 import { ClassUpdateDto } from './dto/ClassUpdate.dto';
 import { ClassSearchDto } from './dto/ClassSearch.dto';
@@ -17,6 +18,15 @@ import { UserDocument } from '../users/user.schema';
 import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
 import { UserRepository } from '../users/user.repository';
 import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
+import { Evaluations } from './dto/Evaluations.dto';
+import { UpdateEvaluations } from './dto/UpdateEvaluation.dto';
+import { LessonsService } from 'src/lessons/lessons.service';
+import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
+import {
+  StudentInformation,
+  UpdateLessonDto,
+} from 'src/lessons/dto/update-lesson.dto';
+import { ObjectID } from 'mongodb';
 
 @Injectable()
 export class ClassRepository {
@@ -26,7 +36,10 @@ export class ClassRepository {
     private readonly userModel: UserRepository,
     @Inject(forwardRef(() => UserRepository))
     private readonly userModelMongo: Model<UserDocument>,
+    private readonly lessonModel: LessonsService,
   ) {}
+
+  private ObjectId = mongoose.Types.ObjectId;
 
   // Create a class, and if already exists a class with the same name, return an error
   async create(classCreateDto: ClassCreateDto): Promise<void> {
@@ -43,7 +56,18 @@ export class ClassRepository {
 
   // Find all the classes and populate the table with the data of the teacher and students
   async findAll() {
-    return await this.classModel.find().populate('teacher students');
+    return await this.classModel
+      .find()
+      .populate({
+        path: 'teacher students evaluations.student',
+        match: { id: { $ne: '' } },
+        select: { firstName: 1, lastName: 1, email: 1 },
+      })
+      .populate({
+        path: 'lessons.students.studentName',
+        match: { id: { $ne: '' } },
+        select: { email: 1 },
+      });
   }
 
   // Find with filters (name, description, startDate or endDate)
@@ -80,7 +104,11 @@ export class ClassRepository {
           },
         ],
       })
-      .populate('teacher students')
+      .populate({
+        path: 'teacher students evaluations.student',
+        match: { id: { $ne: '' } },
+        select: { firstName: 1, lastName: 1, email: 1 },
+      })
       .exec();
   }
 
@@ -109,6 +137,165 @@ export class ClassRepository {
     );
     if (!result) {
       throw new NotFoundException('Class with ID not found');
+    }
+  }
+
+  async createEvaluation(updateClass: ClassUpdateDto) {
+    if (!updateClass.name) {
+      throw new BadRequestException('The class name is missing!');
+    }
+    const today = new Date();
+    const findClasses = await this.findAll();
+    const { name } = updateClass;
+    const { endDate, students } = findClasses.find(
+      (classes) => classes.name === name,
+    );
+
+    if (today.getTime() <= new Date(endDate).getTime()) {
+      throw new BadRequestException('The class is still ongoing');
+    }
+
+    const evaluation = students.map((item) => {
+      const e: Evaluations = {
+        student: item.id,
+        grade: 0,
+      };
+      return e;
+    });
+
+    const result = await this.classModel.findOneAndUpdate(
+      { name },
+      { evaluationDate: today, $addToSet: { evaluations: evaluation } },
+    );
+    if (!result) {
+      throw new NotFoundException('Class with ID not found');
+    }
+  }
+
+  async updateEvaluation(updateEvaluation: UpdateEvaluations) {
+    const result = await this.classModel.updateOne(
+      {
+        name: updateEvaluation.name,
+        'evaluations.student': updateEvaluation.student,
+      },
+      { $set: { 'evaluations.$.grade': updateEvaluation.grade } },
+    );
+    if (!result) {
+      throw new NotFoundException('Class with ID not found');
+    }
+  }
+
+  async createLesson(createLesson: CreateLessonDto) {
+    const ObjectId = mongoose.Types.ObjectId;
+
+    if (!createLesson.className) {
+      throw new BadRequestException('The class name is missing!');
+    }
+    const today = new Date();
+    const findClasses = await this.findAll();
+    const { className } = createLesson;
+    const searchClass = findClasses.find(
+      (classes) => classes.name === className,
+    );
+    if (!searchClass) {
+      throw new NotFoundException('Class with ID not found');
+    }
+
+    const { startDate, endDate, students, lessons } = searchClass;
+    if (today.getTime() < new Date(startDate).getTime()) {
+      throw new BadRequestException('The class did not start yet');
+    }
+    if (today.getTime() > new Date(endDate).getTime()) {
+      throw new BadRequestException('The class is finished');
+    }
+    if (lessons.length > 0) {
+      const findSummary = lessons.filter((item: CreateLessonDto) => {
+        console.log(item.date.getDay());
+        console.log(today.getDay());
+        item.date.getDay() === today.getDay() &&
+          item.date.getMonth() === today.getMonth() &&
+          item.date.getFullYear() === today.getFullYear();
+      });
+
+      if (findSummary) {
+        throw new ConflictException('Already exists an summary for this date');
+      }
+    }
+
+    const studentsLessons = students.map((item) => {
+      const e: StudentInformation = {
+        studentName: new ObjectId(item.id),
+        submmitedWork: '',
+        presence: false,
+        absence: '',
+      };
+      return e;
+    });
+    const { summary } = createLesson;
+    const result = await this.classModel.findOneAndUpdate(
+      { name: className },
+      {
+        $addToSet: {
+          lessons: {
+            date: today,
+            summary: summary,
+            classWork: '',
+            students: studentsLessons,
+          },
+        },
+      },
+    );
+    if (!result) {
+      throw new NotFoundException('Class with ID not found');
+    }
+  }
+
+  async updateLesson(updateLesson: UpdateLessonDto) {
+    const ObjectId = mongoose.Types.ObjectId;
+
+    const result = await this.classModel.updateOne(
+      {
+        name: updateLesson.className,
+        'lessons._id': new ObjectId(updateLesson.lessonID),
+      },
+      {
+        'lessons.$.classWork': updateLesson.classWork,
+      },
+    );
+    if (result.matchedCount === 0) {
+      throw new NotFoundException('Verify the input data');
+    }
+  }
+
+  async updateLessonStudent(updateLesson: UpdateLessonDto) {
+    const ObjectId = mongoose.Types.ObjectId;
+    const result = await this.classModel.updateOne(
+      {
+        name: updateLesson.className,
+        lessons: {
+          $elemMatch: {
+            id: new ObjectId(updateLesson.lessonID), //summary
+            'students._id': new this.ObjectId(updateLesson.id),
+          },
+        },
+      },
+      {
+        $set: {
+          'lessons.$[outer].students.$[inner].presence': updateLesson.presence,
+          'lessons.$[outer].students.$[inner].absence': updateLesson.absence,
+          'lessons.$[outer].students.$[inner].submmitedWork':
+            updateLesson.submmitedWork,
+        },
+      },
+      {
+        arrayFilters: [
+          { 'outer._id': new this.ObjectId(updateLesson.lessonID) },
+          { 'inner._id': new this.ObjectId(updateLesson.id) },
+        ],
+      },
+    );
+    if (result.matchedCount === 0) {
+      throw new NotFoundException('Verify the input data');
     }
   }
 

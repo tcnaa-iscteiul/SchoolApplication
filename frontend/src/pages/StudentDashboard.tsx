@@ -20,10 +20,11 @@ const studentDashboard: lists[] = [
 const StudentDashboard = () => {
   const userClasses: IClass[] = useAppSelector((state) => state.menu.userClass);
 
+  console.log(userClasses);
   const dispatch = useAppDispatch();
   const listClasses: string[] = [];
   useEffect(() => {
-    dispatch(fetchUserClassData());
+    dispatch(fetchUserClassData(useAppSelector((state) => state.menu.email)));
   }, [dispatch]);
 
   useCallback(() => {

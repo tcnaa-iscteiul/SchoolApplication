@@ -15,7 +15,7 @@ const createClass = (clas: IClass) => api.post('/class', clas);
 const getAllUsers = (): Promise<AxiosResponse> => api.get('user/all');
 const getAllClasses = () => api.get('class/all');
 
-const getClassByUser = () => api.get('class');
+const getClassByUser = (user: IUser) => api.get('class', { data: user });
 
 const deleteClass = (clas: IClass) => api.delete('class', { data: clas });
 

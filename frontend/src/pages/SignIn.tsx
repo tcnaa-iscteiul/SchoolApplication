@@ -23,6 +23,8 @@ import { useNavigate } from 'react-router-dom';
 import { getCookie } from 'typescript-cookie';
 import { AxiosError } from 'axios';
 import '../components/styles/SignIn.css';
+import { Role } from '../interfaces/Role';
+import { menuActions } from '../store/menu-slice';
 
 export default function SignIn() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -64,6 +66,10 @@ export default function SignIn() {
           if (status !== 201) {
             console.log('aqui');
             throw new Error('New Error');
+          }
+          if (data.role === Role.Student) {
+            console.log(enteredEmail);
+            dispatch(menuActions.addUserEmail(enteredEmail));
           }
           dispatch(
             authActions.login({

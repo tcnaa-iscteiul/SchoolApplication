@@ -11,6 +11,7 @@ import {
   IsMongoId,
   IsNotEmpty,
 } from 'class-validator';
+import { UserUpdateDto } from 'src/users/dto/UserUpdate.dto';
 
 export class ClassUpdateDto {
   @IsOptional()
@@ -44,4 +45,8 @@ export class ClassUpdateDto {
   @Validate(MinDate, ['startDate'])
   @IsNotEmpty()
   endDate: Date;
+
+  @IsOptional()
+  @IsNotEmpty()
+  students: [UserUpdateDto];
 }

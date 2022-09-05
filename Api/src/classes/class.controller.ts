@@ -19,8 +19,11 @@ import { ClassService } from './class.service';
 import { Roles } from '../roleGuard/role.decorator';
 import { Role } from '../users/dto/UserRole.dto';
 import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
+import { UpdateEvaluations } from './dto/UpdateEvaluation.dto';
+import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
+import { UpdateLessonDto } from 'src/lessons/dto/update-lesson.dto';
 
-@UseGuards(AuthGuard('jwt'))
+//@UseGuards(AuthGuard('jwt'))
 @Controller('class')
 export class ClassController {
   constructor(private classService: ClassService) {}
@@ -83,5 +86,29 @@ export class ClassController {
   @Get()
   async getClassByUser(@Body() userSearch: UserSearchDto) {
     return await this.classService.getClassByUser(userSearch);
+  }
+
+  @Patch('/evaluation')
+  async createEvaluation(@Body() updateClass: ClassUpdateDto) {
+    return await this.classService.createEvaluation(updateClass);
+  }
+
+  @Patch('/updateEvaluation')
+  async updateEvaluation(@Body() updateEvaluation: UpdateEvaluations) {
+    return await this.classService.updateEvaluation(updateEvaluation);
+  }
+  @Patch('/createLesson')
+  async createLesson(@Body() createLesson: CreateLessonDto) {
+    return await this.classService.createLesson(createLesson);
+  }
+
+  @Patch('/updateLesson')
+  async updateLesson(@Body() updateLesson: UpdateLessonDto) {
+    return await this.classService.updateLesson(updateLesson);
+  }
+
+  @Patch('/updateLessonStudent')
+  async updateLessonStudent(@Body() updateLesson: UpdateLessonDto) {
+    return await this.classService.updateLessonStudent(updateLesson);
   }
 }

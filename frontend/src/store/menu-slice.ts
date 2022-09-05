@@ -3,11 +3,13 @@ import { IClass } from '../interfaces/IClass';
 
 type MenuState = {
   option: string;
+  email: string;
   userClass: IClass[];
 };
 
 const initialState: MenuState = {
   option: '',
+  email: '',
   userClass: [],
 };
 
@@ -17,6 +19,9 @@ const MenuSlice = createSlice({
   reducers: {
     addOption(state, action: PayloadAction<string>) {
       state.option = action.payload;
+    },
+    addUserEmail(state, action: PayloadAction<string>) {
+      state.email = action.payload;
     },
     replaceUsersClasses(state, action: PayloadAction<IClass[]>) {
       state.userClass = action.payload;

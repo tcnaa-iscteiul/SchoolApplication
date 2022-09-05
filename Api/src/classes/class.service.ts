@@ -7,6 +7,9 @@ import { StudentToClassDto } from './dto/StudentToClass.dto';
 import { ClassRepository } from './class.repository';
 import { Class } from './class.schema';
 import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
+import { UpdateEvaluations } from './dto/UpdateEvaluation.dto';
+import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
+import { UpdateLessonDto } from 'src/lessons/dto/update-lesson.dto';
 
 @Injectable()
 export class ClassService {
@@ -60,5 +63,25 @@ export class ClassService {
 
   async getClassByUser(userSearch: UserSearchDto) {
     return await this.classRepository.getClassByUser(userSearch);
+  }
+
+  async createEvaluation(updateClass: ClassUpdateDto) {
+    return await this.classRepository.createEvaluation(updateClass);
+  }
+
+  async updateEvaluation(updateEvaluation: UpdateEvaluations) {
+    return await this.classRepository.updateEvaluation(updateEvaluation);
+  }
+
+  async createLesson(createLesson: CreateLessonDto) {
+    return await this.classRepository.createLesson(createLesson);
+  }
+
+  async updateLesson(updateLesson: UpdateLessonDto) {
+    return await this.classRepository.updateLesson(updateLesson);
+  }
+
+  async updateLessonStudent(updateLesson: UpdateLessonDto) {
+    return await this.classRepository.updateLessonStudent(updateLesson);
   }
 }

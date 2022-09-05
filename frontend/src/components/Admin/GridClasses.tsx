@@ -186,7 +186,7 @@ export default function FullFeaturedCrudGrid() {
   const handleCloseSnackbar = () => {
     setSnackbar(null);
     if (snackbar?.severity === 'success' && error === '') {
-      dispatch(fetchUserClassData());
+      dispatch(fetchClassData());
     }
   };
   return (
