@@ -15,6 +15,9 @@ import { Status } from '../users/dto/UserStatus.dto';
 import { UserUpdatePasswordDto } from './dto/UserUpdatePassword.dto';
 import { MailService } from '../mail/mail.service';
 import { UserSearchDto } from '../users/dto/UserSearch.dto';
+import { ClassRepository } from 'src/classes/class.repository';
+import { Role } from 'src/users/dto/UserRole.dto';
+import { ClassSearchDto } from 'src/classes/dto/ClassSearch.dto';
 
 @Injectable()
 export class AuthRepository {
@@ -24,6 +27,7 @@ export class AuthRepository {
     @Inject(forwardRef(() => TokenRepository))
     private tokenService: TokenRepository,
     private mailService: MailService,
+    private readonly classModel: ClassRepository,
   ) {}
 
   async validateUser(
@@ -41,7 +45,7 @@ export class AuthRepository {
     return null;
   }
 
-  async login(user: any) {
+  async login(user) {
     const { email } = user;
     const payload: JwtPayload = { email };
     const accessToken: string = await this.jwtService.sign(payload);
@@ -60,6 +64,29 @@ export class AuthRepository {
     const user = await this.tokenService.getUserByToken(token);
     if (user) {
       return this.login(user);
+    }
+    return new HttpException(
+      {
+        errorMessage: 'Invalid Token',
+      },
+      HttpStatus.UNAUTHORIZED,
+    );
+  }
+
+  async getClassByToken(token: string) {
+    const user = await this.tokenService.getUserByToken(token);
+    if (user.role !== Role.Teacher && user.role !== Role.Admin) {
+      const userClasses = await this.classModel.getClassByUser(user);
+      return userClasses;
+    }
+    if (user.role === Role.Teacher) {
+      const allClasses = await this.classModel.findAll();
+      const teacherAssigned = allClasses
+        .map((item) => {
+          if (item.teacher?.email === user.email) return item.name;
+        })
+        .filter((item) => item);
+      return teacherAssigned;
     }
     return new HttpException(
       {

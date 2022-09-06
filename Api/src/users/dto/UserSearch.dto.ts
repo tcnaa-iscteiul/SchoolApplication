@@ -23,7 +23,7 @@ export enum Status {
 export class UserSearchDto {
   @IsOptional()
   @IsMongoId()
-  id: string;
+  id?: string;
 
   @IsOptional()
   @IsEmail()

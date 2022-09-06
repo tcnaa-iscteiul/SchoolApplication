@@ -47,7 +47,7 @@ export class Class {
   endDate: Date;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  teacher: string;
+  teacher: UserSearchDto;
 
   @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }])
   students: [UserSearchDto];

@@ -77,7 +77,6 @@ function CreateStudentFields(props: StudentProps) {
   };
 
   const {
-    response,
     error,
     loading: isLoading,
     sendData,

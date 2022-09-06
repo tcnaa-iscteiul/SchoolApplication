@@ -6,12 +6,14 @@ type Auth = {
   token: string;
   status: string | null;
   role: string | null;
+  userClasses?: string[];
 };
 
 const initialState: Auth = {
   token: getCookie('token') || '',
   status: getCookie('status') || null,
   role: getCookie('role') || null,
+  userClasses: [],
 };
 // TODO:expiration time token
 
@@ -28,6 +30,7 @@ const AuthSlice = createSlice({
       removeCookie('token');
       removeCookie('status');
       removeCookie('role');
+      removeCookie('userClass');
     },
     login(state, action: PayloadAction<Auth>) {
       if (action.payload.status !== Status.Inactive) {
@@ -38,7 +41,6 @@ const AuthSlice = createSlice({
         setCookie('role', state.role);
         setCookie('token', state.token);
         setCookie('status', state.status);
-
         //  setTimeout(this.logout, 60);
       }
     },

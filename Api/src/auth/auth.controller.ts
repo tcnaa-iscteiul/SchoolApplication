@@ -6,8 +6,10 @@ import {
   Body,
   Patch,
   HttpCode,
+  Get,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { RefreshTokenDto } from 'src/token/dto/refresh.token.dto';
 import { UserCreateDto } from '../users/dto/UserCreate.dto';
 import { UserSearchDto } from '../users/dto/UserSearch.dto';
 import { UserService } from '../users/user.service';
@@ -41,5 +43,10 @@ export class AuthController {
   @Post('/forgotPassword')
   async forgotPassword(@Body() user: UserSearchDto) {
     return await this.authService.forgotPassword(user);
+  }
+
+  @Post('/userClasses')
+  async getUserClass(@Body() data: RefreshTokenDto) {
+    return await this.authService.getUserClassByToken(data.oldToken);
   }
 }

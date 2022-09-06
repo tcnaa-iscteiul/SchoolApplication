@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { RefreshTokenDto } from 'src/token/dto/refresh.token.dto';
 import { UserSearchDto } from '../users/dto/UserSearch.dto';
 import { User } from '../users/User.schema';
 import { AuthRepository } from './auth.repository';
@@ -26,5 +27,9 @@ export class AuthService {
 
   async forgotPassword(user: UserSearchDto) {
     return this.authRepository.forgotPassword(user);
+  }
+
+  async getUserClassByToken(token: string) {
+    return this.authRepository.getClassByToken(token);
   }
 }

@@ -175,7 +175,6 @@ export const useSignUp = () => {
         setError('');
         try {
             const { data, status } = await Service.signIn(user);
-            console.log(data);
             navigate('/' + data.role);
             if (status !== 201) {
                 throw new Error();

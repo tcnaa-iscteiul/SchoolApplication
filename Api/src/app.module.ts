@@ -12,10 +12,10 @@ import { LessonsModule } from './lessons/lessons.module';
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.DB_URL),
     UserModule,
-    ClassModule,
     AuthModule,
     TokenModule,
     LessonsModule,
+    ClassModule,
   ],
 })
 export class AppModule {}

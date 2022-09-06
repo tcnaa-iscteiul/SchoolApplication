@@ -1,8 +1,5 @@
-import { Fragment } from 'react';
+import { memo } from 'react';
 import Dashboard from '../components/UI/Dashboard';
-import { useAppSelector } from '../hooks/use-redux';
-import { Role } from '../interfaces/Role';
-import { Status } from '../interfaces/Status';
 
 const adminDashboard: lists[] = [
   {
@@ -41,4 +38,4 @@ const adminDashboard: lists[] = [
 const AdminDashboard = () => {
   return <Dashboard options={adminDashboard} />;
 };
-export default AdminDashboard;
+export default memo(AdminDashboard);

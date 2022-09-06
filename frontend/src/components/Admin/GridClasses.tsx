@@ -20,7 +20,6 @@ import { Fragment, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert, { AlertProps } from '@mui/material/Alert';
 import { fetchClassData } from '../../store/classesActions';
-import { fetchUserClassData } from '../../store/menuActions';
 
 export default function FullFeaturedCrudGrid() {
   const classes = useAppSelector((state) => state.classes.classes);

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TokenModule } from 'src/token/token.module';
@@ -10,6 +10,7 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { AuthRepository } from './auth.repository';
 import { AuthController } from './auth.controller';
 import { MailModule } from '../mail/mail.module';
+import { ClassModule } from 'src/classes/class.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MailModule } from '../mail/mail.module';
     PassportModule,
     UserModule,
     TokenModule,
+    ClassModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: {

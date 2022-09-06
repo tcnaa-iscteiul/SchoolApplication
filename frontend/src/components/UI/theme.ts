@@ -21,6 +21,17 @@ const theme = createTheme({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          MuiButton: {
+            variants: [
+              {
+                props: { variant: 'contained' },
+                style: {
+                  width: '100%',
+                  color: secondaryColor,
+                },
+              },
+            ],
+          },
         },
       },
       variants: [
@@ -95,6 +106,22 @@ const theme = createTheme({
           },
         },
       ],
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          root: {
+            width: '100%',
+          },
+        },
+      },
+    },
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          width: '100%',
+        },
+      },
     },
   },
 });

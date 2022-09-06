@@ -17,10 +17,12 @@ import Typography from '@mui/material/Typography';
 import theme from './theme';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Button } from '@mui/material';
-import { useAppDispatch } from '../../hooks/use-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/use-redux';
 import { menuActions } from '../../store/menu-slice';
 import { useSignUp } from '../../hooks/useSignUp';
 import { useState } from 'react';
+import { Role } from '../../interfaces/Role';
+import TeacherContainer from '../Teacher/TeacherContainer';
 const drawerWidth = 300;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -119,6 +121,8 @@ export default function DashboardContent(props: DashboardProps) {
     setOpen(!open);
   };
 
+  const { role } = useAppSelector((state) => state.auth);
+
   return (
     <Box display="flex">
       <CssBaseline />
@@ -154,7 +158,8 @@ export default function DashboardContent(props: DashboardProps) {
       </Drawer>
       <Main>
         <Toolbar />
-        <StudentContainer />
+        {role === Role.Admin && <StudentContainer />}
+        {role === Role.Teacher && <TeacherContainer />}
       </Main>
     </Box>
   );

@@ -12,6 +12,7 @@ import {
   IsArray,
   IsNotEmpty,
 } from 'class-validator';
+import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
 
 export class ClassSearchDto {
   @IsOptional()
@@ -50,7 +51,7 @@ export class ClassSearchDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  teacher: string;
+  teacher: UserSearchDto;
 
   @IsOptional()
   @IsNotEmpty()

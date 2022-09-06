@@ -14,7 +14,6 @@ import { ClassUpdateDto } from './dto/ClassUpdate.dto';
 import { ClassSearchDto } from './dto/ClassSearch.dto';
 import { StudentToClassDto } from './dto/StudentToClass.dto';
 import { Class, ClassDocument } from './class.schema';
-import { UserDocument } from '../users/user.schema';
 import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
 import { UserRepository } from '../users/user.repository';
 import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
@@ -26,7 +25,7 @@ import {
   StudentInformation,
   UpdateLessonDto,
 } from 'src/lessons/dto/update-lesson.dto';
-import { ObjectID } from 'mongodb';
+import { Role } from 'src/users/dto/UserRole.dto';
 
 @Injectable()
 export class ClassRepository {
@@ -34,8 +33,6 @@ export class ClassRepository {
     @InjectModel(Class.name) private classModel: Model<ClassDocument>,
     @Inject(forwardRef(() => UserRepository))
     private readonly userModel: UserRepository,
-    @Inject(forwardRef(() => UserRepository))
-    private readonly userModelMongo: Model<UserDocument>,
     private readonly lessonModel: LessonsService,
   ) {}
 
@@ -80,6 +77,7 @@ export class ClassRepository {
       ? ''
       : filter.startDate;
     const endDate = Object.is(filter.endDate, undefined) ? '' : filter.endDate;
+    const teacher = Object.is(filter.teacher, undefined) ? '' : filter.teacher;
 
     return await this.classModel
       .find({
@@ -95,12 +93,13 @@ export class ClassRepository {
             },
           },
           {
-            startDate: {
-              $regex: startDate,
-            },
+            startDate: startDate,
           },
           {
-            endDate: { $regex: endDate },
+            endDate: endDate,
+          },
+          {
+            teacher: { $regex: teacher },
           },
         ],
       })
@@ -210,8 +209,6 @@ export class ClassRepository {
     }
     if (lessons.length > 0) {
       const findSummary = lessons.filter((item: CreateLessonDto) => {
-        console.log(item.date.getDay());
-        console.log(today.getDay());
         item.date.getDay() === today.getDay() &&
           item.date.getMonth() === today.getMonth() &&
           item.date.getFullYear() === today.getFullYear();
@@ -394,18 +391,22 @@ export class ClassRepository {
   }
 
   async getClassByUser(userSearch: UserSearchDto) {
-    const response = await this.userModel.getClassByUser();
-    const { email } = userSearch;
-    const allClasses = response.filter((item) => item.email === email);
-    const classes = allClasses[0].classes;
-    return classes.map((item) => item.name);
+    if (userSearch.role === Role.Student) {
+      const response = await this.userModel.getClassByUser();
+      const { email } = userSearch;
+      const allClasses = response.filter((item) => item.email === email);
+      const classes = allClasses[0].classes;
+      return classes.map((item) => item.name);
+    } else if (userSearch.role !== Role.Admin) {
+      const result = await this.classModel.find({ teacher: userSearch }).exec();
+      return result;
+    }
     /*
     const r = [
       ...response.map((item) =>
         item?.classes.map((clas: ClassSearchDto) => clas.name),
       ),
     ];
-    console.log(email);
     console.log(r.find((item) => console.log(item)));
 
     const result = response

@@ -1,10 +1,10 @@
 import {
   MaxLength,
   MinLength,
-  IsAlpha,
   IsNotEmpty,
   IsMongoId,
   IsOptional,
+  IsString,
 } from 'class-validator';
 
 export class CreateLessonDto {
@@ -17,7 +17,7 @@ export class CreateLessonDto {
   @MaxLength(50)
   className: string;
 
-  @IsAlpha()
+  @IsString()
   @MinLength(5)
   @MaxLength(3000)
   @IsNotEmpty()

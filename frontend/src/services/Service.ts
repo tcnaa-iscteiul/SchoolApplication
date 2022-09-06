@@ -15,6 +15,8 @@ const createClass = (clas: IClass) => api.post('/class', clas);
 const getAllUsers = (): Promise<AxiosResponse> => api.get('user/all');
 const getAllClasses = () => api.get('class/all');
 
+const getUserClassByToken = (token: string) =>
+  api.post('auth/userClasses', { oldToken: token });
 const getClassByUser = (user: IUser) => api.get('class', { data: user });
 
 const deleteClass = (clas: IClass) => api.delete('class', { data: clas });
@@ -56,4 +58,5 @@ export const Service = {
   deleteToken,
   forgotPassword,
   refreshToken,
+  getUserClassByToken,
 };

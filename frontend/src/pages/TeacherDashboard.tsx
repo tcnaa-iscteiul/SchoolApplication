@@ -1,19 +1,26 @@
+import { useEffect, memo } from 'react';
 import Dashboard from '../components/UI/Dashboard';
-
-const teacherDashboard: lists[] = [
-  {
-    id: '1',
-    subheader: 'Manage Account',
-    list: ['Change Password'],
-  },
-  {
-    id: '2',
-    subheader: 'Manage Classes',
-    list: ['Class 1', 'Class 2', 'Class 3', 'Class 4'],
-  },
-];
+import { useAppDispatch, useAppSelector } from '../hooks/use-redux';
+import { fetchUserClassData } from '../store/menuActions';
 
 const TeacherWelcomePage = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchUserClassData());
+  }, [dispatch]);
+
+  const teacherDashboard: lists[] = [
+    {
+      id: '1',
+      subheader: 'Manage Account',
+      list: ['Change Password'],
+    },
+    {
+      id: '.2',
+      subheader: 'Manage Classes',
+      list: useAppSelector((state) => state.menu.userClass),
+    },
+  ];
   return <Dashboard options={teacherDashboard} />;
 };
-export default TeacherWelcomePage;
+export default memo(TeacherWelcomePage);
