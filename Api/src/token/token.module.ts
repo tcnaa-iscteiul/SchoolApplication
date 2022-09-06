@@ -10,7 +10,7 @@ import { TokenRepository } from './token.repository';
 @Module({
   imports: [
     forwardRef(() => AuthModule),
-    UserModule,
+    forwardRef(() => UserModule),
     MongooseModule.forFeature([{ name: Token.name, schema: TokenSchema }]),
   ],
   controllers: [TokenController],

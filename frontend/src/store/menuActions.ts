@@ -16,10 +16,6 @@ export const fetchUserClassData = () => async (dispatch: AppDispatch) => {
   };
   try {
     const classData = await fetchData();
-    /* const transformedData:IClass[] = classData.data.map((item)=>{return {id:item.id, name:item.name, description:item.description, startDate:item.startDate, 
-      endDate: item.endDate,
-      students:item.students,
-    teacher:item.teacher}});*/
     dispatch(menuActions.replaceUsersClasses(classData.data));
   } catch (error: unknown) {
     if (error instanceof AxiosError) {

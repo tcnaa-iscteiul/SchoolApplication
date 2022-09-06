@@ -16,8 +16,8 @@ import { ClassModule } from 'src/classes/class.module';
   imports: [
     ConfigModule.forRoot(),
     PassportModule,
-    UserModule,
-    TokenModule,
+    forwardRef(() => UserModule),
+    forwardRef(() => TokenModule),
     ClassModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,

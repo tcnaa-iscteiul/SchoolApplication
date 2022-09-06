@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getCookie, removeCookie, setCookie } from 'typescript-cookie';
 import { Status } from '../interfaces/Status';
+import { menuActions } from './menu-slice';
 
 type Auth = {
   token: string;
@@ -31,6 +32,7 @@ const AuthSlice = createSlice({
       removeCookie('status');
       removeCookie('role');
       removeCookie('userClass');
+      menuActions.addOption('');
     },
     login(state, action: PayloadAction<Auth>) {
       if (action.payload.status !== Status.Inactive) {

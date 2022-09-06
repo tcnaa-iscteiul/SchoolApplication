@@ -48,7 +48,7 @@ const UserInClass = (props: AllStudents): JSX.Element => {
           <Grid item xs={12}>
             <Title> Teachers</Title>
             {clas !== '' && (
-              <ListItemText>
+              <ListItemText key={clas}>
                 {teacher
                   ? `${teacher.firstName} ${teacher.lastName} - ${teacher.email}`
                   : 'No teacher assigned to the class'}
@@ -61,6 +61,7 @@ const UserInClass = (props: AllStudents): JSX.Element => {
               students.length !== 0 &&
               students.map((item: IUser) => (
                 <ListItemText
+                  key={item.id}
                   primary={`${item.firstName} ${item.lastName} - ${item.email}`}
                 />
               ))}

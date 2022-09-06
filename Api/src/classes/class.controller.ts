@@ -23,7 +23,7 @@ import { UpdateEvaluations } from './dto/UpdateEvaluation.dto';
 import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
 import { UpdateLessonDto } from 'src/lessons/dto/update-lesson.dto';
 
-//@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 @Controller('class')
 export class ClassController {
   constructor(private classService: ClassService) {}

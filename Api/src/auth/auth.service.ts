@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { RefreshTokenDto } from 'src/token/dto/refresh.token.dto';
 import { UserSearchDto } from '../users/dto/UserSearch.dto';
 import { User } from '../users/User.schema';
 import { AuthRepository } from './auth.repository';

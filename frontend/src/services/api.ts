@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { getCookie, setCookie } from 'typescript-cookie';
+import store from '../store';
+import { authActions } from '../store/auth-slice';
 import Config from '../util/Config';
 
 const api = axios.create({
@@ -21,7 +23,7 @@ api.interceptors.request.use(
   },
   (err) => Promise.reject(err),
 );
-
+const { dispatch } = store;
 // For POST requests
 api.interceptors.response.use(
   (response) => response,
@@ -45,10 +47,16 @@ api.interceptors.response.use(
           resolve(res);
         } else {
           reject(err);
+          dispatch(authActions.logout());
         }
       }
       if (err.response.status === 408 || err.code === 'ECONNABORTED') {
+        dispatch(authActions.logout());
         return Promise.reject(err);
+      }
+      const token = getCookie('token');
+      if (!token) {
+        dispatch(authActions.logout());
       }
       reject(err);
     }),

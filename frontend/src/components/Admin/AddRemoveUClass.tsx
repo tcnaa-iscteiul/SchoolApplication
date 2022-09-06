@@ -74,12 +74,17 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
     setShowModal(false);
   };
 
+  const today = new Date();
   //Classes where user is not assigned to
   const filteredClasses = user
     ? classes.filter((clas: IClass) => {
         if (props.students) {
           const response = clas.students.map((student: IUser) => {
-            if (student.email === user) return clas;
+            if (
+              student.email === user &&
+              new Date(clas.startDate).getTime() <= today.getTime()
+            )
+              return clas;
           });
           const [objs] = response;
           if (objs !== clas) return clas;
@@ -95,7 +100,11 @@ const AddRemoveUClass = (props: AllStudents): JSX.Element => {
     ? classes.filter((clas: IClass) => {
         if (props.students) {
           const response = clas.students.map((student: IUser) => {
-            if (student.email === user) return clas;
+            if (
+              student.email === user &&
+              new Date(clas.endDate).getTime() <= today.getTime()
+            )
+              return clas;
           });
           const [objs] = response;
           if (objs === clas) return clas;

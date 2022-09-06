@@ -17,6 +17,7 @@ export class TokenRepository {
   constructor(
     @InjectModel(Token.name)
     private tokenModel: Model<TokenDocument>,
+    @Inject(forwardRef(() => UserService))
     private userService: UserService,
     @Inject(forwardRef(() => AuthRepository))
     private authService: AuthRepository,

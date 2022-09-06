@@ -17,11 +17,11 @@ import { MailService } from '../mail/mail.service';
 import { UserSearchDto } from '../users/dto/UserSearch.dto';
 import { ClassRepository } from 'src/classes/class.repository';
 import { Role } from 'src/users/dto/UserRole.dto';
-import { ClassSearchDto } from 'src/classes/dto/ClassSearch.dto';
 
 @Injectable()
 export class AuthRepository {
   constructor(
+    @Inject(forwardRef(() => UserRepository))
     private readonly userModel: UserRepository,
     private jwtService: JwtService,
     @Inject(forwardRef(() => TokenRepository))
@@ -127,7 +127,9 @@ export class AuthRepository {
     }
 
     const { accessToken } = await this.login(user);
-    const forgotLink = `http:localhost:3000/changePassword?token=${accessToken}`;
+    const forgotLink =
+      `${process.env.PORT}/this.changePassword?token=${accessToken}` ||
+      `http:localhost:3000/changePassword?token=${accessToken}`;
 
     await this.mailService.send({
       from: 'noreply@schoolApplication.com',

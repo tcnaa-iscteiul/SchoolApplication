@@ -24,7 +24,6 @@ export class LessonsRepository {
         summary: summary,
       }).save();
     } catch (error) {
-      console.log(error);
       if (error.code === 11000) {
         throw new ConflictException('Lesson already exists!');
       } else {

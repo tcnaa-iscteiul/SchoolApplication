@@ -8,7 +8,7 @@ import {
   IsMongoId,
   IsBoolean,
 } from 'class-validator';
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 import { CreateLessonDto } from './create-lesson.dto';
 
 export class StudentInformation {

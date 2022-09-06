@@ -4,8 +4,6 @@ import * as mongoose from 'mongoose';
 import { Evaluations } from './dto/Evaluations.dto';
 import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
 import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
-import { ObjectId } from 'mongodb';
-import { StudentToClassDto } from './dto/StudentToClass.dto';
 
 export type ClassDocument = Class & Document;
 

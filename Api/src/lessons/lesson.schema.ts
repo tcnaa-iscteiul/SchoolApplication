@@ -41,7 +41,7 @@ export class Lesson {
 export const LessonSchema = SchemaFactory.createForClass(Lesson);
 
 LessonSchema.set('toJSON', {
-  transform: function (doc, ret, options) {
+  transform: function (doc, ret) {
     ret.id = ret._id;
     delete ret._id;
     delete ret.__v;

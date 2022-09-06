@@ -62,7 +62,6 @@ export default function SignIn() {
           const { data, status } = await Service.signIn(user);
           navigate('/' + data.role);
           if (status !== 201) {
-            console.log('aqui');
             throw new Error('New Error');
           }
           dispatch(

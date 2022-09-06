@@ -6,7 +6,6 @@ import {
   Body,
   Patch,
   HttpCode,
-  Get,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RefreshTokenDto } from 'src/token/dto/refresh.token.dto';
