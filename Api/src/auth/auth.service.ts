@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserSearchDto } from '../users/dto/UserSearch.dto';
-import { User } from '../users/User.schema';
+import { User } from '../users/user.schema';
 import { AuthRepository } from './auth.repository';
 import { UserUpdatePasswordDto } from './dto/UserUpdatePassword.dto';
 
