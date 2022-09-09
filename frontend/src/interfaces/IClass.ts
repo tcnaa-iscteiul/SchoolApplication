@@ -1,3 +1,4 @@
+import { ILesson } from './ILesson';
 import { IUser } from './IUser';
 
 export interface IClass {
@@ -8,4 +9,5 @@ export interface IClass {
   teacher?: IUser;
   students: IUser[];
   id?: string;
+  lessons?: ILesson[];
 }

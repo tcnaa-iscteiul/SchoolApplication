@@ -6,8 +6,10 @@ import {
   Body,
   Patch,
   HttpCode,
+  Get,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ClassRepository } from 'src/classes/class.repository';
 import { RefreshTokenDto } from 'src/token/dto/refresh.token.dto';
 import { UserCreateDto } from '../users/dto/UserCreate.dto';
 import { UserSearchDto } from '../users/dto/UserSearch.dto';
@@ -20,6 +22,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly classModel: ClassRepository,
   ) {}
 
   @UseGuards(AuthGuard('local'))
@@ -47,5 +50,14 @@ export class AuthController {
   @Post('/userClasses')
   async getUserClass(@Body() data: RefreshTokenDto) {
     return await this.authService.getUserClassByToken(data.oldToken);
+  }
+
+  @Get('/nr')
+  async getNrClasses() {
+    return await this.classModel.getNrClasses();
+  }
+  @Get('/classes')
+  async getTopFive() {
+    return await this.classModel.getTopFive();
   }
 }

@@ -11,12 +11,18 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import DrawerComp from './Drawer';
-import theme from './theme';
+import theme from './Theme';
 import '../styles/Header.css';
 import { IChildren } from '../../interfaces/IChildren';
 
 const Header = (props: IChildren): JSX.Element => {
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+
+  const scrollToElement = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    const element = event.currentTarget?.textContent || '';
+    document.getElementById(element)?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <Fragment>
@@ -33,12 +39,8 @@ const Header = (props: IChildren): JSX.Element => {
                 <MenuItem component={Link} to={'/home'}>
                   Home
                 </MenuItem>
-                <MenuItem component={Link} to={'/courses'}>
-                  Popular Course
-                </MenuItem>
-                <MenuItem component={Link} to={'/feature'}>
-                  Main Feature
-                </MenuItem>
+                <MenuItem onClick={scrollToElement}>Main Feature</MenuItem>
+                <MenuItem onClick={scrollToElement}>Popular Course</MenuItem>
               </Box>
               <Grid container>
                 <Button component={Link} to="/signin" variant="contained">

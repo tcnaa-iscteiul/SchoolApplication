@@ -40,6 +40,8 @@ const forgotPassword = (email: string) =>
 
 const refreshToken = (oldToken: string) => api.put('token/refresh', oldToken);
 
+const nrClasses = () => api.get('auth/nr');
+
 export const Service = {
   signIn,
   signUp,
@@ -59,4 +61,5 @@ export const Service = {
   forgotPassword,
   refreshToken,
   getUserClassByToken,
+  nrClasses,
 };

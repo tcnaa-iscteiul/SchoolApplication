@@ -9,15 +9,15 @@ import ChangePassword from '../ChangePassword';
 import { memo, useState } from 'react';
 import { useAppSelector } from '../../hooks/use-redux';
 import InsertForm from './InsertForm';
+import GridTeacher from './GridTeacher';
+import Spreadsheet from './Spreadsheet';
 
 function TeacherContainer() {
   const [success] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [error] = useState<string>('');
   const [loading] = useState<boolean>(false);
-
   const option = useAppSelector((state) => state.menu.option);
-
   const components: JSX.Element[] = [
     <ChangePassword key={'Change Password'} />,
     <InsertForm
@@ -26,6 +26,8 @@ function TeacherContainer() {
       method={'Patch'}
       url={'class/createLesson'}
     />,
+    <GridTeacher key={option !== 'Change Password' ? option : null} />,
+    <Spreadsheet />,
   ];
 
   const res = components.filter((item: JSX.Element) => item.key === option);

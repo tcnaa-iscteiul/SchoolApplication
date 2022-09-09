@@ -81,6 +81,7 @@ export class AuthRepository {
     }
     if (user.role === Role.Teacher) {
       const allClasses = await this.classModel.findAll();
+
       const teacherAssigned = allClasses
         .map((item) => {
           if (item.teacher?.email === user.email) return item.name;
@@ -127,9 +128,7 @@ export class AuthRepository {
     }
 
     const { accessToken } = await this.login(user);
-    const forgotLink =
-      `${process.env.PORT}/this.changePassword?token=${accessToken}` ||
-      `http:localhost:3000/changePassword?token=${accessToken}`;
+    const forgotLink = `${process.env.FORGOT_PASSWORD}/token=${accessToken}`;
 
     await this.mailService.send({
       from: 'noreply@schoolApplication.com',

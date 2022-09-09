@@ -13,6 +13,15 @@ const theme = createTheme({
       main: secondaryColor,
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 1000,
+      lg: 1200,
+      xl: 1920,
+    },
+  },
   components: {
     MuiContainer: {
       styleOverrides: {
@@ -44,10 +53,47 @@ const theme = createTheme({
         },
       ],
     },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: '32px 24px',
+          '&:last-child': {
+            paddingBottom: '32px',
+          },
+          borderRadius: '50px',
+          height: 'auto',
+        },
+      },
+    },
+    MuiCardHeader: {
+      defaultProps: {
+        titleTypographyProps: {
+          variant: 'h6',
+        },
+        subheaderTypographyProps: {
+          variant: 'body2',
+        },
+      },
+      styleOverrides: {
+        root: {
+          padding: '32px 24px',
+        },
+      },
+    },
     MuiAvatar: {
       styleOverrides: {
         colorDefault: primaryColor,
       },
+      variants: [
+        {
+          props: { variant: 'rounded' },
+          style: {
+            backgroundColor: secondaryColor,
+            height: 56,
+            width: 56,
+          },
+        },
+      ],
     },
     MuiIconButton: {
       variants: [
@@ -55,16 +101,6 @@ const theme = createTheme({
           props: { edge: 'end' },
           style: {
             marginLeft: 'auto',
-          },
-        },
-      ],
-    },
-    MuiTypography: {
-      variants: [
-        {
-          props: { variant: 'h6' },
-          style: {
-            flexGrow: 1,
           },
         },
       ],
@@ -91,22 +127,6 @@ const theme = createTheme({
         },
       },
     },
-    MuiPaper: {
-      variants: [
-        {
-          props: { elevation: 1 },
-          style: {
-            padding: '192px',
-          },
-        },
-        {
-          props: { elevation: 2 },
-          style: {
-            padding: '64px',
-          },
-        },
-      ],
-    },
     MuiInputBase: {
       styleOverrides: {
         input: {
@@ -122,6 +142,108 @@ const theme = createTheme({
           width: '100%',
         },
       },
+      variants: [
+        {
+          props: { container: true },
+          style: {
+            marginTop: 10,
+            marginBottom: 9,
+          },
+        },
+        {
+          props: { container: true, item: true },
+          style: {
+            marginTop: 36,
+            marginBottom: 36,
+            display: 'inline-flex',
+          },
+        },
+      ],
+    },
+    MuiPaper: {
+      variants: [
+        {
+          props: { elevation: 3 },
+          style: {
+            padding: '192px',
+          },
+        },
+        {
+          props: { elevation: 2 },
+          style: {
+            padding: '64px',
+          },
+        },
+      ],
+    },
+  },
+  typography: {
+    button: {
+      fontWeight: 600,
+    },
+    fontFamily:
+      '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+    body1: {
+      fontSize: '1rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
+    },
+    body2: {
+      fontSize: '0.875rem',
+      fontWeight: 400,
+      lineHeight: 1.57,
+    },
+    subtitle1: {
+      fontSize: '1rem',
+      fontWeight: 500,
+      lineHeight: 1.75,
+    },
+    subtitle2: {
+      fontSize: '0.875rem',
+      fontWeight: 500,
+      lineHeight: 1.57,
+    },
+    overline: {
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      letterSpacing: '0.5px',
+      lineHeight: 2.5,
+      textTransform: 'uppercase',
+    },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      lineHeight: 1.66,
+    },
+    h1: {
+      fontWeight: 700,
+      fontSize: '3.5rem',
+      lineHeight: 1.375,
+    },
+    h2: {
+      fontWeight: 700,
+      fontSize: '3rem',
+      lineHeight: 1.375,
+    },
+    h3: {
+      fontWeight: 700,
+      fontSize: '2.25rem',
+      lineHeight: 1.375,
+    },
+    h4: {
+      fontWeight: 700,
+      fontSize: '2rem',
+      lineHeight: 1.375,
+    },
+    h5: {
+      fontWeight: 600,
+      fontSize: '1.5rem',
+      lineHeight: 1.375,
+    },
+    h6: {
+      fontWeight: 600,
+      fontSize: '1.125rem',
+      lineHeight: 1.375,
     },
   },
 });

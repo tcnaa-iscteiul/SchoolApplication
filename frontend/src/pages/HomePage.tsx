@@ -1,13 +1,18 @@
-import { BottomNavigation } from '@mui/material';
-import Layout from '../components/UI/Layout';
+import { memo } from 'react';
+import Header from '../components/UI/Header';
+import HeaderCard from '../components/UI/HeaderCard';
+import PopularCourse from '../components/UI/PopularCourse';
+import StatisticsCard from '../components/UI/StatisticsCard';
 
 const HomePage = () => {
   return (
-    <Layout>
-      <p>Welcome to home page!</p>
-      <BottomNavigation />
-    </Layout>
+    <div id="Home">
+      <Header />
+      <HeaderCard />
+      <StatisticsCard />
+      <PopularCourse />
+    </div>
   );
 };
 
-export default HomePage;
+export default memo(HomePage);

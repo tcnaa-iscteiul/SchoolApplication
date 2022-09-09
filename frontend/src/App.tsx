@@ -15,7 +15,7 @@ import { Provider } from 'react-redux';
 import store from './store/index';
 import ForgotPassword from './pages/ForgotPassword';
 import ChangePassword from './components/ChangePassword';
-import theme from './components/UI/theme';
+import theme from './components/UI/Theme';
 import { ThemeProvider } from '@mui/material/styles';
 import { PopularCourse } from './components/PopularCourse';
 import { MainFeature } from './components/MainFeature';

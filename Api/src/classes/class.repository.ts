@@ -385,9 +385,19 @@ export class ClassRepository {
   }
 
   async getNrClasses() {
-    const response = await this.classModel.count();
+    const nrClasses = await this.classModel.count();
+    const nrStudents = await this.userModel.getNrUsers({
+      role: Role.Student,
+      email: '',
+      phone: '',
+    });
+    const nrTeachers = await this.userModel.getNrUsers({
+      role: Role.Teacher,
+      email: '',
+      phone: '',
+    });
 
-    return response;
+    return { nrClasses, nrStudents, nrTeachers };
   }
 
   async getClassByUser(userSearch: UserSearchDto) {
@@ -401,55 +411,22 @@ export class ClassRepository {
       const result = await this.classModel.find({ teacher: userSearch }).exec();
       return result;
     }
-    /*
-    const r = [
-      ...response.map((item) =>
-        item?.classes.map((clas: ClassSearchDto) => clas.name),
-      ),
-    ];
-    console.log(r.find((item) => console.log(item)));
-
-    const result = response
-      .map((item) => {
-        if (item.email === email) {
-          return item;
-        }
-      })
-      .filter((item) => item != null);*/
-
-    //  const [allClasses] = [...result.map((item) => item.classes)];
-
-    // return response;
   }
 
-  /*
-  async getClassByUser(userSearch: UserSearchDto) {
+  async getTopFive() {
+    const allClasses = await this.findAll();
 
-    const response = await this.classModel.aggregate([
-      {
-        $lookup: {
-          from: 'students',
-          localField: '_id',
-          foreignField: 'users',
-          as: 'students',
-        },
-      },
-      {
-        $project: {
-          ' _id ': 1,
-          ' name' : 1,
-          ' email ': 1,
-          ' password ': 1,
-          ' firstName ': 1,
-          ' lastName ': 1,
-          ' role ': 1,
-          ' status ': 1,
-          'classes.name': 1,
-          'students.name': 1,
-        },
-      },
-    ]);
-    console.log(response);
-    return response;
-  }*/
+    const result = allClasses
+      .sort((a, b) => b.students?.length - a.students?.length)
+      .filter((item, index) => index < 5)
+      .map((item) => {
+        return {
+          name: item.name,
+          description: item.description,
+          id: new this.ObjectId(),
+        };
+      });
+
+    return result;
+  }
 }

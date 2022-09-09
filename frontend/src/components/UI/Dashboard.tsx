@@ -14,7 +14,7 @@ import IconButton, {
   IconButtonProps as MuiIconButtonProps,
 } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import theme from './theme';
+import theme from './Theme';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Button } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/use-redux';

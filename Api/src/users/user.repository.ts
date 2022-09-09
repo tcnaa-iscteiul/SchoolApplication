@@ -12,7 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { UserCreateDto } from './dto/UserCreate.dto';
 import { User, UserDocument } from './user.schema';
 import { UserUpdateDto } from './dto/UserUpdate.dto';
-import { Status, UserSearchDto } from './dto/UserSearch.dto';
+import { UserSearchDto } from './dto/UserSearch.dto';
 import { Role } from './dto/UserRole.dto';
 import { MailService } from 'src/mail/mail.service';
 import { AuthRepository } from 'src/auth/auth.repository';
@@ -128,20 +128,6 @@ export class UserRepository {
     );
     if (!result) {
       throw new NotFoundException('User with ID not found');
-    }
-    if (user.role === Role.Teacher && user.status) {
-      const status =
-        user.status === Status.Active ? 'activated' : 'deactivated';
-      await this.mailService.send({
-        from: 'noreply@schoolApplication.com',
-        to: user.email,
-        subject: 'Welcome to School Application',
-        html: `
-                  <h3>Hello ${user.firstName}!</h3>
-                  <p>Welcome to School Application!</p>
-                  <p>Your account was ${status} </p>
-              `,
-      });
     }
   }
 

@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, memo, useState } from 'react';
 import useAxios from '../../hooks/use-axios';
 import { useAppSelector } from '../../hooks/use-redux';
 import useInput from '../../hooks/useInput';
@@ -101,4 +101,4 @@ function InsertForm(props: InsertFormProps) {
   );
 }
 
-export default InsertForm;
+export default memo(InsertForm);
