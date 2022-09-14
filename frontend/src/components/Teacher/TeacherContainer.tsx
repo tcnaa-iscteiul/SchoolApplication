@@ -10,7 +10,6 @@ import { memo, useState } from 'react';
 import { useAppSelector } from '../../hooks/use-redux';
 import InsertForm from './InsertForm';
 import GridTeacher from './GridTeacher';
-import Spreadsheet from './Spreadsheet';
 
 function TeacherContainer() {
   const [success] = useState<string>('');
@@ -27,7 +26,6 @@ function TeacherContainer() {
       url={'class/createLesson'}
     />,
     <GridTeacher key={option !== 'Change Password' ? option : null} />,
-    <Spreadsheet />,
   ];
 
   const res = components.filter((item: JSX.Element) => item.key === option);
