@@ -1,4 +1,7 @@
+import { UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { PartialType } from '@nestjs/mapped-types';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { MulterField } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import {
   IsOptional,
   IsString,
@@ -12,8 +15,8 @@ import mongoose from 'mongoose';
 import { CreateLessonDto } from './create-lesson.dto';
 
 export class StudentInformation {
-  id?: string;
-  studentName: mongoose.Types.ObjectId;
+  _id?: string;
+  studentName?: mongoose.Types.ObjectId;
   presence: boolean;
   absence: string;
   submmitedWork: string;
@@ -23,14 +26,21 @@ export class UpdateLessonDto extends PartialType(CreateLessonDto) {
   @IsMongoId()
   lessonID: string;
 
-  @IsOptional()
+  @IsMongoId()
+  _id: string;
+
+ /* @IsOptional()
   @IsString()
   @MinLength(15)
   @MaxLength(50)
-  @IsNotEmpty()
-  classWork: string;
+  @IsNotEmpty()*/
+  classWork:string;
 
-  students: StudentInformation;
+  summaryId:string;
+
+  student?: StudentInformation;
+
+  students?: StudentInformation[];
 
   @IsOptional()
   @IsString()
@@ -39,15 +49,16 @@ export class UpdateLessonDto extends PartialType(CreateLessonDto) {
 
   /*@IsOptional()
   @IsBoolean()*/
-  presence: boolean;
+  presence?: boolean;
 
   /* @IsOptional()
   @MinLength(15)
   @MaxLength(50)*/
-  absence: string;
+  absence?: string;
 
   /* @IsOptional()
   @MinLength(15)
   @MaxLength(50)*/
-  submmitedWork: string;
+  //@UploadedFiles()
+  submmitedWork?: String;
 }

@@ -7,6 +7,8 @@ import {
   Delete,
   Patch,
   UseGuards,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
@@ -22,8 +24,10 @@ import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
 import { UpdateEvaluations } from './dto/UpdateEvaluation.dto';
 import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
 import { UpdateLessonDto } from 'src/lessons/dto/update-lesson.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { UpdateStudentLessonDto } from 'src/lessons/dto/update-student-data-lesson';
 
-@UseGuards(AuthGuard('jwt'))
+//@UseGuards(AuthGuard('jwt'))
 @Controller('class')
 export class ClassController {
   constructor(private classService: ClassService) {}
@@ -108,7 +112,7 @@ export class ClassController {
   }
 
   @Patch('/updateLessonStudent')
-  async updateLessonStudent(@Body() updateLesson: UpdateLessonDto) {
+  async updateLessonStudent(@Body() updateLesson: UpdateStudentLessonDto) {
     return await this.classService.updateLessonStudent(updateLesson);
   }
 }

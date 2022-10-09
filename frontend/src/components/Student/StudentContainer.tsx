@@ -8,39 +8,21 @@ import Modal from '../UI/Modal';
 import ChangePassword from '../ChangePassword';
 import { memo, useState } from 'react';
 import { useAppSelector } from '../../hooks/use-redux';
-import InsertForm from './InsertForm';
-import GridTeacher from './GridTeacher';
-import ClassInfo from '../Classes/ClassInfo';
+import StudentTable from './StudentTable';
 
-function TeacherContainer() {
+function StudentContainer() {
   const [success] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [error] = useState<string>('');
   const [loading] = useState<boolean>(false);
-  const userClass = useAppSelector((state) => state.menu.userClass);
+  const listClasses = useAppSelector((state) => state.auth.userClasses);
   const option = useAppSelector((state) => state.menu.option);
-  const keyOption = userClass.find((item) => item.name === option);
-  const selectedClass = userClass.filter((item) => item.name === option);
-  const components: JSX.Element[] =
-    (option &&
-      selectedClass.length > 0 && [
-        <ChangePassword key={option === 'Change Password' ? option : null} />,
-        <ClassInfo
-          key={keyOption ? option : null}
-          className={selectedClass[0].name}
-          classId={selectedClass[0].id!}
-          startDate={selectedClass[0].startDate}
-          endDate={selectedClass[0].endDate}
-        />,
-        <InsertForm
-          key={keyOption ? option : null}
-          title={'Insert Summary'}
-          method={'Patch'}
-          url={'class/createLesson'}
-        />,
-        <GridTeacher key={keyOption ? option : null} />,
-      ]) ||
-    [];
+  const components: JSX.Element[] = [
+    <ChangePassword key={option === 'Change Password' ? option : null} />,
+    <StudentTable
+      key={listClasses?.find((item) => item === option) && option}
+    />,
+  ];
 
   const res = components.filter((item: JSX.Element) => item.key === option);
 
@@ -62,11 +44,11 @@ function TeacherContainer() {
       <Grid container spacing={3}>
         {res &&
           res.map((item, index: number) => (
-            <Grid item key={index} xs={12}>
+            <Grid item key={item.key} xs={12}>
               <Paper elevation={2}>{item}</Paper>
             </Grid>
           ))}
-        {res.length === 0 && option && (
+        {res.length === 0 && (
           <Grid container spacing={3}>
             <Grid item key={'welcome'} xs={12}>
               <Paper elevation={1}>
@@ -82,4 +64,4 @@ function TeacherContainer() {
   );
 }
 
-export default memo(TeacherContainer);
+export default memo(StudentContainer);

@@ -17,7 +17,7 @@ export class TokenService {
     return await this.tokenRepository.getUserByToken(token);
   }
 
-  async deleteToken(token: string): Promise<any> {
+  async deleteToken(token: string){
     return await this.tokenRepository.deleteToken(token);
   }
 }

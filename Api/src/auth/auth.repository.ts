@@ -56,8 +56,14 @@ export class AuthRepository {
     expireAt.setDate(expireAt.getDate() + 1);
 
     const expired = expireAt.toISOString();
+    console.log('Login');
+    console.log(email);
     this.tokenService.save(accessToken, email, expired);
-    return { accessToken, role, status };
+    console.log('Access Token');
+    console.log(accessToken);
+    //return the name of the class or classes where the user is assigned
+    const userClass = await this.classModel.getNameClassByUser(user);
+    return { accessToken, role, status, userClass };
   }
 
   async loginToken(token: string) {
@@ -75,6 +81,17 @@ export class AuthRepository {
 
   async getClassByToken(token: string) {
     const user = await this.tokenService.getUserByToken(token);
+    if (user) {
+      //return the class or classes where the user is assigned
+      return await this.classModel.getClassByUser(user);
+    }
+    return new HttpException(
+      {
+        errorMessage: 'Invalid Token',
+      },
+      HttpStatus.UNAUTHORIZED,
+    );
+    /*const user = await this.tokenService.getUserByToken(token);
     if (user.role !== Role.Teacher && user.role !== Role.Admin) {
       const userClasses = await this.classModel.getClassByUser(user);
       return userClasses;
@@ -94,7 +111,7 @@ export class AuthRepository {
         errorMessage: 'Invalid Token',
       },
       HttpStatus.UNAUTHORIZED,
-    );
+    );*/
   }
 
   async changePassword(userUpdatePasswordDto: UserUpdatePasswordDto) {

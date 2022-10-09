@@ -6,10 +6,12 @@ import {
   IsEnum,
   IsEmail,
   IsAlpha,
+  IsMongoId,
 } from 'class-validator';
 import { Role, Status } from '../dto/UserSearch.dto';
 
 export class UserCreateDto {
+  @IsMongoId()
   id: string;
 
   @IsEnum(Role)

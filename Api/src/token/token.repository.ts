@@ -11,6 +11,7 @@ import { AuthRepository } from 'src/auth/auth.repository';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Token, TokenDocument } from './token.schema';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class TokenRepository {
@@ -25,16 +26,12 @@ export class TokenRepository {
 
   async save(hash: string, email: string, expireAt: string) {
     const objToken = await this.tokenModel.findOne({ email: email });
-
     if (objToken) {
       await this.tokenModel.findOneAndUpdate(
-        { id: objToken.id },
+        { _id: new ObjectId(objToken.id) },
         {
           hash,
           expireAt,
-        },
-        {
-          new: true,
         },
       );
     } else {

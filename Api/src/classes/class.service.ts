@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UploadedFiles } from '@nestjs/common';
 import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
 import { ClassCreateDto } from './dto/ClassCreate.dto';
 import { ClassSearchDto } from './dto/ClassSearch.dto';
@@ -10,6 +10,7 @@ import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
 import { UpdateEvaluations } from './dto/UpdateEvaluation.dto';
 import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
 import { UpdateLessonDto } from 'src/lessons/dto/update-lesson.dto';
+import { UpdateStudentLessonDto } from 'src/lessons/dto/update-student-data-lesson';
 
 @Injectable()
 export class ClassService {
@@ -81,7 +82,7 @@ export class ClassService {
     return await this.classRepository.updateLesson(updateLesson);
   }
 
-  async updateLessonStudent(updateLesson: UpdateLessonDto) {
-    return await this.classRepository.updateLessonStudent(updateLesson);
+  async updateLessonStudent(updateLesson: UpdateStudentLessonDto) {
+    return await this.classRepository.updateLessonStudent( updateLesson);
   }
 }

@@ -10,11 +10,13 @@ type Auth = {
   userClasses?: string[];
 };
 
+const user = getCookie('userClass') || '';
+const cookieUser: string[] = user ? JSON.parse(user) : [];
 const initialState: Auth = {
   token: getCookie('token') || '',
   status: getCookie('status') || null,
   role: getCookie('role') || null,
-  userClasses: [],
+  userClasses: cookieUser,
 };
 // TODO:expiration time token
 
@@ -28,21 +30,23 @@ const AuthSlice = createSlice({
       state.token = '';
       state.status = null;
       state.role = null;
+      menuActions.addOption('');
       removeCookie('token');
       removeCookie('status');
       removeCookie('role');
       removeCookie('userClass');
-      menuActions.addOption('');
     },
     login(state, action: PayloadAction<Auth>) {
       if (action.payload.status !== Status.Inactive) {
         state.token = action.payload.token;
         state.status = action.payload.status;
         state.role = action.payload.role;
+        state.userClasses = action.payload.userClasses;
 
         setCookie('role', state.role);
         setCookie('token', state.token);
         setCookie('status', state.status);
+        setCookie('userClass', JSON.stringify(state.userClasses));
         //  setTimeout(this.logout, 60);
       }
     },

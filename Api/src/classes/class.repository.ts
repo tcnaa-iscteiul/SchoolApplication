@@ -6,6 +6,8 @@ import {
   forwardRef,
   Inject,
   BadRequestException,
+  UploadedFiles,
+  Body,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -19,13 +21,14 @@ import { UserRepository } from '../users/user.repository';
 import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
 import { Evaluations } from './dto/Evaluations.dto';
 import { UpdateEvaluations } from './dto/UpdateEvaluation.dto';
-import { LessonsService } from 'src/lessons/lessons.service';
 import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
 import {
   StudentInformation,
   UpdateLessonDto,
 } from 'src/lessons/dto/update-lesson.dto';
 import { Role } from 'src/users/dto/UserRole.dto';
+import { ObjectId } from 'mongodb';
+import { UpdateStudentLessonDto } from 'src/lessons/dto/update-student-data-lesson';
 
 @Injectable()
 export class ClassRepository {
@@ -33,7 +36,6 @@ export class ClassRepository {
     @InjectModel(Class.name) private classModel: Model<ClassDocument>,
     @Inject(forwardRef(() => UserRepository))
     private readonly userModel: UserRepository,
-    private readonly lessonModel: LessonsService,
   ) {}
 
   private ObjectId = mongoose.Types.ObjectId;
@@ -249,48 +251,62 @@ export class ClassRepository {
 
   async updateLesson(updateLesson: UpdateLessonDto) {
     const ObjectId = mongoose.Types.ObjectId;
-
+   // console.log(updateLesson);
     const result = await this.classModel.updateOne(
       {
         name: updateLesson.className,
-        'lessons._id': new ObjectId(updateLesson.lessonID),
+        'lessons.id': new ObjectId(updateLesson.lessonID),
       },
       {
         'lessons.$.classWork': updateLesson.classWork,
       },
     );
+   // console.log(result);
     if (result.matchedCount === 0) {
       throw new NotFoundException('Verify the input data');
     }
   }
 
-  async updateLessonStudent(updateLesson: UpdateLessonDto) {
+  async updateLessonStudent(updateLesson: UpdateStudentLessonDto) {
+   // console.log("Classes");
+   /* updateLesson.className = 'French';
+    updateLesson.lessonID='6317685b415fd15d0164d5dc';
+    updateLesson.id='631090c9d5af73305d4bbf54';
+    updateLesson.presence=true;
+    updateLesson.absence='false';
+    updateLesson.submmitedWork='test';
+    console.log('test');
+    console.log(updateLesson);*/
     const ObjectId = mongoose.Types.ObjectId;
+    console.log('Update Lesson');
+    console.log(updateLesson);
+    const {className, lessonID, studentSummaryId, presence, absence, submmitedWork} = updateLesson;
     const result = await this.classModel.updateOne(
       {
-        name: updateLesson.className,
+        name: className,
         lessons: {
           $elemMatch: {
-            id: new ObjectId(updateLesson.lessonID), //summary
-            'students._id': new this.ObjectId(updateLesson.id),
+            _id: new ObjectId(lessonID), //summary
+            'students.id': new this.ObjectId(studentSummaryId),
           },
         },
       },
       {
         $set: {
-          'lessons.$[outer].students.$[inner].presence': updateLesson.presence,
-          'lessons.$[outer].students.$[inner].absence': updateLesson.absence,
-          'lessons.$[outer].students.$[inner].submmitedWork':
-            updateLesson.submmitedWork,
+          'lessons.$[outer].students.$[inner].presence': presence,
+          'lessons.$[outer].students.$[inner].absence': absence,
+          'lessons.$[outer].students.$[inner].submmitedWork': submmitedWork,
         },
       },
       {
         arrayFilters: [
-          { 'outer._id': new this.ObjectId(updateLesson.lessonID) },
-          { 'inner._id': new this.ObjectId(updateLesson.id) },
+          { 'outer._id': new this.ObjectId(lessonID) },
+          { 'inner._id': new this.ObjectId(studentSummaryId) },
         ],
       },
     );
+    console.log('result');
+    console.log(result);
     if (result.matchedCount === 0) {
       throw new NotFoundException('Verify the input data');
     }
@@ -405,11 +421,67 @@ export class ClassRepository {
       const response = await this.userModel.getClassByUser();
       const { email } = userSearch;
       const allClasses = response.filter((item) => item.email === email);
+      const formatData = allClasses[0].classes.map((item) => {
+            const lessons =item.lessons && item.lessons.map((lesson:UpdateLessonDto) =>{
+              const data = lesson.students && lesson.students.filter((lessonStudent:StudentInformation) => lessonStudent.studentName.toString() === userSearch.id)||[];
+
+
+              return {
+                lessonId: lesson._id,
+                lessonDate: lesson.date.toString().split('T')[0],
+                lessonSummary: lesson.summary,
+                lessonClassWork: lesson.classWork,    
+                lessonSummaryId: data &&data[0] && data[0]._id||'',   
+                lessonStudentPresence: data &&data[0] && data[0].presence,
+                lessonStudentAbsence:data && data[0] &&data[0].absence,
+                lessonStudentSubmmitedClassWork:data &&data[0] &&data[0].submmitedWork
+              }
+            }) || [];
+          
+          const grade =  item.evaluations && item.evaluations.filter((evaluation) => evaluation.student.toString() === userSearch.id) || [];
+
+          return {
+            studentId: userSearch.id,
+            id:item.id,
+            name:item.name, 
+            description:item.description, 
+            startDate:item.startDate, 
+            endDate:item.endDate, 
+            teacher:item.teacher||null,
+            lessonsStudent: lessons ||null,
+            evaluations: {
+              date: item.evaluationDate || null,
+              grade: grade.length>0 ? grade[0].grade : grade
+            }
+          };
+      });
+      console.log('Data');
+      console.log(formatData);
+      return formatData;
+    }
+    if (userSearch.role === Role.Teacher) {
+      const result = await this.classModel.find({ teacher: userSearch }).populate({
+        path: 'students evaluations.student lessons.students.studentName',
+        match: { id: { $ne: '' } },
+        select: { firstName: 1, lastName: 1, email: 1 },
+      })
+      .exec();
+
+      return result;
+    }
+  }
+
+  async getNameClassByUser(userSearch: UserSearchDto) {
+    if (userSearch.role === Role.Student) {
+      const response = await this.userModel.getClassByUser();
+      const { email } = userSearch;
+      const allClasses = response.filter((item) => item.email === email);
       const classes = allClasses[0].classes;
       return classes.map((item) => item.name);
     } else if (userSearch.role !== Role.Admin) {
       const result = await this.classModel.find({ teacher: userSearch }).exec();
-      return result;
+      const response = result.map((item) => item.name);
+      return response;
     }
   }
 

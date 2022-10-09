@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import StudentContainer from '../Admin/StudentContainer';
+import StudentContainer from '../Student/StudentContainer';
 import ListItems from '../Admin/ListItems';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import IconButton, {
@@ -23,6 +23,7 @@ import { useSignUp } from '../../hooks/useSignUp';
 import { useState } from 'react';
 import { Role } from '../../interfaces/Role';
 import TeacherContainer from '../Teacher/TeacherContainer';
+import AdminContainer from '../Admin/AdminContainer';
 const drawerWidth = 300;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -110,6 +111,7 @@ export default function DashboardContent(props: DashboardProps) {
   const logoutHandler = async (event: React.MouseEvent) => {
     event.preventDefault();
     logout();
+    dispatch(menuActions.addOption(''));
   };
 
   const clickDashboardHandler = () => {
@@ -153,13 +155,14 @@ export default function DashboardContent(props: DashboardProps) {
         </StyledToolbar>
         <Divider />
         <List component="nav">
-          <ListItems key={Math.random()} list={props.options} />
+          <ListItems key={Math.random()} list={props.options}/>
         </List>
       </Drawer>
       <Main>
         <Toolbar />
-        {role === Role.Admin && <StudentContainer />}
+        {role === Role.Admin && <AdminContainer />}
         {role === Role.Teacher && <TeacherContainer />}
+        {role === Role.Student && <StudentContainer />}
       </Main>
     </Box>
   );

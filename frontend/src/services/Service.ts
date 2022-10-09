@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 import api from './api';
 import { IUser } from '../interfaces/IUser';
 import { IClass } from '../interfaces/IClass';
+import { UpdateLessonStudent } from '../interfaces/UpdateLessonStudent';
 
 const signIn = (user: Pick<IUser, 'email' | 'password'>) =>
   api.post('auth', user);
@@ -33,6 +34,9 @@ const assignTeacherToClass = (name: string, teacher: string) =>
 const removeTeacherToClass = (name: string, teacher: string) =>
   api.patch('/class/remove', { name, teacher });
 
+const updateLessonStudent = (updateDataStudent: UpdateLessonStudent) =>
+  api.patch('/class/updateLessonStudent', { updateDataStudent });
+
 const deleteToken = (token: string) => api.delete('token', { data: token });
 
 const forgotPassword = (email: string) =>
@@ -62,4 +66,5 @@ export const Service = {
   refreshToken,
   getUserClassByToken,
   nrClasses,
+  updateLessonStudent,
 };

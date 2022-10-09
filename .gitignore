@@ -1,0 +1,7 @@
+.vercel
+/Api/node_modules
+/Api/dist
+/frontend/dist
+/frontend/node_modules
+/Api/.env
+/node_modules

@@ -25,11 +25,21 @@ const ListItems = (props: DashboardProps): JSX.Element => {
     // dispatch(menuActions.addOption({ option: text }));
   };
 
+
   const itens = (list: string[]) =>
     list.map((option: string, index: number) => (
       <ListItemButton
         key={index.toString()}
         onClick={(e) => onClickHandler(e, option)}
+        sx={{
+          // selected and (selected + hover) states
+          '&& .Mui-selected, && .Mui-selected:hover': {
+            bgcolor: 'red',
+            '&, & .MuiListItemIcon-root': {
+              color: 'pink',
+            },
+          },
+        }}
       >
         <ListItemIcon>
           <PeopleIcon />

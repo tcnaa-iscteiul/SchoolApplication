@@ -109,7 +109,9 @@ export class UserRepository {
   }
 
   async findEmail(email: string): Promise<User | undefined> {
-    return this.userModel.findOne({ email });
+    console.log('User');
+    console.log(email);
+    return this.userModel.findOne({ email:email });
   }
 
   async update(user: UserUpdateDto): Promise<void> {
