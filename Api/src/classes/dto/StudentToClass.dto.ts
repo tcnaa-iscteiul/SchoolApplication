@@ -1,7 +1,7 @@
 export class StudentToClassDto {
-  id?: string;
+  id?: string
 
-  name: string;
+  name: string
 
-  newStudents: string;
+  newStudents: string
 }

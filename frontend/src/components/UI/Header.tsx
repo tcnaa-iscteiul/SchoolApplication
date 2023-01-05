@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from 'react'
 import {
   AppBar,
   Box,
@@ -8,21 +8,21 @@ import {
   Toolbar,
   Typography,
   useMediaQuery,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
-import DrawerComp from './Drawer';
-import theme from './Theme';
-import '../styles/Header.css';
-import { IChildren } from '../../interfaces/IChildren';
+} from '@mui/material'
+import { Link } from 'react-router-dom'
+import DrawerComp from './Drawer'
+import theme from './Theme'
+import '../styles/Header.css'
+import { IChildren } from '../../interfaces/IChildren'
 
 const Header = (props: IChildren): JSX.Element => {
-  const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+  const isMatch = useMediaQuery(theme.breakpoints.down('md'))
 
   const scrollToElement = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    const element = event.currentTarget?.textContent || '';
-    document.getElementById(element)?.scrollIntoView({ behavior: 'smooth' });
-  };
+    event.preventDefault()
+    const element = event.currentTarget?.textContent || ''
+    document.getElementById(element)?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
     <Fragment>
@@ -56,7 +56,7 @@ const Header = (props: IChildren): JSX.Element => {
       </AppBar>
       {props.children}
     </Fragment>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

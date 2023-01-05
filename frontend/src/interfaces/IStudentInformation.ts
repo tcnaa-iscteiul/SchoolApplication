@@ -1,8 +1,8 @@
-import { IUser } from './IUser';
+import { IUser } from './IUser'
 
 export interface StudentInformation {
-  studentName: IUser;
-  presence: boolean;
-  absence: string;
-  submmitedClassWork?: string;
+  studentName: IUser
+  presence: boolean
+  absence: string
+  submmitedClassWork?: string
 }

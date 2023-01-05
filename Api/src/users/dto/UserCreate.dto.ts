@@ -7,37 +7,37 @@ import {
   IsEmail,
   IsAlpha,
   IsMongoId,
-} from 'class-validator';
-import { Role, Status } from '../dto/UserSearch.dto';
+} from 'class-validator'
+import { Role, Status } from '../dto/UserSearch.dto'
 
 export class UserCreateDto {
   @IsMongoId()
-  id: string;
+  id: string
 
   @IsEnum(Role)
-  role: Role;
+  role: Role
 
   @IsEnum(Status)
-  status: Status;
+  status: Status
 
   @IsAlpha()
   @MinLength(2)
   @MaxLength(20)
-  firstName: string;
+  firstName: string
 
   @IsAlpha()
   @MinLength(2)
   @MaxLength(20)
-  lastName: string;
+  lastName: string
 
   @IsPhoneNumber('PT')
-  phone: string;
+  phone: string
 
   @IsEmail()
-  email: string;
+  email: string
 
   @IsString()
   @MinLength(8)
   @MaxLength(16)
-  password: string;
+  password: string
 }

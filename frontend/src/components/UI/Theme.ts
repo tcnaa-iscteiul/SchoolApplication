@@ -1,8 +1,8 @@
-import { createTheme } from '@mui/material/styles';
-import { lightGreen, purple } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles'
+import { lightGreen, purple } from '@mui/material/colors'
 
-const primaryColor = lightGreen[500];
-const secondaryColor = purple[500];
+const primaryColor = lightGreen[500]
+const secondaryColor = purple[500]
 
 const theme = createTheme({
   palette: {
@@ -37,6 +37,7 @@ const theme = createTheme({
                 style: {
                   width: '100%',
                   color: secondaryColor,
+                  alignItems:'right',
                 },
               },
             ],
@@ -176,6 +177,24 @@ const theme = createTheme({
         },
       ],
     },
+    MuiListItemButton:{
+      styleOverrides: {
+        root: {
+          backgroundColor:primaryColor,
+          '&.MuiListItemButton-root:hover': {
+            '&, &.MuiListItemIcon-root': {
+              color: primaryColor,
+            },
+          },
+          "&.Mui-selected": {
+            backgroundColor: 'white',
+            color: 'black'
+          }
+        },
+        selected: {
+          },
+        }
+      }
   },
   typography: {
     button: {
@@ -246,8 +265,8 @@ const theme = createTheme({
       lineHeight: 1.375,
     },
   },
-});
+})
 
-export const maxWidthModal = 200;
-export const maxWidthSpinner = 50;
-export default theme;
+export const maxWidthModal = 200
+export const maxWidthSpinner = 50
+export default theme

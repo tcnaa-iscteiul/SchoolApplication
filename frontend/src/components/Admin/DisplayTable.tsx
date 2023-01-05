@@ -1,40 +1,38 @@
-﻿import * as React from 'react';
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Button from '@mui/material/Button';
-import Title from './Title';
-import { IUser } from '../../interfaces/IUser';
-import { Fragment, useState } from 'react';
-import { CssBaseline } from '@mui/material';
-import { memo } from 'react';
+﻿import * as React from 'react'
+import Link from '@mui/material/Link'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import Button from '@mui/material/Button'
+import Title from './Title'
+import { IUser } from '../../interfaces/IUser'
+import { Fragment, useState } from 'react'
+import { CssBaseline } from '@mui/material'
+import { memo } from 'react'
 
 type DisplayTableProps = {
-  title: string;
-  users: IUser[];
-  button?: boolean;
-  buttonTitle?: string;
-  approveRequest: (value: string) => void;
-  disableTeacher: (value: string) => void;
-  approve: boolean;
-};
+  title: string
+  users: IUser[]
+  button?: boolean
+  buttonTitle?: string
+  approveRequest: (value: string) => void
+  disableTeacher: (value: string) => void
+  approve: boolean
+}
 
 function DisplayTable(props: DisplayTableProps) {
-  const [more, setMore] = useState<boolean>(false);
+  const [more, setMore] = useState<boolean>(false)
 
   function preventDefault(event: React.MouseEvent) {
-    event.preventDefault();
-    setMore(!more);
+    event.preventDefault()
+    setMore(!more)
   }
 
   const users =
     props.users &&
-    (more
-      ? props.users
-      : props.users.filter((user: IUser, index: number) => index < 5));
+    (more ? props.users : props.users.filter((user: IUser, index: number) => index < 5))
 
   return (
     <Fragment>
@@ -66,7 +64,7 @@ function DisplayTable(props: DisplayTableProps) {
                         if (user.email) {
                           props.approve
                             ? props.approveRequest(user.email)
-                            : props.disableTeacher(user.email);
+                            : props.disableTeacher(user.email)
                         }
                       }}
                     >
@@ -82,7 +80,7 @@ function DisplayTable(props: DisplayTableProps) {
         {!more ? 'See more orders' : 'See less orders'}
       </Link>
     </Fragment>
-  );
+  )
 }
 
-export default memo(DisplayTable);
+export default memo(DisplayTable)

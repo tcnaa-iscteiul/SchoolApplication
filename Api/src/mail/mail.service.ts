@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { MailerService } from '@nestjs-modules/mailer';
-import { IMailGunData } from './interface/mail.interface';
+import { Injectable } from '@nestjs/common'
+import { MailerService } from '@nestjs-modules/mailer'
+import { IMailGunData } from './interface/mail.interface'
 
 @Injectable()
 export class MailService {
@@ -10,12 +10,12 @@ export class MailService {
     return new Promise((res, rej) => {
       this.mailerService
         .sendMail(data)
-        .then((body) => {
-          res(body);
+        .then(body => {
+          res(body)
         })
-        .catch((error) => {
-          rej(error);
-        });
-    });
+        .catch(error => {
+          rej(error)
+        })
+    })
   }
 }

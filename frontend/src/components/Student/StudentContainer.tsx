@@ -1,34 +1,32 @@
-import * as React from 'react';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import { Typography } from '@mui/material';
-import LoadingSpinner from '../UI/LoadingSpinner';
-import Modal from '../UI/Modal';
-import ChangePassword from '../ChangePassword';
-import { memo, useState } from 'react';
-import { useAppSelector } from '../../hooks/use-redux';
-import StudentTable from './StudentTable';
+import * as React from 'react'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import { Typography } from '@mui/material'
+import LoadingSpinner from '../UI/LoadingSpinner'
+import Modal from '../UI/Modal'
+import ChangePassword from '../ChangePassword'
+import { memo, useState } from 'react'
+import { useAppSelector } from '../../hooks/use-redux'
+import StudentTable from './StudentTable'
 
 function StudentContainer() {
-  const [success] = useState<string>('');
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [error] = useState<string>('');
-  const [loading] = useState<boolean>(false);
-  const listClasses = useAppSelector((state) => state.auth.userClasses);
-  const option = useAppSelector((state) => state.menu.option);
+  const [success] = useState<string>('')
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [error] = useState<string>('')
+  const [loading] = useState<boolean>(false)
+  const listClasses = useAppSelector(state => state.auth.userClasses)
+  const option = useAppSelector(state => state.menu.option)
   const components: JSX.Element[] = [
     <ChangePassword key={option === 'Change Password' ? option : null} />,
-    <StudentTable
-      key={listClasses?.find((item) => item === option) && option}
-    />,
-  ];
+    <StudentTable key={listClasses?.find(item => item === option) && option} />,
+  ]
 
-  const res = components.filter((item: JSX.Element) => item.key === option);
+  const res = components.filter((item: JSX.Element) => item.key === option)
 
   const handleCloseModal = () => {
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
   return (
     <Container maxWidth="lg">
@@ -61,7 +59,7 @@ function StudentContainer() {
         )}
       </Grid>
     </Container>
-  );
+  )
 }
 
-export default memo(StudentContainer);
+export default memo(StudentContainer)

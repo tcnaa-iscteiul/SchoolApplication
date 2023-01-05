@@ -1,11 +1,11 @@
-import * as React from 'react';
-import Typography from '@mui/material/Typography';
-import { Card, CardContent, Grid } from '@mui/material';
+import * as React from 'react'
+import Typography from '@mui/material/Typography'
+import { Card, CardContent, Grid } from '@mui/material'
 
 type PropsType = {
-  title: string;
-  description: string;
-};
+  title: string
+  description: string
+}
 
 export default function MediaCard({ title, description }: PropsType) {
   return (
@@ -21,5 +21,5 @@ export default function MediaCard({ title, description }: PropsType) {
         </Grid>
       </CardContent>
     </Card>
-  );
+  )
 }

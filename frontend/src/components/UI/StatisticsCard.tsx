@@ -1,26 +1,26 @@
-import { Container, Grid, Box, Typography } from '@mui/material';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { memo, useEffect, useState } from 'react';
-import { CardStats } from './CardStats';
-import useAxios from '../../hooks/use-axios';
+import { Container, Grid, Box, Typography } from '@mui/material'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
+import { memo, useEffect, useState } from 'react'
+import { CardStats } from './CardStats'
+import useAxios from '../../hooks/use-axios'
 type Stats = {
-  nrClasses: number;
-  nrStudents: number;
-  nrTeachers: number;
-};
+  nrClasses: number
+  nrStudents: number
+  nrTeachers: number
+}
 const StatisticsCard = () => {
-  const [data, setData] = useState<Stats>();
+  const [data, setData] = useState<Stats>()
   const { response, sendData } = useAxios({
     method: 'Get',
     url: 'auth/nr',
     data: '',
-  });
+  })
   useEffect(() => {
-    sendData();
+    sendData()
     if (response) {
-      setData(response.data);
+      setData(response.data)
     }
-  }, []);
+  }, [])
   return (
     <Box id="Main Feature" component="main">
       <Container maxWidth={false}>
@@ -45,16 +45,10 @@ const StatisticsCard = () => {
             />
           </Grid>
           <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <CardStats
-              title={'Total Students'}
-              nr={`+${data?.nrStudents || 7}`}
-            />
+            <CardStats title={'Total Students'} nr={`+${data?.nrStudents || 7}`} />
           </Grid>
           <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <CardStats
-              title={'Total Teachers'}
-              nr={`+${data?.nrTeachers || 9}`}
-            />
+            <CardStats title={'Total Teachers'} nr={`+${data?.nrTeachers || 9}`} />
           </Grid>
           <Grid item xl={3} lg={3} sm={6} xs={12}>
             <CardStats title={'New Courses'} nr={'0'} />
@@ -62,7 +56,7 @@ const StatisticsCard = () => {
         </Grid>
       </Container>
     </Box>
-  );
-};
+  )
+}
 
-export default memo(StatisticsCard);
+export default memo(StatisticsCard)

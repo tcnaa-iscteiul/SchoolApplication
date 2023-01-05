@@ -1,26 +1,19 @@
-import Title from '../Admin/Title';
-import {
-  CssBaseline,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-} from '@mui/material';
-import { Fragment, memo } from 'react';
+import Title from '../Admin/Title'
+import { CssBaseline, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material'
+import { Fragment, memo } from 'react'
 type Evaluation = {
-  date: Date;
-  grade: number;
-};
+  date: Date
+  grade: number
+}
 
 type PropsInput = {
-  evaluations?: Evaluation;
-  className: string;
-  classId: string;
-  startDate: Date;
-  endDate: Date;
-  teacher?: string;
-};
+  evaluations?: Evaluation
+  className: string
+  classId: string
+  startDate: Date
+  endDate: Date
+  teacher?: string
+}
 
 function ClassInfo(props: PropsInput) {
   return (
@@ -33,9 +26,7 @@ function ClassInfo(props: PropsInput) {
             <TableCell>Start Date</TableCell>
             <TableCell>End Date</TableCell>
             {props.teacher && <TableCell>Teacher</TableCell>}
-            {props.evaluations !== undefined && (
-              <TableCell>Evaluation Date</TableCell>
-            )}
+            {props.evaluations !== undefined && <TableCell>Evaluation Date</TableCell>}
             {props.evaluations !== undefined && <TableCell>Grade</TableCell>}
           </TableRow>
         </TableHead>
@@ -46,23 +37,19 @@ function ClassInfo(props: PropsInput) {
             {props.teacher && <TableCell>{props.teacher}</TableCell>}
             {props.evaluations !== undefined && (
               <TableCell>
-                {props.evaluations.date
-                  ? props.evaluations.date.toString().split('T')[0]
-                  : ''}
+                {props.evaluations.date ? props.evaluations.date.toString().split('T')[0] : ''}
               </TableCell>
             )}
             {props.evaluations !== undefined && (
               <TableCell>
-                {props.evaluations.grade !== undefined
-                  ? props.evaluations.grade
-                  : ''}
+                {props.evaluations.grade !== undefined ? props.evaluations.grade : ''}
               </TableCell>
             )}
           </TableRow>
         </TableBody>
       </Table>
     </Fragment>
-  );
+  )
 }
 
-export default memo(ClassInfo);
+export default memo(ClassInfo)

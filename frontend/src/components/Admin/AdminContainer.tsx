@@ -1,40 +1,40 @@
-import * as React from 'react';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import CreateStudent from './CreateStudent';
-import CreateClass from './CreateClass';
-import DisplayTable from './DisplayTable';
-import UpdateStudent from './UpdateStudent';
-import RemoveStudent from './RemoveStudent';
-import { useCallback, useEffect, useState } from 'react';
-import { IUser } from '../../interfaces/IUser';
-import { Role } from '../../interfaces/Role';
-import { Status } from '../../interfaces/Status';
-import AddRemoveUClass from './AddRemoveUClass';
-import { fetchUsersData } from '../../store/usersActions';
-import { fetchClassData } from '../../store/classesActions';
-import { Typography } from '@mui/material';
-import LoadingSpinner from '../UI/LoadingSpinner';
-import Modal from '../UI/Modal';
-import ChangePassword from '../ChangePassword';
-import { memo } from 'react';
-import { useAppSelector, useAppDispatch } from '../../hooks/use-redux';
-import { AxiosError } from 'axios';
-import { Service } from '../../services/Service';
-import GridClasses from './GridClasses';
-import UserInClass from './UserInClass';
+import * as React from 'react'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import CreateStudent from './CreateStudent'
+import CreateClass from './CreateClass'
+import DisplayTable from './DisplayTable'
+import UpdateStudent from './UpdateStudent'
+import RemoveStudent from './RemoveStudent'
+import { useCallback, useEffect, useState } from 'react'
+import { IUser } from '../../interfaces/IUser'
+import { Role } from '../../interfaces/Role'
+import { Status } from '../../interfaces/Status'
+import AddRemoveUClass from './AddRemoveUClass'
+import { fetchUsersData } from '../../store/usersActions'
+import { fetchClassData } from '../../store/classesActions'
+import { Typography } from '@mui/material'
+import LoadingSpinner from '../UI/LoadingSpinner'
+import Modal from '../UI/Modal'
+import ChangePassword from '../ChangePassword'
+import { memo } from 'react'
+import { useAppSelector, useAppDispatch } from '../../hooks/use-redux'
+import { AxiosError } from 'axios'
+import { Service } from '../../services/Service'
+import GridClasses from './GridClasses'
+import UserInClass from './UserInClass'
 
 function StudentContainer() {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  const [success, setSuccess] = useState<string>('');
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<string>('')
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const users = useAppSelector((state) => state.students.students);
-  const option = useAppSelector((state) => state.menu.option);
+  const users = useAppSelector(state => state.students.students)
+  const option = useAppSelector(state => state.menu.option)
 
   /* const {
         response,
@@ -51,71 +51,68 @@ function StudentContainer() {
     });*/
 
   const approveRequest = useCallback(async (value: string) => {
-    setLoading(true);
+    setLoading(true)
     await Service.updateUser({ email: value, status: Status.Active })
-      .then((response) => {
+      .then(response => {
         if (!response.statusText) {
-          throw new Error('New Error');
+          throw new Error('New Error')
         }
-        dispatch(fetchUsersData());
-        setSuccess('Teacher approved with success');
-        setShowModal(true);
+        dispatch(fetchUsersData())
+        setSuccess('Teacher approved with success')
+        setShowModal(true)
       })
-      .catch((err) => {
+      .catch(err => {
         if (err instanceof AxiosError) {
-          setLoading(false);
+          setLoading(false)
           if (err.response?.data) {
-            setError(err.response.data.message);
+            setError(err.response.data.message)
           } else if (err.message) {
-            setError(err.message);
+            setError(err.message)
           }
         } else {
-          setError('Something went wrong!');
+          setError('Something went wrong!')
         }
-      });
-    setLoading(false);
-  }, []);
+      })
+    setLoading(false)
+  }, [])
 
   useEffect(() => {
-    dispatch(fetchUsersData());
-    dispatch(fetchClassData());
-  }, [dispatch, approveRequest]);
+    dispatch(fetchUsersData())
+    dispatch(fetchClassData())
+  }, [dispatch, approveRequest])
 
-  const allStudents = users.filter((user: IUser) => user.role === Role.Student);
-  const teachers = users.filter((user: IUser) => user.role === Role.Teacher);
-  const activeTeachers = teachers.filter(
-    (user: IUser) => user.status === Status.Active,
-  );
+  const allStudents = users.filter((user: IUser) => user.role === Role.Student)
+  const teachers = users.filter((user: IUser) => user.role === Role.Teacher)
+  const activeTeachers = teachers.filter((user: IUser) => user.status === Status.Active)
   const pendingTeachers = users.filter(
-    (user: IUser) =>
-      user.role === Role.Teacher && user.status === Status.Pending,
-  );
+    (user: IUser) => user.role === Role.Teacher && user.status === Status.Pending,
+  )
 
   const disableTeacher = useCallback(async (value: string) => {
-    setLoading(true);
-    setShowModal(true);
+    setLoading(true)
+    setShowModal(true)
     await Service.updateUser({ email: value, status: Status.Inactive })
-      .then((response) => {
+      .then(response => {
         if (!response.statusText) {
-          throw new Error('New Error');
+          throw new Error('New Error')
         }
-        dispatch(fetchUsersData());
-        setSuccess('Teacher disabled with success');
+        dispatch(fetchUsersData())
+        setSuccess('Teacher disabled with success')
       })
-      .catch((err) => {
+      .catch(err => {
         if (err instanceof AxiosError) {
-          setLoading(false);
+          setLoading(false)
           if (err.response?.data) {
-            setError(err.response.data.message);
+            setError(err.response.data.message)
           } else if (err.message) {
-            setError(err.message);
+            setError(err.message)
           }
         } else {
-          setError('Something went wrong!');
+          setError('Something went wrong!')
         }
-      });
-    setLoading(false);
-  }, []);
+      })
+    setLoading(false)
+  }, [])
 
   const components: JSX.Element[] = [
     <ChangePassword key={'Change Password'} />,
@@ -184,17 +181,14 @@ function StudentContainer() {
       title={'Remove Teacher from Class '}
       remove={true}
     />,
-    <UserInClass
-      key={'Display Users in Class'}
-      title={'Display Users in Class '}
-    />,
-  ];
+    <UserInClass key={'Display Users in Class'} title={'Display Users in Class '} />,
+  ]
 
-  const res = components.filter((item: JSX.Element) => item.key === option);
+  const res = components.filter((item: JSX.Element) => item.key === option)
 
   const handleCloseModal = () => {
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
   return (
     <Container maxWidth="lg">
@@ -227,7 +221,7 @@ function StudentContainer() {
         )}
       </Grid>
     </Container>
-  );
+  )
 }
 
-export default memo(StudentContainer);
+export default memo(StudentContainer)

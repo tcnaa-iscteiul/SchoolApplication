@@ -1,16 +1,16 @@
-import React, { memo, useEffect, Fragment } from 'react';
-import Dashboard from '../components/UI/Dashboard';
-import { useAppDispatch, useAppSelector } from '../hooks/use-redux';
-import { fetchUserClassData } from '../store/menuActions';
+import React, { memo, useEffect, Fragment } from 'react'
+import Dashboard from '../components/UI/Dashboard'
+import { useAppDispatch, useAppSelector } from '../hooks/use-redux'
+import { fetchUserClassData } from '../store/menuActions'
 
 const StudentDashboard = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchUserClassData());
-  }, [dispatch]);
+    dispatch(fetchUserClassData())
+  }, [dispatch])
 
-  const userClasses = useAppSelector((state) => state.auth.userClasses) || [];
+  const userClasses = useAppSelector(state => state.auth.userClasses) || []
   const studentDashboard: lists[] = [
     {
       id: '.1',
@@ -22,13 +22,13 @@ const StudentDashboard = () => {
       subheader: 'Classes',
       list: userClasses,
     },
-  ];
+  ]
 
   return (
     <Fragment>
       {userClasses && <Dashboard options={studentDashboard} />}
       {!userClasses && <p>Please check your connection!</p>}
     </Fragment>
-  );
-};
-export default memo(StudentDashboard);
+  )
+}
+export default memo(StudentDashboard)

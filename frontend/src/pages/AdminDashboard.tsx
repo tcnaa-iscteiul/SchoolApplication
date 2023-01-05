@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import Dashboard from '../components/UI/Dashboard';
+import { memo } from 'react'
+import Dashboard from '../components/UI/Dashboard'
 
 const adminDashboard: lists[] = [
   {
@@ -10,12 +10,7 @@ const adminDashboard: lists[] = [
   {
     id: '2',
     subheader: 'Manage Students',
-    list: [
-      'All Students',
-      'Create Student',
-      'Update Student',
-      'Remove Student',
-    ],
+    list: ['All Students', 'Create Student', 'Update Student', 'Remove Student'],
   },
   {
     id: '3',
@@ -33,9 +28,9 @@ const adminDashboard: lists[] = [
       'Display Users in Class',
     ],
   },
-];
+]
 
 const AdminDashboard = () => {
-  return <Dashboard options={adminDashboard} />;
-};
-export default memo(AdminDashboard);
+  return <Dashboard options={adminDashboard} />
+}
+export default memo(AdminDashboard)

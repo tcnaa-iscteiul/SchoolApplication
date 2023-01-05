@@ -1,27 +1,30 @@
-import {
-  MaxLength,
-  MinLength,
-  IsNotEmpty,
-  IsMongoId,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-
+import { MaxLength, MinLength, IsNotEmpty, IsMongoId, IsOptional, IsString } from 'class-validator'
+export type File = {
+  id: string,
+  fieldname: string,
+  originalname: string,
+  encoding: string,
+  mimetype: string,
+  buffer: Buffer[],
+  size: number
+}
 export class CreateLessonDto {
   @IsOptional()
   @IsMongoId()
-  id: string;
+  id: string
 
   @IsOptional()
   @MinLength(2)
   @MaxLength(50)
-  className: string;
+  className: string
 
   @IsString()
   @MinLength(5)
   @MaxLength(3000)
   @IsNotEmpty()
-  summary: string;
+  summary?: string
 
-  date: Date;
+  classWork?:File
+
+  date?: Date
 }

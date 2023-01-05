@@ -1,33 +1,33 @@
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import maxWidthModal from './Theme';
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import maxWidthModal from './Theme'
 
 type DialogProps = {
-  open: boolean;
-  title: string;
-  message: string;
-  onClose: () => void;
-  onConfirm?: () => void;
-  button?: boolean;
-};
+  open: boolean
+  title: string
+  message: string
+  onClose: () => void
+  onConfirm?: () => void
+  button?: boolean
+}
 
 export default function ResponsiveDialog(props: DialogProps) {
-  const fullScreen = useMediaQuery(`(max-width:${maxWidthModal}px)`);
+  const fullScreen = useMediaQuery(`(max-width:${maxWidthModal}px)`)
 
   const handleClose = () => {
-    props.onClose();
-  };
+    props.onClose()
+  }
 
   const handleConfirm = () => {
-    if (props.onConfirm) props.onConfirm();
-  };
+    if (props.onConfirm) props.onConfirm()
+  }
 
-  const content: string = props.message;
+  const content: string = props.message
 
   return (
     <Dialog fullScreen={fullScreen} open={props.open} onClose={handleClose}>
@@ -46,5 +46,5 @@ export default function ResponsiveDialog(props: DialogProps) {
         </DialogActions>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

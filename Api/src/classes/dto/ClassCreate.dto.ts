@@ -1,4 +1,4 @@
-import { Transform } from 'class-transformer';
+import { Transform } from 'class-transformer'
 import {
   IsString,
   MaxLength,
@@ -7,34 +7,33 @@ import {
   IsDate,
   MinDate,
   IsNotEmpty,
-} from 'class-validator';
+} from 'class-validator'
 
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-tomorrow.toLocaleString();
+const tomorrow = new Date()
+tomorrow.setDate(tomorrow.getDate() + 1)
+tomorrow.toLocaleString()
 
 export class ClassCreateDto {
-  @IsAlpha()
   @MinLength(2)
   @MaxLength(50)
   @IsNotEmpty()
-  name: string;
+  name: string
 
   @IsString()
   @MinLength(15)
   @MaxLength(50)
   @IsNotEmpty()
-  description: string;
+  description: string
 
   @Transform(({ value }) => new Date(value))
   @IsDate()
   @MinDate(tomorrow)
   @IsNotEmpty()
-  startDate: Date;
+  startDate: Date
 
   @Transform(({ value }) => new Date(value))
   @IsDate()
   @MinDate(tomorrow)
   @IsNotEmpty()
-  endDate: Date;
+  endDate: Date
 }

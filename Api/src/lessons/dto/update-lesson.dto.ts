@@ -1,7 +1,7 @@
-import { UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { PartialType } from '@nestjs/mapped-types';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { MulterField } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
+import { UploadedFiles, UseInterceptors } from '@nestjs/common'
+import { PartialType } from '@nestjs/mapped-types'
+import { FilesInterceptor } from '@nestjs/platform-express'
+import { MulterField } from '@nestjs/platform-express/multer/interfaces/multer-options.interface'
 import {
   IsOptional,
   IsString,
@@ -10,55 +10,67 @@ import {
   IsNotEmpty,
   IsMongoId,
   IsBoolean,
-} from 'class-validator';
-import mongoose from 'mongoose';
-import { CreateLessonDto } from './create-lesson.dto';
+} from 'class-validator'
+import mongoose from 'mongoose'
+import { CreateLessonDto } from './create-lesson.dto'
 
 export class StudentInformation {
-  _id?: string;
-  studentName?: mongoose.Types.ObjectId;
-  presence: boolean;
-  absence: string;
-  submmitedWork: string;
+  _id?: string
+  studentName?: mongoose.Types.ObjectId
+  presence: boolean
+  absence: string
+  submmitedWork: string
+}
+
+export type File = {
+  id:string,
+  fieldname: string,
+  originalname: string,
+  encoding: string,
+  mimetype: string,
+  buffer: Buffer[],
+  size: number
 }
 
 export class UpdateLessonDto extends PartialType(CreateLessonDto) {
-  @IsMongoId()
-  lessonID: string;
+  //@IsMongoId()
+  lessonID: string
 
-  @IsMongoId()
-  _id: string;
+  className: string
 
- /* @IsOptional()
+  //@IsMongoId()
+  _id?: string
+
+  /* @IsOptional()
   @IsString()
   @MinLength(15)
   @MaxLength(50)
   @IsNotEmpty()*/
-  classWork:string;
+  classWork: File
 
-  summaryId:string;
+  summaryId: string
 
-  student?: StudentInformation;
+  student?: StudentInformation
 
-  students?: StudentInformation[];
+  students?: StudentInformation[]
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  studentEmail: string;
+  studentEmail?: string
 
   /*@IsOptional()
   @IsBoolean()*/
-  presence?: boolean;
+  presence?: boolean
 
   /* @IsOptional()
   @MinLength(15)
   @MaxLength(50)*/
-  absence?: string;
+  absence?: string
 
   /* @IsOptional()
   @MinLength(15)
   @MaxLength(50)*/
   //@UploadedFiles()
-  submmitedWork?: String;
+  submmitedWork?: String
 }

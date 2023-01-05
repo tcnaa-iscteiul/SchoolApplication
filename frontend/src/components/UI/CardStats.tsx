@@ -1,10 +1,10 @@
-import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
+import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material'
 
 type PropsType = {
-  title: string;
-  nr: string;
-  icon?: JSX.Element;
-};
+  title: string
+  nr: string
+  icon?: JSX.Element
+}
 
 export const CardStats = ({ title, nr, icon }: PropsType) => (
   <Card>
@@ -24,4 +24,4 @@ export const CardStats = ({ title, nr, icon }: PropsType) => (
       </Grid>
     </CardContent>
   </Card>
-);
+)
