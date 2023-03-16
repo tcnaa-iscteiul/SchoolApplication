@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import { useDispatch } from 'react-redux';
 import { menuActions } from '../../store/menu-slice';
 import { memo } from 'react';
+import { useAppSelector } from '../../hooks/use-redux';
 
 type DashboardProps = {
   list: lists[];
@@ -25,11 +26,14 @@ const ListItems = (props: DashboardProps): JSX.Element => {
     // dispatch(menuActions.addOption({ option: text }));
   };
 
+  const selectedOption = useAppSelector((state) => state.menu.option);
+
   const itens = (list: string[]) =>
     list.map((option: string, index: number) => (
       <ListItemButton
         key={index.toString()}
         onClick={(e) => onClickHandler(e, option)}
+        selected={selectedOption != list[index]}
       >
         <ListItemIcon>
           <PeopleIcon />

@@ -37,6 +37,7 @@ const theme = createTheme({
                 style: {
                   width: '100%',
                   color: secondaryColor,
+                  alignItems: 'right',
                 },
               },
             ],
@@ -175,6 +176,23 @@ const theme = createTheme({
           },
         },
       ],
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: primaryColor,
+          '&.MuiListItemButton-root:hover': {
+            '&, &.MuiListItemIcon-root': {
+              color: primaryColor,
+            },
+          },
+          '&.Mui-selected': {
+            backgroundColor: 'white',
+            color: 'black',
+          },
+        },
+        selected: {},
+      },
     },
   },
   typography: {

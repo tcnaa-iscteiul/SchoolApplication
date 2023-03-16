@@ -1,13 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src\\components",
-    "\\src\\components\\Admin",
-    "\\src\\components\\UI",
-    "\\src\\hooks",
-    "\\src\\pages",
-    "\\src\\store"
+    "\\frontend",
+    "\\frontend\\src",
+    "\\frontend\\src\\components",
+    "\\frontend\\src\\components\\UI"
   ],
-  "SelectedNode": "\\Api",
   "PreviewInSolutionExplorer": false
 }
