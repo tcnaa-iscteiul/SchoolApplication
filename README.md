@@ -70,3 +70,4 @@ e-mail:teacher@teacher.pt
 password: Teacher!123
 
 
+https://school-application-front.vercel.app/
