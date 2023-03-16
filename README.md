@@ -54,3 +54,19 @@ Working on dev mode if at the root of directory install the dependencies (school
 
 ### `npm start`
 
+Notes:
+Used mailtrap for receiving e-mails
+
+Admin access:
+e-mail: admin@admin.pt
+password: Admin!123
+
+Student access:
+e-mail:student@student.pt
+password: Student!123
+
+Teacher access:
+e-mail:teacher@teacher.pt
+password: Teacher!123
+
+
