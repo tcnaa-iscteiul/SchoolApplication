@@ -1,28 +1,27 @@
-import Dropdown from '../UI/Dropdown';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { Fragment } from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import { useState } from 'react';
-import { memo } from 'react';
-import { Grid, ListItemText } from '@mui/material';
-import { useAppSelector } from '../../hooks/use-redux';
-import { IClass } from '../../interfaces/IClass';
-import { IUser } from '../../interfaces';
-import Title from './Title';
+import Dropdown from '../UI/Dropdown'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { Fragment } from 'react'
+import CssBaseline from '@mui/material/CssBaseline'
+import { useState } from 'react'
+import { memo } from 'react'
+import { Grid, ListItemText } from '@mui/material'
+import { useAppSelector } from '../../hooks/use-redux'
+import { IClass } from '../../interfaces/IClass'
+import { IUser } from '../../interfaces'
+import Title from './Title'
 
 type AllStudents = {
-  title: string;
-};
+  title: string
+}
 
 const UserInClass = (props: AllStudents): JSX.Element => {
-  const [clas, setClass] = useState<string>('');
+  const [clas, setClass] = useState<string>('')
 
-  const classes = useAppSelector((state) => state.classes.classes);
+  const classes = useAppSelector(state => state.classes.classes)
 
-  const { students, teacher } =
-    clas && classes.find((c: IClass) => c.name === clas);
+  const { students, teacher } = clas && classes.find((c: IClass) => c.name === clas)
 
   return (
     <Fragment>
@@ -40,7 +39,7 @@ const UserInClass = (props: AllStudents): JSX.Element => {
               classes={classes}
               key={Math.random()}
               manageUser={(name: string) => {
-                setClass(name);
+                setClass(name)
               }}
               value={clas}
             />
@@ -72,7 +71,7 @@ const UserInClass = (props: AllStudents): JSX.Element => {
         </Grid>
       </Container>
     </Fragment>
-  );
-};
+  )
+}
 
-export default memo(UserInClass);
+export default memo(UserInClass)

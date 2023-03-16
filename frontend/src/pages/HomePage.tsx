@@ -1,8 +1,8 @@
-import { memo } from 'react';
-import Header from '../components/UI/Header';
-import HeaderCard from '../components/UI/HeaderCard';
-import PopularCourse from '../components/UI/PopularCourse';
-import StatisticsCard from '../components/UI/StatisticsCard';
+import { memo } from 'react'
+import Header from '../components/UI/Header'
+import HeaderCard from '../components/UI/HeaderCard'
+import PopularCourse from '../components/UI/PopularCourse'
+import StatisticsCard from '../components/UI/StatisticsCard'
 
 const HomePage = () => {
   return (
@@ -12,7 +12,7 @@ const HomePage = () => {
       <StatisticsCard />
       <PopularCourse />
     </div>
-  );
-};
+  )
+}
 
-export default memo(HomePage);
+export default memo(HomePage)

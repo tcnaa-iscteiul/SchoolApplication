@@ -1,9 +1,16 @@
-import { memo, Fragment } from 'react';
-import Dashboard from '../components/UI/Dashboard';
-import { useAppSelector } from '../hooks/use-redux';
+import { memo, Fragment, useEffect } from 'react'
+import Dashboard from '../components/UI/Dashboard'
+import { useAppDispatch, useAppSelector } from '../hooks/use-redux'
+import { fetchUserClassData } from '../store/menuActions'
 
 const TeacherWelcomePage = () => {
-  const menuList: string[] = useAppSelector((state) => state.menu.userClass);
+  const menuList: string[] = useAppSelector(state => state.auth.userClasses) || []
+
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchUserClassData())
+  }, [dispatch])
 
   const teacherDashboard: lists[] = [
     {
@@ -14,12 +21,15 @@ const TeacherWelcomePage = () => {
     {
       id: '.2',
       subheader: 'Manage Classes',
-      list: ['Php', 'Biologia'],
+      list: menuList,
     },
-  ];
+  ]
 
   return (
-    <Fragment>{menuList && <Dashboard options={teacherDashboard} />}</Fragment>
-  );
-};
-export default memo(TeacherWelcomePage);
+    <Fragment>
+      {' '}
+      <Dashboard options={teacherDashboard} />
+    </Fragment>
+  )
+}
+export default memo(TeacherWelcomePage)

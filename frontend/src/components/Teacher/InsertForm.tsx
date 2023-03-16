@@ -1,27 +1,23 @@
-import {
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  TextField,
-  Typography,
-} from '@mui/material';
-import React, { Fragment, memo, useState } from 'react';
-import useAxios from '../../hooks/use-axios';
-import { useAppSelector } from '../../hooks/use-redux';
-import useInput from '../../hooks/useInput';
-import LoadingSpinner from '../UI/LoadingSpinner';
-import Modal from '../UI/Modal';
+import { Box, Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material'
+import React, { Fragment, memo, useState } from 'react'
+import useAxios from '../../hooks/use-axios'
+import { useAppDispatch, useAppSelector } from '../../hooks/use-redux'
+import useInput from '../../hooks/useInput'
+import { fetchClassData } from '../../store/classesActions'
+import { fetchUserClassData } from '../../store/menuActions'
+import LoadingSpinner from '../UI/LoadingSpinner'
+import Modal from '../UI/Modal'
 
 type InsertFormProps = {
-  title: string;
-  method: string;
-  url: string;
-};
+  title: string
+  method: string
+  url: string
+}
 
 function InsertForm(props: InsertFormProps) {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false)
+
+  const dispatch = useAppDispatch()
 
   const {
     value: enteredSummary,
@@ -30,28 +26,29 @@ function InsertForm(props: InsertFormProps) {
     valueChangeHandler: summaryChangedHandler,
     valueBlurHandler: summaryBlurHandler,
     reset: resetSummaryInput,
-  } = useInput((value: string) => value !== '');
+  } = useInput((value: string) => value !== '')
 
   const axiosParams = {
     method: props.method,
     url: props.url,
     data: {
       summary: enteredSummary,
-      className: useAppSelector((state) => state.menu.option),
+      className: useAppSelector(state => state.menu.option),
     },
-  };
+  }
 
-  const { error, loading, sendData } = useAxios(axiosParams);
+  const { error, loading, sendData } = useAxios(axiosParams)
   const clickHandlerInsert = (event: React.MouseEvent) => {
-    event.preventDefault();
-    sendData();
-    setShowModal(true);
-    resetSummaryInput();
-  };
+    event.preventDefault()
+    sendData()
+    setShowModal(true)
+    resetSummaryInput()
+    dispatch(fetchUserClassData())
+  }
 
   const handleCloseModal = () => {
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
   return (
     <Fragment>
@@ -98,7 +95,7 @@ function InsertForm(props: InsertFormProps) {
         </Box>
       </Container>
     </Fragment>
-  );
+  )
 }
 
-export default memo(InsertForm);
+export default memo(InsertForm)

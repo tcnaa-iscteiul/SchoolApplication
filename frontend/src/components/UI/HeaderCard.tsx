@@ -1,5 +1,5 @@
-import { Grid, Typography } from '@mui/material';
-import homePageImage from './Images/homePageImage.png';
+import { Grid, Typography } from '@mui/material'
+import homePageImage from './Images/homePageImage.png'
 
 const HeaderCard = () => {
   return (
@@ -12,8 +12,7 @@ const HeaderCard = () => {
         </Grid>
         <Grid container alignItems="flex-start">
           <Typography gutterBottom variant="h5">
-            Anywhere, anytime. Start learning today! And Get and Exceptional
-            Education Experience.
+            Anywhere, anytime. Start learning today! And Get and Exceptional Education Experience.
           </Typography>
         </Grid>
       </Grid>
@@ -31,6 +30,6 @@ const HeaderCard = () => {
         />
       </Grid>
     </Grid>
-  );
-};
-export default HeaderCard;
+  )
+}
+export default HeaderCard

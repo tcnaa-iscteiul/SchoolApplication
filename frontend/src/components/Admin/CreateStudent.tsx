@@ -1,31 +1,31 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { useEffect, useState } from 'react';
-import useInput from '../../hooks/useInput';
-import { Fragment } from 'react';
-import Modal from '../UI/Modal';
-import LoadingSpinner from '../UI/LoadingSpinner';
-import { memo } from 'react';
-import useAxios from '../../hooks/use-axios';
-import { fetchUsersData } from '../../store/usersActions';
-import { useAppDispatch } from '../../hooks/use-redux';
-import CreateStudentFields from './CreateStudentFields';
+import * as React from 'react'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { useEffect, useState } from 'react'
+import useInput from '../../hooks/useInput'
+import { Fragment } from 'react'
+import Modal from '../UI/Modal'
+import LoadingSpinner from '../UI/LoadingSpinner'
+import { memo } from 'react'
+import useAxios from '../../hooks/use-axios'
+import { fetchUsersData } from '../../store/usersActions'
+import { useAppDispatch } from '../../hooks/use-redux'
+import CreateStudentFields from './CreateStudentFields'
 
 function CreateStudent() {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [showFields, setShowFields] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [showFields, setShowFields] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>('')
 
   const re =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   const {
     value: enteredEmail,
     isValid: enteredEmailIsValid,
@@ -33,7 +33,7 @@ function CreateStudent() {
     valueChangeHandler: emailChangedHandler,
     valueBlurHandler: emailBlurHandler,
     reset: resetEmailInput,
-  } = useInput((value: string) => re.test(value) && value.length < 100);
+  } = useInput((value: string) => re.test(value) && value.length < 100)
 
   const {
     response,
@@ -46,41 +46,41 @@ function CreateStudent() {
     params: {
       email: enteredEmail,
     },
-  });
+  })
 
-  const validateForm: boolean = enteredEmailIsValid;
+  const validateForm: boolean = enteredEmailIsValid
 
   const resetInputs = () => {
-    resetEmailInput();
-    setShowFields(false);
-  };
+    resetEmailInput()
+    setShowFields(false)
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    sendData();
-  };
+    event.preventDefault()
+    sendData()
+  }
 
   useEffect(() => {
     if (response?.data.length === 0 && response.statusText === 'OK') {
-      setShowModal(false);
-      setShowFields(true);
-      setMessage('');
+      setShowModal(false)
+      setShowFields(true)
+      setMessage('')
     } else if (response?.data.length !== 0 && response?.statusText === 'OK') {
-      setShowModal(true);
-      setMessage('Email already registered');
-      resetEmailInput();
+      setShowModal(true)
+      setMessage('Email already registered')
+      resetEmailInput()
     } else {
-      setShowModal(true);
-      resetEmailInput();
+      setShowModal(true)
+      resetEmailInput()
     }
-  }, [response, error]);
+  }, [response, error])
 
   const handleCloseModal = () => {
     if (!error) {
-      dispatch(fetchUsersData());
+      dispatch(fetchUsersData())
     }
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
   return (
     <Fragment>
@@ -114,11 +114,7 @@ function CreateStudent() {
                   value={enteredEmail}
                   onChange={emailChangedHandler}
                   onBlur={emailBlurHandler}
-                  helperText={
-                    emailInputHasError &&
-                    enteredEmail &&
-                    'Please insert a valid email'
-                  }
+                  helperText={emailInputHasError && enteredEmail && 'Please insert a valid email'}
                 />
               </Grid>
 
@@ -136,7 +132,7 @@ function CreateStudent() {
                 <Button
                   fullWidth
                   onClick={() => {
-                    setShowFields(false);
+                    setShowFields(false)
                   }}
                   variant="contained"
                   disabled={!showFields}
@@ -147,12 +143,10 @@ function CreateStudent() {
             </Grid>
           </Box>
         </Box>
-        {showFields && (
-          <CreateStudentFields email={enteredEmail} resetInputs={resetInputs} />
-        )}
+        {showFields && <CreateStudentFields email={enteredEmail} resetInputs={resetInputs} />}
       </Container>
     </Fragment>
-  );
+  )
 }
 
-export default memo(CreateStudent);
+export default memo(CreateStudent)

@@ -1,21 +1,15 @@
-import {
-  IsString,
-  MinLength,
-  IsOptional,
-  IsMongoId,
-  MaxLength,
-} from 'class-validator';
+import { IsString, MinLength, IsOptional, IsMongoId, MaxLength } from 'class-validator'
 
 export class UserUpdatePasswordDto {
   @IsOptional()
   @IsMongoId()
-  id: string;
+  id: string
 
   @IsString()
-  token: string;
+  token: string
 
   @IsString()
   @MinLength(8)
   @MaxLength(16)
-  password: string;
+  password: string
 }

@@ -1,22 +1,22 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import * as mongoose from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document } from 'mongoose'
+import * as mongoose from 'mongoose'
 
-export type LessonDocument = Lesson & Document;
+export type LessonDocument = Lesson & Document
 
 @Schema()
 export class Lesson {
   @Prop()
-  id: string;
+  id: string
 
   @Prop({ type: Date })
-  date: Date;
+  date: Date
 
   @Prop({ required: true })
-  summary: string;
+  summary: string
 
   @Prop()
-  classWork: string;
+  classWork: string
 
   @Prop([
     {
@@ -30,20 +30,20 @@ export class Lesson {
   ])
   students: [
     {
-      studentName: string;
-      submmitedWork: string;
-      presence: boolean;
-      abcence: JSON;
+      studentName: string
+      submmitedWork: string
+      presence: boolean
+      abcence: JSON
     },
-  ];
+  ]
 }
 
-export const LessonSchema = SchemaFactory.createForClass(Lesson);
+export const LessonSchema = SchemaFactory.createForClass(Lesson)
 
 LessonSchema.set('toJSON', {
   transform: function (doc, ret) {
-    ret.id = ret._id;
-    delete ret._id;
-    delete ret.__v;
+    ret.id = ret._id
+    delete ret._id
+    delete ret.__v
   },
-});
+})

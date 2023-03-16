@@ -1,5 +1,5 @@
-import { BottomNavigation } from '@mui/material';
-import Layout from './UI/Layout';
+import { BottomNavigation } from '@mui/material'
+import Layout from './UI/Layout'
 
 export const MainFeature = () => {
   return (
@@ -7,5 +7,5 @@ export const MainFeature = () => {
       <p>Main Feature</p>
       <BottomNavigation />
     </Layout>
-  );
-};
+  )
+}

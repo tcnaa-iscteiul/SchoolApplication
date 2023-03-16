@@ -1,38 +1,38 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { useState } from 'react';
-import useInput from '../hooks/useInput';
-import PasswordStrengthBar from 'react-password-strength-bar';
-import { Fragment } from 'react';
-import Modal from './UI/Modal';
-import LoadingSpinner from './UI/LoadingSpinner';
-import useAxios from '../hooks/use-axios';
-import { getCookie } from 'typescript-cookie';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import { Service } from '../services/Service';
-import { memo } from 'react';
-import { IconButton, InputAdornment } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import './styles/SignIn.css';
+import * as React from 'react'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { useState } from 'react'
+import useInput from '../hooks/useInput'
+import PasswordStrengthBar from 'react-password-strength-bar'
+import { Fragment } from 'react'
+import Modal from './UI/Modal'
+import LoadingSpinner from './UI/LoadingSpinner'
+import useAxios from '../hooks/use-axios'
+import { getCookie } from 'typescript-cookie'
+import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import { Service } from '../services/Service'
+import { memo } from 'react'
+import { IconButton, InputAdornment } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import './styles/SignIn.css'
 
 function ChangePassword() {
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false)
 
-  const [showPassword, setShowPassord] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassord] = useState<boolean>(false);
+  const [showPassword, setShowPassord] = useState<boolean>(false)
+  const [showConfirmPassword, setShowConfirmPassord] = useState<boolean>(false)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const mediumRegex = new RegExp(
     '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
-  );
+  )
   const {
     value: enteredPassword,
     isValid: enteredPasswordIsValid,
@@ -40,7 +40,7 @@ function ChangePassword() {
     valueChangeHandler: passwordChangedHandler,
     valueBlurHandler: passwordBlurHandler,
     reset: resetPasswordInput,
-  } = useInput((value: string) => mediumRegex.test(value));
+  } = useInput((value: string) => mediumRegex.test(value))
 
   const {
     value: enteredConfirmPassword,
@@ -49,15 +49,15 @@ function ChangePassword() {
     valueChangeHandler: confirmPasswordChangedHandler,
     valueBlurHandler: confirmPasswordBlurHandler,
     reset: resetConfirmPasswordInput,
-  } = useInput((value: string) => value === enteredPassword);
+  } = useInput((value: string) => value === enteredPassword)
 
-  const sampleLocation = useLocation();
-  let token = getCookie('token');
+  const sampleLocation = useLocation()
+  let token = getCookie('token')
   if (!token) {
     try {
-      token = sampleLocation.search.split('=')[1];
+      token = sampleLocation.search.split('=')[1]
     } catch (err) {
-      throw new Error('Token not found!');
+      throw new Error('Token not found!')
     }
   }
 
@@ -73,41 +73,40 @@ function ChangePassword() {
       token: token,
       password: enteredPassword,
     },
-  });
+  })
 
-  const validateForm: boolean =
-    enteredPasswordIsValid && enteredConfirmaPasswordIsValid;
+  const validateForm: boolean = enteredPasswordIsValid && enteredConfirmaPasswordIsValid
 
   const resetInputs = () => {
-    resetPasswordInput();
-    resetConfirmPasswordInput();
-  };
+    resetPasswordInput()
+    resetConfirmPasswordInput()
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    sendData();
+    event.preventDefault()
+    sendData()
 
-    setShowModal(true);
-    resetInputs();
-  };
+    setShowModal(true)
+    resetInputs()
+  }
 
   const handleCloseModal = async () => {
-    setShowModal(false);
+    setShowModal(false)
     if (sampleLocation.search && !error && !response?.data) {
       if (token) {
-        await Service.deleteToken(token);
-        navigate('/signin');
+        await Service.deleteToken(token)
+        navigate('/signin')
       }
     }
-  };
+  }
 
   const handleClickShowPassword = () => {
-    setShowPassord(!showPassword);
-  };
+    setShowPassord(!showPassword)
+  }
 
   const handleClickShowConfirmPassword = () => {
-    setShowConfirmPassord(!showConfirmPassword);
-  };
+    setShowConfirmPassord(!showConfirmPassword)
+  }
 
   return (
     <Fragment>
@@ -134,9 +133,7 @@ function ChangePassword() {
                   value={enteredPassword}
                   onChange={passwordChangedHandler}
                   helperText={
-                    passwordInputHasError &&
-                    enteredPassword &&
-                    'Please insert a valid password'
+                    passwordInputHasError && enteredPassword && 'Please insert a valid password'
                   }
                   onBlur={passwordBlurHandler}
                   required
@@ -185,11 +182,7 @@ function ChangePassword() {
                           onClick={handleClickShowConfirmPassword}
                           edge="end"
                         >
-                          {showConfirmPassword ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
+                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -197,12 +190,7 @@ function ChangePassword() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button
-                  fullWidth
-                  type="submit"
-                  variant="contained"
-                  disabled={!validateForm}
-                >
+                <Button fullWidth type="submit" variant="contained" disabled={!validateForm}>
                   Change Password
                 </Button>
               </Grid>
@@ -211,7 +199,7 @@ function ChangePassword() {
         </Box>
       </Container>
     </Fragment>
-  );
+  )
 }
 
-export default memo(ChangePassword);
+export default memo(ChangePassword)

@@ -1,33 +1,33 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { Link as LinkRouter } from 'react-router-dom';
-import { useState } from 'react';
-import useInput from '../hooks/useInput';
-import PasswordStrengthBar from 'react-password-strength-bar';
-import Modal from '../components/UI/Modal';
-import { Status } from '../interfaces/Status';
-import { Role } from '../interfaces/Role';
-import LoadingSpinner from '../components/UI/LoadingSpinner';
-import Layout from '../components/UI/Layout';
-import { IconButton, InputAdornment } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import useAxios from '../hooks/use-axios';
-import '../components/styles/SignIn.css';
+import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { Link as LinkRouter } from 'react-router-dom'
+import { useState } from 'react'
+import useInput from '../hooks/useInput'
+import PasswordStrengthBar from 'react-password-strength-bar'
+import Modal from '../components/UI/Modal'
+import { Status } from '../interfaces/Status'
+import { Role } from '../interfaces/Role'
+import LoadingSpinner from '../components/UI/LoadingSpinner'
+import Layout from '../components/UI/Layout'
+import { IconButton, InputAdornment } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import useAxios from '../hooks/use-axios'
+import '../components/styles/SignIn.css'
 
 export default function SignUp() {
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [showPassword, setShowPassord] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassord] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [showPassword, setShowPassord] = useState<boolean>(false)
+  const [showConfirmPassword, setShowConfirmPassord] = useState<boolean>(false)
 
-  const letters = /^[A-Za-z]+$/;
+  const letters = /^[A-Za-z]+$/
   const {
     value: enteredFirstName,
     isValid: enteredFirstNameIsValid,
@@ -35,10 +35,7 @@ export default function SignUp() {
     valueChangeHandler: firstNameChangedHandler,
     valueBlurHandler: firstNameBlurHandler,
     reset: resetFirstNameInput,
-  } = useInput(
-    (value: string) =>
-      value.trim() !== '' && value.length > 1 && letters.test(value),
-  );
+  } = useInput((value: string) => value.trim() !== '' && value.length > 1 && letters.test(value))
   const {
     value: enteredLastName,
     isValid: enteredLastNameIsValid,
@@ -46,12 +43,9 @@ export default function SignUp() {
     valueChangeHandler: lastNameChangedHandler,
     valueBlurHandler: lastNameBlurHandler,
     reset: resetLastNameInput,
-  } = useInput(
-    (value: string) =>
-      value.trim() !== '' && value.length > 2 && letters.test(value),
-  );
+  } = useInput((value: string) => value.trim() !== '' && value.length > 2 && letters.test(value))
   const re =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   const {
     value: enteredEmail,
     isValid: enteredEmailIsValid,
@@ -59,8 +53,8 @@ export default function SignUp() {
     valueChangeHandler: emailChangedHandler,
     valueBlurHandler: emailBlurHandler,
     reset: resetEmailInput,
-  } = useInput((value: string) => re.test(value));
-  const number = /^[0-9]+$/;
+  } = useInput((value: string) => re.test(value))
+  const number = /^[0-9]+$/
   const {
     value: enteredPhone,
     isValid: enteredPhoneIsValid,
@@ -70,15 +64,12 @@ export default function SignUp() {
     reset: resetPhoneInput,
   } = useInput(
     (value: string) =>
-      value.trim() !== '' &&
-      value.length === 9 &&
-      number.test(value) &&
-      value.startsWith('9'),
-  );
+      value.trim() !== '' && value.length === 9 && number.test(value) && value.startsWith('9'),
+  )
 
   const mediumRegex = new RegExp(
     '^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})',
-  );
+  )
   const {
     value: enteredPassword,
     isValid: enteredPasswordIsValid,
@@ -86,7 +77,7 @@ export default function SignUp() {
     valueChangeHandler: passwordChangedHandler,
     valueBlurHandler: passwordBlurHandler,
     reset: resetPasswordInput,
-  } = useInput((value: string) => mediumRegex.test(value));
+  } = useInput((value: string) => mediumRegex.test(value))
   const {
     value: enteredConfirmPassword,
     isValid: enteredConfirmaPasswordIsValid,
@@ -94,7 +85,7 @@ export default function SignUp() {
     valueChangeHandler: confirmPasswordChangedHandler,
     valueBlurHandler: confirmPasswordBlurHandler,
     reset: resetConfirmPasswordInput,
-  } = useInput((value: string) => value === enteredPassword);
+  } = useInput((value: string) => value === enteredPassword)
 
   const {
     error,
@@ -112,7 +103,7 @@ export default function SignUp() {
       lastName: enteredLastName,
       phone: enteredPhone,
     },
-  });
+  })
 
   const validateForm: boolean =
     enteredFirstNameIsValid &&
@@ -120,35 +111,35 @@ export default function SignUp() {
     enteredEmailIsValid &&
     enteredPhoneIsValid &&
     enteredPasswordIsValid &&
-    enteredConfirmaPasswordIsValid;
+    enteredConfirmaPasswordIsValid
 
   const resetInputs = () => {
-    setShowModal(true);
-    resetFirstNameInput();
-    resetLastNameInput();
-    resetEmailInput();
-    resetPhoneInput();
-    resetPasswordInput();
-    resetConfirmPasswordInput();
-  };
+    setShowModal(true)
+    resetFirstNameInput()
+    resetLastNameInput()
+    resetEmailInput()
+    resetPhoneInput()
+    resetPasswordInput()
+    resetConfirmPasswordInput()
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    sendData();
-    resetInputs();
-  };
+    event.preventDefault()
+    sendData()
+    resetInputs()
+  }
 
   const handleCloseModal = () => {
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
   const handleClickShowPassword = () => {
-    setShowPassord(!showPassword);
-  };
+    setShowPassord(!showPassword)
+  }
 
   const handleClickShowConfirmPassword = () => {
-    setShowConfirmPassord(!showConfirmPassword);
-  };
+    setShowConfirmPassord(!showConfirmPassword)
+  }
 
   return (
     <Layout>
@@ -184,9 +175,7 @@ export default function SignUp() {
                   onChange={firstNameChangedHandler}
                   onBlur={firstNameBlurHandler}
                   helperText={
-                    firstNameInputHasError &&
-                    enteredFirstName &&
-                    'Please insert a valid name'
+                    firstNameInputHasError && enteredFirstName && 'Please insert a valid name'
                   }
                 />
               </Grid>
@@ -201,9 +190,7 @@ export default function SignUp() {
                   onChange={lastNameChangedHandler}
                   onBlur={lastNameBlurHandler}
                   helperText={
-                    lastNameInputHasError &&
-                    enteredLastName &&
-                    'Please insert a valid  last name'
+                    lastNameInputHasError && enteredLastName && 'Please insert a valid  last name'
                   }
                 />
               </Grid>
@@ -219,11 +206,7 @@ export default function SignUp() {
                   value={enteredEmail}
                   onChange={emailChangedHandler}
                   onBlur={emailBlurHandler}
-                  helperText={
-                    emailInputHasError &&
-                    enteredEmail &&
-                    'Please insert a valid email'
-                  }
+                  helperText={emailInputHasError && enteredEmail && 'Please insert a valid email'}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -237,9 +220,7 @@ export default function SignUp() {
                   onChange={phoneChangedHandler}
                   onBlur={phoneBlurHandler}
                   helperText={
-                    phoneInputHasError &&
-                    enteredPhone &&
-                    'Please insert a valid phone number'
+                    phoneInputHasError && enteredPhone && 'Please insert a valid phone number'
                   }
                 />
               </Grid>
@@ -249,9 +230,7 @@ export default function SignUp() {
                   value={enteredPassword}
                   onChange={passwordChangedHandler}
                   helperText={
-                    passwordInputHasError &&
-                    enteredPassword &&
-                    'Please insert a valid password'
+                    passwordInputHasError && enteredPassword && 'Please insert a valid password'
                   }
                   onBlur={passwordBlurHandler}
                   required
@@ -300,11 +279,7 @@ export default function SignUp() {
                           onClick={handleClickShowConfirmPassword}
                           edge="end"
                         >
-                          {showConfirmPassword ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )}
+                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -312,26 +287,19 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button
-                  fullWidth
-                  type="submit"
-                  variant="contained"
-                  disabled={!validateForm}
-                >
+                <Button fullWidth type="submit" variant="contained" disabled={!validateForm}>
                   Sign Up
                 </Button>
               </Grid>
             </Grid>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <LinkRouter to="/signin">
-                  Already have an account? Sign in
-                </LinkRouter>
+                <LinkRouter to="/signin">Already have an account? Sign in</LinkRouter>
               </Grid>
             </Grid>
           </Box>
         </Box>
       </Container>
     </Layout>
-  );
+  )
 }

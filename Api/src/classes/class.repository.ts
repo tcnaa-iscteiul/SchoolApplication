@@ -6,26 +6,37 @@ import {
   forwardRef,
   Inject,
   BadRequestException,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
-import { ClassCreateDto } from './dto/ClassCreate.dto';
-import { ClassUpdateDto } from './dto/ClassUpdate.dto';
-import { ClassSearchDto } from './dto/ClassSearch.dto';
-import { StudentToClassDto } from './dto/StudentToClass.dto';
-import { Class, ClassDocument } from './class.schema';
-import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto';
-import { UserRepository } from '../users/user.repository';
-import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
-import { Evaluations } from './dto/Evaluations.dto';
-import { UpdateEvaluations } from './dto/UpdateEvaluation.dto';
-import { LessonsService } from 'src/lessons/lessons.service';
-import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto';
-import {
-  StudentInformation,
-  UpdateLessonDto,
-} from 'src/lessons/dto/update-lesson.dto';
-import { Role } from 'src/users/dto/UserRole.dto';
+  Res,
+  HttpException,
+  HttpStatus,
+  StreamableFile,
+  ServiceUnavailableException,
+} from '@nestjs/common'
+import { InjectModel } from '@nestjs/mongoose'
+import mongoose, { Model } from 'mongoose'
+import { ClassCreateDto } from './dto/ClassCreate.dto'
+import { ClassUpdateDto } from './dto/ClassUpdate.dto'
+import { ClassSearchDto } from './dto/ClassSearch.dto'
+import { StudentToClassDto } from './dto/StudentToClass.dto'
+import { Class, ClassDocument } from './class.schema'
+import { TeacherToClassDto } from './dto/AssignTeacherToClass.dto'
+import { UserRepository } from '../users/user.repository'
+import { UserSearchDto } from 'src/users/dto/UserSearch.dto'
+import { Evaluations } from './dto/Evaluations.dto'
+import { UpdateEvaluations } from './dto/UpdateEvaluation.dto'
+import { CreateLessonDto } from 'src/lessons/dto/create-lesson.dto'
+import { StudentInformation, UpdateLessonDto } from 'src/lessons/dto/update-lesson.dto'
+import { Role } from 'src/users/dto/UserRole.dto'
+import { UpdateStudentLessonDto } from 'src/lessons/dto/update-student-data-lesson'
+
+export type File = {
+  fieldname: String,
+  originalname: String,
+  encoding: String,
+  mimetype: String,
+  buffer: Buffer[],
+  size: Number
+}
 
 @Injectable()
 export class ClassRepository {
@@ -33,20 +44,21 @@ export class ClassRepository {
     @InjectModel(Class.name) private classModel: Model<ClassDocument>,
     @Inject(forwardRef(() => UserRepository))
     private readonly userModel: UserRepository,
-    private readonly lessonModel: LessonsService,
-  ) {}
+    //private readonly bucket: GridFSBucket
+  ) {
+  }
 
-  private ObjectId = mongoose.Types.ObjectId;
+  private ObjectId = mongoose.Types.ObjectId
 
   // Create a class, and if already exists a class with the same name, return an error
   async create(classCreateDto: ClassCreateDto): Promise<void> {
     try {
-      await new this.classModel(classCreateDto).save();
+      await new this.classModel(classCreateDto).save()
     } catch (error) {
       if (error.code === 11000) {
-        throw new ConflictException('Class with this name already exists!');
+        throw new ConflictException('Class with this name already exists!')
       } else {
-        throw new InternalServerErrorException();
+        throw new InternalServerErrorException()
       }
     }
   }
@@ -64,20 +76,16 @@ export class ClassRepository {
         path: 'lessons.students.studentName',
         match: { id: { $ne: '' } },
         select: { email: 1 },
-      });
+      })
   }
 
   // Find with filters (name, description, startDate or endDate)
   async findWithFilters(filter: ClassSearchDto) {
-    const name = Object.is(filter.name, undefined) ? '' : filter.name;
-    const description = Object.is(filter.description, undefined)
-      ? ''
-      : filter.description;
-    const startDate = Object.is(filter.startDate, undefined)
-      ? ''
-      : filter.startDate;
-    const endDate = Object.is(filter.endDate, undefined) ? '' : filter.endDate;
-    const teacher = Object.is(filter.teacher, undefined) ? '' : filter.teacher;
+    const name = Object.is(filter.name, undefined) ? '' : filter.name
+    const description = Object.is(filter.description, undefined) ? '' : filter.description
+    const startDate = Object.is(filter.startDate, undefined) ? '' : filter.startDate
+    const endDate = Object.is(filter.endDate, undefined) ? '' : filter.endDate
+    const teacher = Object.is(filter.teacher, undefined) ? '' : filter.teacher
 
     return await this.classModel
       .find({
@@ -108,16 +116,14 @@ export class ClassRepository {
         match: { id: { $ne: '' } },
         select: { firstName: 1, lastName: 1, email: 1 },
       })
-      .exec();
+      .exec()
   }
 
   async delete(classSearchDto: ClassUpdateDto): Promise<void> {
-    const result = await this.classModel
-      .findOneAndDelete({ name: classSearchDto.name })
-      .exec();
+    const result = await this.classModel.findOneAndDelete({ name: classSearchDto.name }).exec()
 
     if (!result) {
-      throw new NotFoundException('Class with ID not found');
+      throw new NotFoundException('Class with ID not found')
     }
   }
 
@@ -133,41 +139,39 @@ export class ClassRepository {
       {
         new: true,
       },
-    );
+    )
     if (!result) {
-      throw new NotFoundException('Class with ID not found');
+      throw new NotFoundException('Class with ID not found')
     }
   }
 
   async createEvaluation(updateClass: ClassUpdateDto) {
     if (!updateClass.name) {
-      throw new BadRequestException('The class name is missing!');
+      throw new BadRequestException('The class name is missing!')
     }
-    const today = new Date();
-    const findClasses = await this.findAll();
-    const { name } = updateClass;
-    const { endDate, students } = findClasses.find(
-      (classes) => classes.name === name,
-    );
+    const today = new Date()
+    const findClasses = await this.findAll()
+    const { name } = updateClass
+    const { endDate, students } = findClasses.find(classes => classes.name === name)
 
     if (today.getTime() <= new Date(endDate).getTime()) {
-      throw new BadRequestException('The class is still ongoing');
+      throw new BadRequestException('The class is still ongoing')
     }
 
-    const evaluation = students.map((item) => {
+    const evaluation = students.map(item => {
       const e: Evaluations = {
         student: item.id,
         grade: 0,
-      };
-      return e;
-    });
+      }
+      return e
+    })
 
     const result = await this.classModel.findOneAndUpdate(
       { name },
       { evaluationDate: today, $addToSet: { evaluations: evaluation } },
-    );
+    )
     if (!result) {
-      throw new NotFoundException('Class with ID not found');
+      throw new NotFoundException('Class with ID not found')
     }
   }
 
@@ -178,57 +182,58 @@ export class ClassRepository {
         'evaluations.student': updateEvaluation.student,
       },
       { $set: { 'evaluations.$.grade': updateEvaluation.grade } },
-    );
+    )
     if (!result) {
-      throw new NotFoundException('Class with ID not found');
+      throw new NotFoundException('Class with ID not found')
     }
   }
 
   async createLesson(createLesson: CreateLessonDto) {
-    const ObjectId = mongoose.Types.ObjectId;
+    const ObjectId = mongoose.Types.ObjectId
 
     if (!createLesson.className) {
-      throw new BadRequestException('The class name is missing!');
+      throw new BadRequestException('The class name is missing!')
     }
-    const today = new Date();
-    const findClasses = await this.findAll();
-    const { className } = createLesson;
-    const searchClass = findClasses.find(
-      (classes) => classes.name === className,
-    );
+    const today = new Date()
+    const findClasses = await this.findAll()
+    const { className, summary } = createLesson
+    const searchClass = findClasses.find(classes => classes.name === className)
     if (!searchClass) {
-      throw new NotFoundException('Class with ID not found');
+      throw new NotFoundException('Class with ID not found')
     }
 
-    const { startDate, endDate, students, lessons } = searchClass;
+    const { startDate, endDate, students, lessons } = searchClass
     if (today.getTime() < new Date(startDate).getTime()) {
-      throw new BadRequestException('The class did not start yet');
+      throw new BadRequestException('The class did not start yet')
     }
     if (today.getTime() > new Date(endDate).getTime()) {
-      throw new BadRequestException('The class is finished');
+      throw new BadRequestException('The class is finished')
     }
     if (lessons.length > 0) {
       const findSummary = lessons.filter((item: CreateLessonDto) => {
         item.date.getDay() === today.getDay() &&
           item.date.getMonth() === today.getMonth() &&
-          item.date.getFullYear() === today.getFullYear();
-      });
+          item.date.getFullYear() === today.getFullYear()
+      })
 
       if (findSummary) {
-        throw new ConflictException('Already exists an summary for this date');
+        throw new ConflictException('Already exists an summary for this date')
       }
     }
 
-    const studentsLessons = students.map((item) => {
+    const studentsLessons = students.map(item => {
       const e: StudentInformation = {
         studentName: new ObjectId(item.id),
         submmitedWork: '',
         presence: false,
         absence: '',
-      };
-      return e;
-    });
-    const { summary } = createLesson;
+      }
+      return e
+    })
+    console.log('Summary')
+    console.log(studentsLessons)
+    console.log('Data frontend')
+    console.log(createLesson)
     const result = await this.classModel.findOneAndUpdate(
       { name: className },
       {
@@ -236,197 +241,362 @@ export class ClassRepository {
           lessons: {
             date: today,
             summary: summary,
-            classWork: '',
+            classWork: null,
             students: studentsLessons,
           },
         },
       },
-    );
+    )
     if (!result) {
-      throw new NotFoundException('Class with ID not found');
+      throw new NotFoundException('Class with ID not found')
     }
   }
 
-  async updateLesson(updateLesson: UpdateLessonDto) {
-    const ObjectId = mongoose.Types.ObjectId;
+  async removeLesson (createLesson:CreateLessonDto) {
+    const {className} = createLesson
+    const findClasses = await this.findAll()
+    const searchClass = findClasses.find(classes => classes.name === className)
+    if (!searchClass) {
+      throw new NotFoundException('Class with ID not found')
+    }
+    const { startDate, endDate, students, lessons } = searchClass
 
+    if (lessons.length > 0) {
+      const findSummary = lessons.filter((item: CreateLessonDto) => {
+        const today = new Date()
+        item.date.getDay() === today.getDay() &&
+          item.date.getMonth() === today.getMonth() &&
+          item.date.getFullYear() === today.getFullYear()
+      })
+
+      if (!findSummary) {
+        throw new ConflictException('Already exists an summary for this date')
+      }
+      const remSummary = lessons.filter((item: CreateLessonDto) => {
+        const today = new Date()
+        item.date.getDay() !== today.getDay() &&
+          item.date.getMonth() !== today.getMonth() &&
+          item.date.getFullYear() !== today.getFullYear()
+      })
+      const result = await this.classModel.updateOne(
+        {
+          name: className,
+        },
+        {
+          lessons: remSummary,
+        },
+      )
+      if (result.matchedCount === 0) {
+        throw new NotFoundException('Verify the input data')
+      }
+    }
+  }
+
+  async updateLesson(file, updateLesson) {
+    console.log('File')
+    console.log(file[0])
+    console.log(updateLesson)
+    const data: UpdateLessonDto = JSON.parse(updateLesson.updateLesson)
+    console.log(data)
+    const ObjectId = mongoose.Types.ObjectId
+    // console.log(updateLesson);
     const result = await this.classModel.updateOne(
       {
-        name: updateLesson.className,
-        'lessons._id': new ObjectId(updateLesson.lessonID),
+        name: data.className,
+        'lessons._id': new ObjectId(data.lessonID),
       },
       {
-        'lessons.$.classWork': updateLesson.classWork,
+        'lessons.$.classWork': file[0],
       },
-    );
+    )
+     console.log(result);
     if (result.matchedCount === 0) {
-      throw new NotFoundException('Verify the input data');
+      throw new NotFoundException('Verify the input data')
     }
   }
 
-  async updateLessonStudent(updateLesson: UpdateLessonDto) {
-    const ObjectId = mongoose.Types.ObjectId;
+  async updateLessonStudent(file, updateLesson: UpdateStudentLessonDto) {
+    // console.log("Classes");
+    /* updateLesson.className = 'French';
+    updateLesson.lessonID='6317685b415fd15d0164d5dc';
+    updateLesson.id='631090c9d5af73305d4bbf54';
+    updateLesson.presence=true;
+    updateLesson.absence='false';
+    updateLesson.submmitedWork='test';
+    console.log('test');
+    console.log(updateLesson);*/
+    const ObjectId = mongoose.Types.ObjectId
+    console.log('Update Lesson')
+    console.log(file)
+    const { className, lessonID, studentSummaryId, presence, absence, submmitedWork } = updateLesson
     const result = await this.classModel.updateOne(
       {
-        name: updateLesson.className,
+        name: className,
         lessons: {
           $elemMatch: {
-            id: new ObjectId(updateLesson.lessonID), //summary
-            'students._id': new this.ObjectId(updateLesson.id),
+            _id: new ObjectId(lessonID), //summary
+            'students.id': new this.ObjectId(studentSummaryId),
           },
         },
       },
       {
         $set: {
-          'lessons.$[outer].students.$[inner].presence': updateLesson.presence,
-          'lessons.$[outer].students.$[inner].absence': updateLesson.absence,
-          'lessons.$[outer].students.$[inner].submmitedWork':
-            updateLesson.submmitedWork,
+          // 'lessons.$[outer].students.$[inner].presence': presence,
+          //'lessons.$[outer].students.$[inner].absence': absence,
+          'lessons.$[outer].students.$[inner].submmitedWork': file,
         },
       },
       {
         arrayFilters: [
-          { 'outer._id': new this.ObjectId(updateLesson.lessonID) },
-          { 'inner._id': new this.ObjectId(updateLesson.id) },
+          { 'outer._id': new this.ObjectId(lessonID) },
+          { 'inner._id': new this.ObjectId(studentSummaryId) },
         ],
       },
-    );
+    )
+    console.log('result')
+    console.log(result)
     if (result.matchedCount === 0) {
-      throw new NotFoundException('Verify the input data');
+      throw new NotFoundException('Verify the input data')
     }
   }
 
-  async assignStudentsToClass(
-    classSearchDto: StudentToClassDto,
-  ): Promise<void> {
-    const { name, newStudents } = classSearchDto;
+  async assignStudentsToClass(classSearchDto: StudentToClassDto): Promise<void> {
+    const { name, newStudents } = classSearchDto
     try {
-      const findStudent = await this.userModel.findEmail(newStudents);
+      const findStudent = await this.userModel.findEmail(newStudents)
 
       if (!findStudent) {
-        throw new NotFoundException('User with ID not found');
+        throw new NotFoundException('User with ID not found')
       }
 
       const res = await this.classModel.findOneAndUpdate(
         { name },
         { $addToSet: { students: findStudent._id } },
-      );
+      )
       if (!res) {
-        throw new NotFoundException('User with ID not found');
+        throw new NotFoundException('User with ID not found')
       }
     } catch (err) {
-      throw new NotFoundException(err.message);
+      throw new NotFoundException(err.message)
     }
   }
 
-  async removeStudentsFromClass(
-    classSearchDto: StudentToClassDto,
-  ): Promise<void> {
-    const { name, newStudents } = classSearchDto;
+  async removeStudentsFromClass(classSearchDto: StudentToClassDto): Promise<void> {
+    const { name, newStudents } = classSearchDto
     try {
-      const findStudent = await this.userModel.findEmail(newStudents);
+      const findStudent = await this.userModel.findEmail(newStudents)
 
       if (!findStudent) {
-        throw new NotFoundException('User with ID not found');
+        throw new NotFoundException('User with ID not found')
       }
       const res = await this.classModel.findOneAndUpdate(
         { name },
         { $pull: { students: findStudent._id } },
-      );
+      )
       if (!res) {
-        throw new NotFoundException('User with ID not found');
+        throw new NotFoundException('User with ID not found')
       }
     } catch (err) {
-      throw new NotFoundException(err.message);
+      throw new NotFoundException(err.message)
     }
   }
 
   async assignTeacherToClass(classSearchDto: TeacherToClassDto): Promise<void> {
-    const { name, teacher } = classSearchDto;
+    const { name, teacher } = classSearchDto
     try {
-      const findTeacher = await this.userModel.findEmail(teacher);
+      const findTeacher = await this.userModel.findEmail(teacher)
 
       if (!findTeacher) {
-        throw new NotFoundException('User with ID not found');
+        throw new NotFoundException('User with ID not found')
       }
 
-      const res = await this.classModel.findOneAndUpdate(
-        { name },
-        { teacher: findTeacher._id },
-      );
+      const res = await this.classModel.findOneAndUpdate({ name }, { teacher: findTeacher._id })
       if (!res) {
-        throw new NotFoundException('User with ID not found');
+        throw new NotFoundException('User with ID not found')
       }
     } catch (err) {
-      throw new NotFoundException(err.message);
+      throw new NotFoundException(err.message)
     }
   }
 
-  async removeTeacherFromClass(
-    classSearchDto: TeacherToClassDto,
-  ): Promise<void> {
-    const { name, teacher } = classSearchDto;
+  async removeTeacherFromClass(classSearchDto: TeacherToClassDto): Promise<void> {
+    const { name, teacher } = classSearchDto
     try {
-      const findTeacher = await this.userModel.findEmail(teacher);
+      const findTeacher = await this.userModel.findEmail(teacher)
 
       if (!findTeacher) {
-        throw new NotFoundException('User with ID not found');
+        throw new NotFoundException('User with ID not found')
       }
-      const res = await this.classModel.findOneAndUpdate(
-        { name },
-        { teacher: null },
-      );
+      const res = await this.classModel.findOneAndUpdate({ name }, { teacher: null })
       if (!res) {
-        throw new NotFoundException('User with ID not found');
+        throw new NotFoundException('User with ID not found')
       }
     } catch (err) {
-      throw new NotFoundException(err.message);
+      throw new NotFoundException(err.message)
     }
   }
 
   async getNrClasses() {
-    const nrClasses = await this.classModel.count();
+    const nrClasses = await this.classModel.count()
     const nrStudents = await this.userModel.getNrUsers({
       role: Role.Student,
       email: '',
       phone: '',
-    });
+    })
     const nrTeachers = await this.userModel.getNrUsers({
       role: Role.Teacher,
       email: '',
       phone: '',
-    });
+    })
 
-    return { nrClasses, nrStudents, nrTeachers };
+    return { nrClasses, nrStudents, nrTeachers }
   }
 
   async getClassByUser(userSearch: UserSearchDto) {
     if (userSearch.role === Role.Student) {
-      const response = await this.userModel.getClassByUser();
-      const { email } = userSearch;
-      const allClasses = response.filter((item) => item.email === email);
-      const classes = allClasses[0].classes;
-      return classes.map((item) => item.name);
+      const response = await this.userModel.getClassByUser()
+      const { email } = userSearch
+      const allClasses = response.filter(item => item.email === email)
+      const formatData = allClasses[0].classes.map(item => {
+        const lessons =
+          (item.lessons &&
+            item.lessons.map((lesson: UpdateLessonDto) => {
+              const data =
+                (lesson.students &&
+                  lesson.students.filter(
+                    (lessonStudent: StudentInformation) =>
+                      lessonStudent.studentName.toString() === userSearch.id,
+                  )) ||
+                []
+
+              return {
+                lessonId: lesson._id,
+                lessonDate: lesson.date.toString().split('T')[0],
+                lessonSummary: lesson.summary,
+                lessonClassWork: {name:lesson.classWork.originalname, id:lesson.classWork.id},
+                lessonSummaryId: (data && data[0] && data[0]._id) || '',
+                lessonStudentPresence: data && data[0] && data[0].presence,
+                lessonStudentAbsence: data && data[0] && data[0].absence,
+                lessonStudentSubmmitedClassWork: data && data[0] && data[0].submmitedWork,
+              }
+            })) ||
+          []
+
+        const grade =
+          (item.evaluations &&
+            item.evaluations.filter(
+              evaluation => evaluation.student.toString() === userSearch.id,
+            )) ||
+          []
+        
+        return {
+          studentId: userSearch.id,
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          startDate: item.startDate,
+          endDate: item.endDate,
+          teacher: item.teacher || null,
+          lessonsStudent: lessons || null,
+          evaluations: {
+            date: item.evaluationDate || null,
+            grade: grade.length > 0 ? grade[0].grade : grade,
+          },
+        }
+      })
+      return formatData
+    }
+    if (userSearch.role === Role.Teacher) {
+      const result = await this.classModel
+        .find({ teacher: userSearch })
+        .populate({
+          path: 'students evaluations.student lessons.students.studentName',
+          match: { id: { $ne: '' } },
+          select: { firstName: 1, lastName: 1, email: 1 },
+        })
+        .exec()
+
+      return result
+    }
+  }
+
+  async downloadFile (@Res() res,updateLesson: UpdateLessonDto) {
+    const ObjectId = mongoose.Types.ObjectId
+       const clas = await this.classModel.findOne({
+        name: 'German',
+        lessons: {
+          $elemMatch: {
+            id: new ObjectId('634c825ede09fc3fc501bd19'), //summary
+          },
+        },
+      })
+
+      console.log(clas)
+            if(!clas){
+                throw new HttpException('An error occurred while retrieving file', HttpStatus.EXPECTATION_FAILED)
+            } 
+            /*
+              this.bucket
+              const readstream = this.bucket.openDownloadStream(new ObjectId(clas.lessons[0].classWork.id))
+      */
+             /* const file = createReadStream(join(process.cwd(), 'package.json'))
+              res.status(200)
+              res.headers({
+                'Accept-Range': 'bytes',
+                'Content-Type': clas.lessons[0].classWork.mimetype,
+                'Content-Length': clas.lessons[0].classWork.size,
+                'Content-Disposition': `attachment; filename="${clas.lessons[0].classWork.originalname}"`,
+              })
+              console.log(res)
+              res.send(file)
+            */
+          
+        
+      
+            //const file = createReadStream(join(process.cwd(), clas.lessons[0].classWork.originalname))
+            /*res.set({
+              'Content-Type': clas.lessons[0].classWork.mimetype,
+              'Content-Disposition': 'attachment; filename='+clas.lessons[0].classWork.originalname,
+            });*/
+           // res.header('Content-Type', clas.lessons[0].classWork.mimetype)
+            //res.header('Content-Disposition', 'attachment; filename=' + clas.lessons[0].classWork.originalname)
+           // console.log(file)
+           
+           return res.json({
+            data: clas.lessons[0].classWork,
+          })
+          // return res;
+          //return new StreamableFile(file)
+  }
+
+  async getNameClassByUser(userSearch: UserSearchDto) {
+    if (userSearch.role === Role.Student) {
+      const response = await this.userModel.getClassByUser()
+      const { email } = userSearch
+      const allClasses = response.filter(item => item.email === email)
+      const classes = allClasses[0].classes
+      return classes.map(item => item.name)
     } else if (userSearch.role !== Role.Admin) {
-      const result = await this.classModel.find({ teacher: userSearch }).exec();
-      return result;
+      const result = await this.classModel.find({ teacher: userSearch }).exec()
+      const response = result.map(item => item.name)
+      return response
     }
   }
 
   async getTopFive() {
-    const allClasses = await this.findAll();
+    const allClasses = await this.findAll()
 
     const result = allClasses
       .sort((a, b) => b.students?.length - a.students?.length)
       .filter((item, index) => index < 5)
-      .map((item) => {
+      .map(item => {
         return {
           name: item.name,
           description: item.description,
           id: new this.ObjectId(),
-        };
-      });
+        }
+      })
 
-    return result;
+    return result
   }
 }

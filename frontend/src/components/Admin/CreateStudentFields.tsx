@@ -1,32 +1,32 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import { useState } from 'react';
-import useInput from '../../hooks/useInput';
-import { Fragment } from 'react';
-import Modal from '../UI/Modal';
-import { Status } from '../../interfaces/Status';
-import { Role } from '../../interfaces/Role';
-import LoadingSpinner from '../UI/LoadingSpinner';
-import { memo } from 'react';
-import useAxios from '../../hooks/use-axios';
-import { fetchUsersData } from '../../store/usersActions';
-import { useAppDispatch } from '../../hooks/use-redux';
-import { FormControl } from '@mui/material';
+import * as React from 'react'
+import Button from '@mui/material/Button'
+import TextField from '@mui/material/TextField'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import { useState } from 'react'
+import useInput from '../../hooks/useInput'
+import { Fragment } from 'react'
+import Modal from '../UI/Modal'
+import { Status } from '../../interfaces/Status'
+import { Role } from '../../interfaces/Role'
+import LoadingSpinner from '../UI/LoadingSpinner'
+import { memo } from 'react'
+import useAxios from '../../hooks/use-axios'
+import { fetchUsersData } from '../../store/usersActions'
+import { useAppDispatch } from '../../hooks/use-redux'
+import { FormControl } from '@mui/material'
 
 type StudentProps = {
-  email: string;
-  resetInputs: () => void;
-};
+  email: string
+  resetInputs: () => void
+}
 
 function CreateStudentFields(props: StudentProps) {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false)
 
-  const letters = /^[A-Za-z]+$/;
+  const letters = /^[A-Za-z]+$/
   const {
     value: enteredFirstName,
     isValid: enteredFirstNameIsValid,
@@ -34,10 +34,7 @@ function CreateStudentFields(props: StudentProps) {
     valueChangeHandler: firstNameChangedHandler,
     valueBlurHandler: firstNameBlurHandler,
     reset: resetFirstNameInput,
-  } = useInput(
-    (value: string) =>
-      value.trim() !== '' && value.length > 2 && letters.test(value),
-  );
+  } = useInput((value: string) => value.trim() !== '' && value.length > 2 && letters.test(value))
   const {
     value: enteredLastName,
     isValid: enteredLastNameIsValid,
@@ -45,12 +42,9 @@ function CreateStudentFields(props: StudentProps) {
     valueChangeHandler: lastNameChangedHandler,
     valueBlurHandler: lastNameBlurHandler,
     reset: resetLastNameInput,
-  } = useInput(
-    (value: string) =>
-      value.trim() !== '' && value.length > 2 && letters.test(value),
-  );
+  } = useInput((value: string) => value.trim() !== '' && value.length > 2 && letters.test(value))
 
-  const number = /^[0-9]+$/;
+  const number = /^[0-9]+$/
   const {
     value: enteredPhone,
     isValid: enteredPhoneIsValid,
@@ -58,23 +52,19 @@ function CreateStudentFields(props: StudentProps) {
     valueChangeHandler: phoneChangedHandler,
     valueBlurHandler: phoneBlurHandler,
     reset: resetPhoneInput,
-  } = useInput(
-    (value: string) =>
-      value.trim() !== '' && value.length === 9 && number.test(value),
-  );
+  } = useInput((value: string) => value.trim() !== '' && value.length === 9 && number.test(value))
 
   const generatePassword = (): string => {
-    const chars =
-      '0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const passwordLength = 12;
-    let password = '';
+    const chars = '0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const passwordLength = 12
+    let password = ''
 
     for (let i = 0; i <= passwordLength; i++) {
-      const randomNumber = Math.floor(Math.random() * chars.length);
-      password += chars.substring(randomNumber, randomNumber + 1);
+      const randomNumber = Math.floor(Math.random() * chars.length)
+      password += chars.substring(randomNumber, randomNumber + 1)
     }
-    return password;
-  };
+    return password
+  }
 
   const {
     error,
@@ -92,32 +82,32 @@ function CreateStudentFields(props: StudentProps) {
       lastName: enteredLastName,
       phone: enteredPhone,
     },
-  });
+  })
 
   const validateForm: boolean =
-    enteredFirstNameIsValid && enteredLastNameIsValid && enteredPhoneIsValid;
+    enteredFirstNameIsValid && enteredLastNameIsValid && enteredPhoneIsValid
 
   const resetInputs = () => {
-    resetFirstNameInput();
-    resetLastNameInput();
-    resetPhoneInput();
-  };
+    resetFirstNameInput()
+    resetLastNameInput()
+    resetPhoneInput()
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    sendData();
-    setShowModal(true);
-    resetInputs();
-  };
+    sendData()
+    setShowModal(true)
+    resetInputs()
+  }
 
   const handleCloseModal = () => {
     if (!error) {
-      props.resetInputs();
-      dispatch(fetchUsersData());
+      props.resetInputs()
+      dispatch(fetchUsersData())
     }
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
   return (
     <Fragment>
@@ -145,9 +135,7 @@ function CreateStudentFields(props: StudentProps) {
                 onChange={firstNameChangedHandler}
                 onBlur={firstNameBlurHandler}
                 helperText={
-                  firstNameInputHasError &&
-                  enteredFirstName &&
-                  'Please insert a valid name'
+                  firstNameInputHasError && enteredFirstName && 'Please insert a valid name'
                 }
               />
             </Grid>
@@ -162,9 +150,7 @@ function CreateStudentFields(props: StudentProps) {
                 onChange={lastNameChangedHandler}
                 onBlur={lastNameBlurHandler}
                 helperText={
-                  lastNameInputHasError &&
-                  enteredLastName &&
-                  'Please insert a valid  last name'
+                  lastNameInputHasError && enteredLastName && 'Please insert a valid  last name'
                 }
               />
             </Grid>
@@ -179,19 +165,12 @@ function CreateStudentFields(props: StudentProps) {
                 onChange={phoneChangedHandler}
                 onBlur={phoneBlurHandler}
                 helperText={
-                  phoneInputHasError &&
-                  enteredPhone &&
-                  'Please insert a valid phone number'
+                  phoneInputHasError && enteredPhone && 'Please insert a valid phone number'
                 }
               />
             </Grid>
             <Grid item xs={12}>
-              <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                disabled={!validateForm}
-              >
+              <Button fullWidth type="submit" variant="contained" disabled={!validateForm}>
                 Create Student
               </Button>
             </Grid>
@@ -199,7 +178,7 @@ function CreateStudentFields(props: StudentProps) {
         </Box>
       </FormControl>
     </Fragment>
-  );
+  )
 }
 
-export default memo(CreateStudentFields);
+export default memo(CreateStudentFields)

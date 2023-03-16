@@ -1,4 +1,4 @@
-import { Transform } from 'class-transformer';
+import { Transform } from 'class-transformer'
 import {
   IsString,
   MaxLength,
@@ -10,43 +10,43 @@ import {
   IsOptional,
   IsMongoId,
   IsNotEmpty,
-} from 'class-validator';
-import { UserUpdateDto } from 'src/users/dto/UserUpdate.dto';
+} from 'class-validator'
+import { UserUpdateDto } from 'src/users/dto/UserUpdate.dto'
 
 export class ClassUpdateDto {
   @IsOptional()
   @IsMongoId()
   @IsNotEmpty()
-  id: string;
+  id: string
 
   @IsAlpha()
   @MinLength(2)
   @MaxLength(50)
   @IsNotEmpty()
-  name: string;
+  name: string
 
   @IsOptional()
   @IsString()
   @MinLength(15)
   @MaxLength(50)
   @IsNotEmpty()
-  description: string;
+  description: string
 
   @IsOptional()
   @Transform(({ value }) => new Date(value))
   @IsDate()
   @MinDate(new Date())
   @IsNotEmpty()
-  startDate: Date;
+  startDate: Date
 
   @IsOptional()
   @Transform(({ value }) => new Date(value))
   @IsDate()
   @Validate(MinDate, ['startDate'])
   @IsNotEmpty()
-  endDate: Date;
+  endDate: Date
 
   @IsOptional()
   @IsNotEmpty()
-  students: [UserUpdateDto];
+  students: [UserUpdateDto]
 }

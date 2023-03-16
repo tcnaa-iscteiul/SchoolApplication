@@ -1,4 +1,4 @@
-import { Role, Status } from '../dto/UserSearch.dto';
+import { Role, Status } from '../dto/UserSearch.dto'
 import {
   IsString,
   MaxLength,
@@ -9,41 +9,41 @@ import {
   IsAlpha,
   IsOptional,
   IsMongoId,
-} from 'class-validator';
+} from 'class-validator'
 
 export class UserUpdateDto {
   @IsOptional()
   @IsMongoId()
-  id?: string;
+  id?: string
 
   @IsEmail()
-  email?: string;
+  email?: string
 
   @IsOptional()
   @IsString()
-  password?: string;
+  password?: string
 
   @IsOptional()
   @IsEnum(Role)
-  role?: Role;
+  role?: Role
 
   @IsOptional()
   @IsEnum(Status)
-  status?: Status;
+  status?: Status
 
   @IsOptional()
   @IsAlpha()
   @MinLength(2)
   @MaxLength(20)
-  firstName?: string;
+  firstName?: string
 
   @IsOptional()
   @IsAlpha()
   @MinLength(2)
   @MaxLength(20)
-  lastName?: string;
+  lastName?: string
 
   @IsOptional()
   @IsPhoneNumber('PT')
-  phone: string;
+  phone: string
 }

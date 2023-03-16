@@ -1,35 +1,34 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getCookie, setCookie } from 'typescript-cookie';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { IClass } from '../interfaces/IClass'
 
 type MenuState = {
-  option: string;
-  email: string;
-  userClass: string[];
-};
-const user = getCookie('userClass') || '';
-const cookieUser: string[] = user ? JSON.parse(user) : [];
+  option: string
+  email: string
+  userClass: IClass[]
+}
+
 const initialState: MenuState = {
   option: '',
   email: '',
-  userClass: cookieUser,
-};
+  userClass: [],
+}
 
 const MenuSlice = createSlice({
   name: 'menu',
   initialState,
   reducers: {
     addOption(state, action: PayloadAction<string>) {
-      state.option = action.payload;
+      state.option = action.payload
     },
-    addUsersClasses(state, action: PayloadAction<string[]>) {
-      state.userClass = action.payload;
+    addUsersClasses(state, action: PayloadAction<IClass[]>) {
+      state.userClass = action.payload
     },
-    replaceUsersClasses(state, action: PayloadAction<string[]>) {
-      state.userClass = action.payload;
-      setCookie('userClass', JSON.stringify(state.userClass));
+    replaceUsersClasses(state, action: PayloadAction<IClass[]>) {
+      state.userClass = action.payload
+      //setCookie('userClass', JSON.stringify(state.userClass));
     },
   },
-});
+})
 
-export const menuActions = MenuSlice.actions;
-export default MenuSlice;
+export const menuActions = MenuSlice.actions
+export default MenuSlice

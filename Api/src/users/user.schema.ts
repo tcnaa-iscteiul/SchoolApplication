@@ -1,41 +1,41 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { Role } from './dto/UserRole.dto';
-import { Status } from './dto/UserStatus.dto';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document } from 'mongoose'
+import { Role } from './dto/UserRole.dto'
+import { Status } from './dto/UserStatus.dto'
 
-export type UserDocument = User & Document;
+export type UserDocument = User & Document
 
 @Schema()
 export class User {
-  _id: string;
+  _id: string
 
   @Prop({ unique: true, required: true })
-  email: string;
+  email: string
 
   @Prop({ required: true })
-  password: string;
+  password: string
 
   @Prop({ required: true })
-  role: Role.Teacher;
+  role: Role.Teacher
 
   @Prop({ required: true })
-  status: Status.Active;
+  status: Status.Active
 
   @Prop({ required: true })
-  firstName: string;
+  firstName: string
 
   @Prop({ required: true })
-  lastName: string;
+  lastName: string
 
   @Prop({ required: true })
-  phone: string;
+  phone: string
 }
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User)
 
 UserSchema.set('toJSON', {
   transform: function (doc, ret) {
-    ret.id = ret._id;
-    delete ret._id;
-    delete ret.__v;
+    ret.id = ret._id
+    delete ret._id
+    delete ret.__v
   },
-});
+})

@@ -1,20 +1,10 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  Param,
-  Patch,
-  Delete,
-  UseGuards,
-  Query,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { UserService } from './user.service';
-import { UserCreateDto } from './dto/UserCreate.dto';
-import { UserUpdateDto } from './dto/UserUpdate.dto';
-import { UserSearchDto } from './dto/UserSearch.dto';
-import { User } from './user.schema';
+import { Controller, Post, Body, Get, Param, Patch, Delete, UseGuards, Query } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
+import { UserService } from './user.service'
+import { UserCreateDto } from './dto/UserCreate.dto'
+import { UserUpdateDto } from './dto/UserUpdate.dto'
+import { UserSearchDto } from './dto/UserSearch.dto'
+import { User } from './user.schema'
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('user')
@@ -24,33 +14,33 @@ export class UserController {
   @Get('/all')
   async getAllUsers(@Query() param: UserSearchDto): Promise<User[]> {
     if (Object.keys(param).length) {
-      return this.userService.userSearch(param);
+      return this.userService.userSearch(param)
     }
-    return this.userService.getAll();
+    return this.userService.getAll()
   }
 
   @Post()
   createUser(@Body() userCreateDto: UserCreateDto): Promise<void> {
-    return this.userService.create(userCreateDto);
+    return this.userService.create(userCreateDto)
   }
 
   @Get('/:id')
   getUserById(@Param('id') id: string): Promise<User> {
-    return this.userService.getUserById(id);
+    return this.userService.getUserById(id)
   }
 
   @Patch()
   updateUser(@Body() userUpdateDto: UserUpdateDto): Promise<void> {
-    return this.userService.update(userUpdateDto);
+    return this.userService.update(userUpdateDto)
   }
 
   @Delete()
   async deleteUser(@Body() param: UserUpdateDto) {
-    return await this.userService.delete(param);
+    return await this.userService.delete(param)
   }
 
   @Get()
   async getNrUsers(@Body() userUpdateDto: UserSearchDto) {
-    return await this.userService.getNrUsers(userUpdateDto);
+    return await this.userService.getNrUsers(userUpdateDto)
   }
 }

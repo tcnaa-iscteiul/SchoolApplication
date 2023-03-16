@@ -1,4 +1,4 @@
-import { Transform } from 'class-transformer';
+import { Transform } from 'class-transformer'
 import {
   IsString,
   MaxLength,
@@ -11,50 +11,50 @@ import {
   IsMongoId,
   IsArray,
   IsNotEmpty,
-} from 'class-validator';
-import { UserSearchDto } from 'src/users/dto/UserSearch.dto';
+} from 'class-validator'
+import { UserSearchDto } from 'src/users/dto/UserSearch.dto'
 
 export class ClassSearchDto {
   @IsOptional()
   @IsMongoId()
   @IsNotEmpty()
-  id: string;
+  id: string
 
   @IsOptional()
   @IsAlpha()
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(50)
-  name: string;
+  name: string
 
   @IsOptional()
   @IsNotEmpty()
   @IsString()
   @MinLength(15)
   @MaxLength(50)
-  description: string;
+  description: string
 
   @IsOptional()
   @IsNotEmpty()
   @Transform(({ value }) => new Date(value))
   @IsDate()
   @MinDate(new Date())
-  startDate: Date;
+  startDate: Date
 
   @IsOptional()
   @IsNotEmpty()
   @Transform(({ value }) => new Date(value))
   @IsDate()
   @Validate(MinDate, ['startDate'])
-  endDate: Date;
+  endDate: Date
 
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  teacher: UserSearchDto;
+  teacher: UserSearchDto
 
   @IsOptional()
   @IsNotEmpty()
   @IsArray()
-  students: string[];
+  students: string[]
 }

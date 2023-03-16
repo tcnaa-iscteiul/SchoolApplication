@@ -1,25 +1,20 @@
-import {
-  Route,
-  Routes,
-  BrowserRouter as Router,
-  Navigate,
-} from 'react-router-dom';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import HomePage from './pages/HomePage';
-import AdminDashboard from './pages/AdminDashboard';
-import StudentDashboard from './pages/StudentDashboard';
-import TeacherDashboard from './pages/TeacherDashboard';
-import PrivateRoutes from './PrivateRoutes';
-import { Provider } from 'react-redux';
-import store from './store/index';
-import ForgotPassword from './pages/ForgotPassword';
-import ChangePassword from './components/ChangePassword';
-import theme from './components/UI/Theme';
-import { ThemeProvider } from '@mui/material/styles';
-import { PopularCourse } from './components/PopularCourse';
-import { MainFeature } from './components/MainFeature';
-import { Role } from './interfaces/Role';
+import { Route, Routes, BrowserRouter as Router, Navigate } from 'react-router-dom'
+import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
+import HomePage from './pages/HomePage'
+import AdminDashboard from './pages/AdminDashboard'
+import StudentDashboard from './pages/StudentDashboard'
+import TeacherDashboard from './pages/TeacherDashboard'
+import PrivateRoutes from './PrivateRoutes'
+import { Provider } from 'react-redux'
+import store from './store/index'
+import ForgotPassword from './pages/ForgotPassword'
+import ChangePassword from './components/ChangePassword'
+import theme from './components/UI/Theme'
+import { ThemeProvider } from '@mui/material/styles'
+import { PopularCourse } from './components/PopularCourse'
+import { MainFeature } from './components/MainFeature'
+import { Role } from './interfaces/Role'
 
 function App() {
   return (
@@ -52,7 +47,7 @@ function App() {
         </Provider>
       </Router>
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App

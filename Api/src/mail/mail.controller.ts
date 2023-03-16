@@ -1,6 +1,6 @@
-import { Controller, Get, Body } from '@nestjs/common';
-import { IMailGunData } from './interface/mail.interface';
-import { MailService } from './mail.service';
+import { Controller, Get, Body } from '@nestjs/common'
+import { IMailGunData } from './interface/mail.interface'
+import { MailService } from './mail.service'
 
 @Controller('email')
 export class MailController {
@@ -8,6 +8,6 @@ export class MailController {
 
   @Get()
   async send(@Body() data: IMailGunData) {
-    return await this.mailService.send(data);
+    return await this.mailService.send(data)
   }
 }

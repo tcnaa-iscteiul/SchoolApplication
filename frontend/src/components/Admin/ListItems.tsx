@@ -12,19 +12,16 @@ import { memo } from 'react';
 import { useAppSelector } from '../../hooks/use-redux';
 
 type DashboardProps = {
-  list: lists[];
-};
+  list: lists[]
+}
 const ListItems = (props: DashboardProps): JSX.Element => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const onClickHandler = (
-    event: React.MouseEvent<HTMLElement>,
-    text: string,
-  ) => {
-    event.preventDefault();
-    dispatch(menuActions.addOption(text));
+  const onClickHandler = (event: React.MouseEvent<HTMLElement>, text: string) => {
+    event.preventDefault()
+    dispatch(menuActions.addOption(text))
     // dispatch(menuActions.addOption({ option: text }));
-  };
+  }
 
   const selectedOption = useAppSelector((state) => state.menu.option);
 
@@ -40,7 +37,7 @@ const ListItems = (props: DashboardProps): JSX.Element => {
         </ListItemIcon>
         <ListItemText primary={option} />
       </ListItemButton>
-    ));
+    ))
 
   return (
     <Fragment>
@@ -54,7 +51,7 @@ const ListItems = (props: DashboardProps): JSX.Element => {
         </div>
       ))}
     </Fragment>
-  );
-};
+  )
+}
 
-export default memo(ListItems);
+export default memo(ListItems)

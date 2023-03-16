@@ -1,27 +1,27 @@
-import Dropdown from '../UI/Dropdown';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { Fragment } from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import { useState } from 'react';
-import Button from '@mui/material/Button';
-import LoadingSpinner from '../UI/LoadingSpinner';
-import Modal from '../UI/Modal';
-import { memo } from 'react';
-import useAxios from '../../hooks/use-axios';
-import { fetchUsersData } from '../../store/usersActions';
-import { useAppDispatch } from '../../hooks/use-redux';
+import Dropdown from '../UI/Dropdown'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { Fragment } from 'react'
+import CssBaseline from '@mui/material/CssBaseline'
+import { useState } from 'react'
+import Button from '@mui/material/Button'
+import LoadingSpinner from '../UI/LoadingSpinner'
+import Modal from '../UI/Modal'
+import { memo } from 'react'
+import useAxios from '../../hooks/use-axios'
+import { fetchUsersData } from '../../store/usersActions'
+import { useAppDispatch } from '../../hooks/use-redux'
 
 const RemoveStudent = (): JSX.Element => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [user, setUser] = useState<string>('');
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [user, setUser] = useState<string>('')
 
   const manageUser = (email: string) => {
-    setUser(email);
-  };
+    setUser(email)
+  }
 
   const { error, loading, sendData } = useAxios({
     method: 'Delete',
@@ -29,22 +29,20 @@ const RemoveStudent = (): JSX.Element => {
     data: {
       email: user,
     },
-  });
+  })
 
-  const removeClickHandler = async (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.preventDefault();
-    sendData();
-    setShowModal(true);
-  };
+  const removeClickHandler = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    sendData()
+    setShowModal(true)
+  }
 
   const handleCloseModal = () => {
     if (!error) {
-      dispatch(fetchUsersData());
+      dispatch(fetchUsersData())
     }
-    setShowModal(false);
-  };
+    setShowModal(false)
+  }
 
   return (
     <Fragment>
@@ -68,18 +66,13 @@ const RemoveStudent = (): JSX.Element => {
         <Dropdown students manageUser={manageUser} value={user} />
         <br />
         {user && (
-          <Button
-            fullWidth
-            type="submit"
-            variant="contained"
-            onClick={removeClickHandler}
-          >
+          <Button fullWidth type="submit" variant="contained" onClick={removeClickHandler}>
             Remove
           </Button>
         )}
       </Container>
     </Fragment>
-  );
-};
+  )
+}
 
-export default memo(RemoveStudent);
+export default memo(RemoveStudent)

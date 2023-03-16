@@ -1,8 +1,8 @@
-import { createTheme } from '@mui/material/styles';
-import { lightGreen, purple } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles'
+import { lightGreen, purple } from '@mui/material/colors'
 
-const primaryColor = lightGreen[500];
-const secondaryColor = purple[500];
+const primaryColor = lightGreen[500]
+const secondaryColor = purple[500]
 
 const theme = createTheme({
   palette: {
@@ -264,8 +264,8 @@ const theme = createTheme({
       lineHeight: 1.375,
     },
   },
-});
+})
 
-export const maxWidthModal = 200;
-export const maxWidthSpinner = 50;
-export default theme;
+export const maxWidthModal = 200
+export const maxWidthSpinner = 50
+export default theme

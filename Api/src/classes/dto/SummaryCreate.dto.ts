@@ -1,26 +1,26 @@
-import { IsString, IsDate, IsBoolean } from 'class-validator';
+import { IsString, IsDate, IsBoolean } from 'class-validator'
 
 class SummaryDto {
   @IsString()
-  name: string;
+  name: string
 
   @IsString()
-  description: string;
+  description: string
 
   @IsDate()
-  date: string;
+  date: string
 
   @IsBoolean()
-  presence: boolean;
+  presence: boolean
 
   @IsString()
-  justification: string;
+  justification: string
 
   evaluation: {
-    name: string;
-    endDate: string;
-    deliverWork: string[];
-  };
+    name: string
+    endDate: string
+    deliverWork: string[]
+  }
 }
 
-export default SummaryDto;
+export default SummaryDto
