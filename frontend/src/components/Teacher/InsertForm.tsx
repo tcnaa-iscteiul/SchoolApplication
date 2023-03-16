@@ -51,7 +51,7 @@ function InsertForm(props: InsertFormProps) {
   }
 
   return (
-     <Fragment>
+    <Fragment>
       {loading && <LoadingSpinner />}
       {!loading && (
         <Modal

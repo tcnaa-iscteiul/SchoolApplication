@@ -37,7 +37,7 @@ const theme = createTheme({
                 style: {
                   width: '100%',
                   color: secondaryColor,
-                  alignItems:'right',
+                  alignItems: 'right',
                 },
               },
             ],
@@ -177,24 +177,23 @@ const theme = createTheme({
         },
       ],
     },
-    MuiListItemButton:{
+    MuiListItemButton: {
       styleOverrides: {
         root: {
-          backgroundColor:primaryColor,
+          backgroundColor: primaryColor,
           '&.MuiListItemButton-root:hover': {
             '&, &.MuiListItemIcon-root': {
               color: primaryColor,
             },
           },
-          "&.Mui-selected": {
+          '&.Mui-selected': {
             backgroundColor: 'white',
-            color: 'black'
-          }
-        },
-        selected: {
+            color: 'black',
           },
-        }
-      }
+        },
+        selected: {},
+      },
+    },
   },
   typography: {
     button: {

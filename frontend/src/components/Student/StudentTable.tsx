@@ -23,8 +23,8 @@ function StudentTable() {
   const userClass = useAppSelector(state => state.menu.userClass)
   const option = useAppSelector(state => state.menu.option)
   console.log(option)
-  userClass.forEach((item)=> console.log(item.name))
-  const classInfo = (userClass && userClass.filter((classItem) => classItem.name === option)) || []
+  userClass.forEach(item => console.log(item.name))
+  const classInfo = (userClass && userClass.filter(classItem => classItem.name === option)) || []
   console.log(classInfo)
   const summaries: IStudentLesson[] =
     classInfo && classInfo[0] && classInfo[0].lessonsStudent ? classInfo[0].lessonsStudent : []
@@ -45,7 +45,7 @@ function StudentTable() {
   const summaryInfo =
     summaries &&
     (more ? summaries : summaries.filter((summItem: IStudentLesson, index: number) => index < 5))
-/*
+  /*
   const { evaluations } = (classInfo && classInfo[0]) || undefined
 
   const classTableInfo: JSX.Element = (
@@ -119,29 +119,34 @@ function StudentTable() {
     className: classInfo[0].name,
     lessonID: lessonId,
   }
-  const { loading:isLoad,  response, sendData:downloadFile } = useAxios({
+  const {
+    loading: isLoad,
+    response,
+    sendData: downloadFile,
+  } = useAxios({
     method: 'Get',
     url: '/class/download',
-    data:updateLesson
+    data: updateLesson,
   })
 
-  const onDownload = async() => {
+  const onDownload = async () => {
     console.log('download')
     //downloadFile()
 
-    await Service.download(updateLesson).then((response) => {
-      console.log('response')
-      console.log(response.data.data)
-      const {obj} = response.data.data
-      //const fileReader = new FileReader()
-     // fileReader.readAsArrayBuffer(response.data.data)
-     const link = document.createElement('a');
-     link.href = URL.createObjectURL( new Blob([response.data], { type:`image/png` }) )
-     link.download = 'image.png'
-     link.click()
-      //console.log(fileReader)
-      
-    /*  const link = document.createElement('a');
+    await Service.download(updateLesson)
+      .then(response => {
+        console.log('response')
+        console.log(response.data.data)
+        const { obj } = response.data.data
+        //const fileReader = new FileReader()
+        // fileReader.readAsArrayBuffer(response.data.data)
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(new Blob([response.data], { type: `image/png` }))
+        link.download = 'image.png'
+        link.click()
+        //console.log(fileReader)
+
+        /*  const link = document.createElement('a');
       const file = new File(response.data.data, 'file')
      // file.append('file', response.data.data)
       link.download = file.name
@@ -151,45 +156,44 @@ function StudentTable() {
       // 4. Force download
       link.click();
       console.log(obj)*/
-      //return obj.blob()
+        //return obj.blob()
 
-
-      //return response.data.data
-      return response.data.toFile()
-      //return response.data.blob()
-    }
-    ).then((blob) => {
-       // 2. Create blob link to download
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.download = `${response?.data.data}`
-      link.href = url
-      //link.setAttribute('download', `sample.${this.state.file}`);  
-      // 3. Append to html page
-      // 4. Force download
-      link.click();
-    })
-   /* const link = document.createElement("a");
+        //return response.data.data
+        return response.data.toFile()
+        //return response.data.blob()
+      })
+      .then(blob => {
+        // 2. Create blob link to download
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.download = `${response?.data.data}`
+        link.href = url
+        //link.setAttribute('download', `sample.${this.state.file}`);
+        // 3. Append to html page
+        // 4. Force download
+        link.click()
+      })
+    /* const link = document.createElement("a");
     link.download = donwloadFile.toString();
     link.href = "./download.txt";
     link.click();*/
     console.log(response)
-    if(!isLoad){
+    if (!isLoad) {
       console.log(response)
     }
-  };
+  }
   const dow = () => {
     const fileReader = new FileReader()
     fileReader.readAsArrayBuffer(response?.data)
     const url = URL.createObjectURL(response?.data)
     console.log(fileReader)
     console.log(url)
-    const link = document.createElement("a");
+    const link = document.createElement('a')
     link.download = response?.data
     link.href = response?.data
     link.click()
   }
- /* React.useEffect(()=>{
+  /* React.useEffect(()=>{
     console.log(response)
     const link = document.createElement("a");
     link.download = response?.data
@@ -223,9 +227,17 @@ function StudentTable() {
                   <TableRow key={lesson.lessonId}>
                     <TableCell>{lesson.lessonDate}</TableCell>
                     <TableCell>{lesson.lessonSummary}</TableCell>
-                    <TableCell><Link sx={{cursor:'pointer'}} onClick={()=>{
-                      setDownloadFile(lesson.lessonClassWork!.name)
-                      onDownload()}}>{lesson.lessonClassWork!.name}</Link></TableCell>
+                    <TableCell>
+                      <Link
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setDownloadFile(lesson.lessonClassWork!.name)
+                          onDownload()
+                        }}
+                      >
+                        {lesson.lessonClassWork!.name}
+                      </Link>
+                    </TableCell>
                     <TableCell>
                       {!fileWork && (
                         <label htmlFor="upload-photo">

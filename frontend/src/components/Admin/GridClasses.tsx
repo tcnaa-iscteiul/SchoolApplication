@@ -188,74 +188,77 @@ export default function FullFeaturedCrudGrid() {
     }
   }
   return (
-    
-    <Fragment>{ classes.length !== 0&&<Fragment>
-      <Fragment>
-        {loading && <LoadingSpinner />}
-        {!loading && (
-          <Modal
-            open={showModal}
-            onClose={handleCloseModal}
-            message={error || 'Updated with success'}
-            title={error ? 'Error' : 'Success'}
-          />
-        )}
-        {showDialog && (
-          <Modal
-            open={showDialog}
-            onClose={() => {
-              setShowDialog(false)
+    <Fragment>
+      {classes.length !== 0 && (
+        <Fragment>
+          <Fragment>
+            {loading && <LoadingSpinner />}
+            {!loading && (
+              <Modal
+                open={showModal}
+                onClose={handleCloseModal}
+                message={error || 'Updated with success'}
+                title={error ? 'Error' : 'Success'}
+              />
+            )}
+            {showDialog && (
+              <Modal
+                open={showDialog}
+                onClose={() => {
+                  setShowDialog(false)
+                }}
+                message={success || ''}
+                title={'Confirm'}
+                button={true}
+                onConfirm={
+                  id
+                    ? handleDeleteClick(id)
+                    : () => {
+                        setShowDialog(false)
+                      }
+                }
+              />
+            )}{' '}
+          </Fragment>
+          <Title>All Classes</Title>
+          {!!snackbar && (
+            <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={10000}>
+              <Alert {...snackbar} onClose={handleCloseSnackbar} />
+            </Snackbar>
+          )}
+          <DataGrid
+            autoHeight
+            rows={rows}
+            columns={columns}
+            loading={rows.length === 0 ? true : false}
+            editMode="cell"
+            rowModesModel={rowModesModel}
+            onProcessRowUpdateError={handleRowUpdateError}
+            processRowUpdate={processRowUpdate}
+            componentsProps={{
+              toolbar: { setRows, setRowModesModel },
             }}
-            message={success || ''}
-            title={'Confirm'}
-            button={true}
-            onConfirm={
-              id
-                ? handleDeleteClick(id)
-                : () => {
-                    setShowDialog(false)
-                  }
-            }
+            pagination={true}
+            pageSize={pageSize}
+            //autoPageSize={true}
+            onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+            //rowsPerPageOptions={[5, 10, 15]}
+            experimentalFeatures={{ newEditingApi: true }}
+            isCellEditable={params => {
+              const today = new Date()
+              if (params.colDef.field === 'description') return true
+              else if (
+                (params.colDef.field === 'startDate' || params.colDef.field === 'endDate') &&
+                new Date(params.getValue(params.id, params.colDef.field)).getTime() >
+                  today.getTime()
+              )
+                return true
+              else return false
+            }}
           />
-        )}{' '}
-      </Fragment>
-      <Title>All Classes</Title>
-      {!!snackbar && (
-        <Snackbar open onClose={handleCloseSnackbar} autoHideDuration={10000}>
-          <Alert {...snackbar} onClose={handleCloseSnackbar} />
-        </Snackbar>
+        </Fragment>
       )}
-      <DataGrid
-        autoHeight
-        rows={rows}
-        columns={columns}
-        loading={rows.length === 0 ? true : false}
-        editMode="cell"
-        rowModesModel={rowModesModel}
-        onProcessRowUpdateError={handleRowUpdateError}
-        processRowUpdate={processRowUpdate}
-        componentsProps={{
-          toolbar: { setRows, setRowModesModel },
-        }}
-        pagination={true}
-        pageSize={pageSize}
-        //autoPageSize={true}
-        onPageSizeChange={newPageSize => setPageSize(newPageSize)}
-        //rowsPerPageOptions={[5, 10, 15]}
-        experimentalFeatures={{ newEditingApi: true }}
-        isCellEditable={params => {
-          const today = new Date()
-          if (params.colDef.field === 'description') return true
-          else if (
-            (params.colDef.field === 'startDate' || params.colDef.field === 'endDate') &&
-            new Date(params.getValue(params.id, params.colDef.field)).getTime() > today.getTime()
-          )
-            return true
-          else return false
-        }}
-      />
-    </Fragment>}
-    {classes.length===0 && <p>No classes availabe!</p>}
+      {classes.length === 0 && <p>No classes availabe!</p>}
     </Fragment>
   )
 }

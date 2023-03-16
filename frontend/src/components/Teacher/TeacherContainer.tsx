@@ -24,11 +24,14 @@ function TeacherContainer() {
 
   //const classEnded = new Date(selectedClass[0].endDate).getTime() > new Date().getTime()
 
-  const insertSummary:JSX.Element =   <InsertForm
-                                              key={keyOption ? option : null}
-                                              title={'Insert Summary'}
-                                              method={'Patch'}
-                                              url={'class/createLesson'}/>
+  const insertSummary: JSX.Element = (
+    <InsertForm
+      key={keyOption ? option : null}
+      title={'Insert Summary'}
+      method={'Patch'}
+      url={'class/createLesson'}
+    />
+  )
 
   const components: JSX.Element[] =
     (option &&
@@ -41,9 +44,17 @@ function TeacherContainer() {
           startDate={selectedClass[0].startDate}
           endDate={selectedClass[0].endDate}
         />,
-        new Date(selectedClass[0].endDate).getTime() >= new Date().getTime() 
-        && new Date(selectedClass[0].startDate).getTime()<= new Date().getTime() ? insertSummary : <></>,
-        new Date(selectedClass[0].startDate).getTime()<= new Date().getTime() ? <GridTeacher key={keyOption ? option : null} /> : <></>,
+        new Date(selectedClass[0].endDate).getTime() >= new Date().getTime() &&
+        new Date(selectedClass[0].startDate).getTime() <= new Date().getTime() ? (
+          insertSummary
+        ) : (
+          <></>
+        ),
+        new Date(selectedClass[0].startDate).getTime() <= new Date().getTime() ? (
+          <GridTeacher key={keyOption ? option : null} />
+        ) : (
+          <></>
+        ),
       ]) ||
     []
 

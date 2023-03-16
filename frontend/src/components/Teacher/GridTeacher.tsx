@@ -34,22 +34,25 @@ function GridTeacher() {
 
   return (
     <Fragment>
-    {summaries.length > 0 &&<Fragment>
-      <FormControl>
-        <InputLabel>Select Summary</InputLabel>
-        <Select fullWidth value={lessonId} label={'name'} onChange={handleChange}>
-          {
-            summaries.map(lesson => (
-              <MenuItem key={lesson.id} value={lesson.id}>
-                {lesson.date!.toString().split('T')[0] + ' - ' + lesson.summary}
-              </MenuItem>
-            ))}
-        </Select>
-      </FormControl>
-      <Box sx={{ heigth: '10%' }}></Box>
-      {lessonId && <DataStudentsTable title={'Summary'} data={selectedLesson[0]} lessonId={lessonId}/>}
-    </Fragment>}
-    {summaries.length===0 && <p>No summaries for this class!</p>}
+      {summaries.length > 0 && (
+        <Fragment>
+          <FormControl>
+            <InputLabel>Select Summary</InputLabel>
+            <Select fullWidth value={lessonId} label={'name'} onChange={handleChange}>
+              {summaries.map(lesson => (
+                <MenuItem key={lesson.id} value={lesson.id}>
+                  {lesson.date!.toString().split('T')[0] + ' - ' + lesson.summary}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Box sx={{ heigth: '10%' }}></Box>
+          {lessonId && (
+            <DataStudentsTable title={'Summary'} data={selectedLesson[0]} lessonId={lessonId} />
+          )}
+        </Fragment>
+      )}
+      {summaries.length === 0 && <p>No summaries for this class!</p>}
     </Fragment>
   )
 }

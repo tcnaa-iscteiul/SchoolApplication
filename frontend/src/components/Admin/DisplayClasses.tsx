@@ -27,36 +27,38 @@ function DisplayClasses() {
       return index < 5
     })
 
-    console.log(allClasses.length)
+  console.log(allClasses.length)
   return (
     <Fragment>
-    {allClasses.length !== 0&&<Fragment>
-      <Title>All Classes</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow key={Math.random()}>
-            <TableCell>Name</TableCell>
-            <TableCell> Description</TableCell>
-            <TableCell> Start Date</TableCell>
-            <TableCell> End Date</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {classes.map((clas: IClass) => (
-            <TableRow key={clas.id}>
-              <TableCell>{clas.name}</TableCell>
-              <TableCell>{clas.description}</TableCell>
-              <TableCell>{clas.startDate.toString()}</TableCell>
-              <TableCell>{clas.endDate.toString()}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Link href="#" onClick={showMoreHandler}>
-        {!more ? 'See more orders' : 'See less orders'}
-      </Link>
-    </Fragment>}
-    {allClasses.length===0 && <p>No classes availabe!</p>}
+      {allClasses.length !== 0 && (
+        <Fragment>
+          <Title>All Classes</Title>
+          <Table size="small">
+            <TableHead>
+              <TableRow key={Math.random()}>
+                <TableCell>Name</TableCell>
+                <TableCell> Description</TableCell>
+                <TableCell> Start Date</TableCell>
+                <TableCell> End Date</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {classes.map((clas: IClass) => (
+                <TableRow key={clas.id}>
+                  <TableCell>{clas.name}</TableCell>
+                  <TableCell>{clas.description}</TableCell>
+                  <TableCell>{clas.startDate.toString()}</TableCell>
+                  <TableCell>{clas.endDate.toString()}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Link href="#" onClick={showMoreHandler}>
+            {!more ? 'See more orders' : 'See less orders'}
+          </Link>
+        </Fragment>
+      )}
+      {allClasses.length === 0 && <p>No classes availabe!</p>}
     </Fragment>
   )
 }

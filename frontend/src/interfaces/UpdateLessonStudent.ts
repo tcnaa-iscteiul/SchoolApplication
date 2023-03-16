@@ -21,7 +21,7 @@ export interface UpdateLessonStudent {
   submmitedWork?: any
 }
 
-export interface UpdateLesson{
+export interface UpdateLesson {
   className: string
   lessonID: string
 }

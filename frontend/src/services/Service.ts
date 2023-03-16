@@ -43,7 +43,7 @@ const refreshToken = (oldToken: string) => api.put('token/refresh', oldToken)
 
 const nrClasses = () => api.get('auth/nr')
 
-const download = (updateLesson:UpdateLesson) => api.get('class/download', {data:updateLesson})
+const download = (updateLesson: UpdateLesson) => api.get('class/download', { data: updateLesson })
 
 export const Service = {
   signIn,
@@ -66,5 +66,5 @@ export const Service = {
   getUserClassByToken,
   nrClasses,
   updateLessonStudent,
-  download
+  download,
 }
